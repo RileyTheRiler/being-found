@@ -1,6 +1,6 @@
 from pathlib import Path
 from playwright.sync_api import sync_playwright
-import json,base64,re
+import json,base64,re,os,shutil
 root=Path(__file__).parent
 html=(root/'dist/index.html').read_text()
 dist=root/'dist'
@@ -9,7 +9,7 @@ html=re.sub(r'<script defer src="/?([\w.-]+\.js)(?:\?v=[^"]*)?"></script>',lambd
 assets={c:'data:image/webp;base64,'+base64.b64encode((root/'assets'/f'{c}_atlas.webp').read_bytes()).decode() for c in ['noor','dele','tomas']}
 html=html.replace('</head>','<script>window.__BFRigAssetOverrides='+json.dumps(assets)+';</script></head>')
 with sync_playwright() as p:
- b=p.chromium.launch(headless=True,executable_path='/usr/bin/chromium',args=['--no-sandbox','--disable-web-security'])
+ b=p.chromium.launch(headless=True,executable_path=os.environ.get('BF_CHROME') or shutil.which('google-chrome') or shutil.which('chromium'),args=['--no-sandbox','--disable-web-security'])
  page=b.new_page(viewport={'width':1194,'height':834});errors=[]
  page.on('pageerror',lambda e:errors.append(str(e)));page.route('**/*',lambda route:route.abort())
  page.set_content(html,wait_until='domcontentloaded',timeout=30000)
