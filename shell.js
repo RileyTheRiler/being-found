@@ -4,14 +4,34 @@
   window.BF83Loaded=true;
   window.BF83Status='loaded';
   const $=s=>document.querySelector(s);
-  let sheet,focusPrev;
-  function dismiss(){if(!sheet)return;sheet.hidden=true;if(focusPrev?.isConnected)focusPrev.focus({preventScroll:true})}
+  let sheet,focusPrev,reflectPriorAria=null,reflectPriorInert=false;
+  function dismiss(){
+    if(!sheet||sheet.hidden)return;
+    sheet.hidden=true;
+    const app=$('#app');
+    if(app){
+      app.inert=reflectPriorInert;
+      if(reflectPriorAria===null)app.removeAttribute('aria-hidden');
+      else app.setAttribute('aria-hidden',reflectPriorAria);
+    }
+    focusPrev?.setAttribute('aria-expanded','false');
+    if(focusPrev?.isConnected)focusPrev.focus({preventScroll:true});
+  }
   function ensureSheet(){
     if(sheet||!document.body)return;
     sheet=document.createElement('div');
     sheet.id='bf83-layer';sheet.hidden=true;
-    sheet.innerHTML='<div class="bf83-backdrop" data-close></div><section class="bf83-panel" role="dialog" aria-modal="true" aria-labelledby="bf83-reflect-title"><button type="button" class="bf83-close">Close</button><h2 id="bf83-reflect-title">Reflect</h2><p id="bf83-reflect-copy">Possibilities in this scene are authored interpretations.</p><div class="bf83-actions"><button data-action="body">Body check-in</button><button data-action="model">Five possibilities</button><button data-action="terms">Study terms</button></div><p class="bf83-note">Fictional perspectives, not clinical assessments.</p></section>';
+    sheet.innerHTML='<div class="bf83-backdrop" data-close></div><section class="bf83-panel" role="dialog" aria-modal="true" aria-labelledby="bf83-reflect-title" aria-describedby="bf83-reflect-copy"><button type="button" class="bf83-close">Close</button><h2 id="bf83-reflect-title">Reflect</h2><p id="bf83-reflect-copy">Possibilities in this scene are authored interpretations.</p><div class="bf83-actions"><button data-action="body">Body check-in</button><button data-action="model">Five possibilities</button><button data-action="terms">Study terms</button></div><p class="bf83-note">Fictional perspectives, not clinical assessments.</p></section>';
     document.body.appendChild(sheet);
+    // Announce new follow-ups without rereading the complete story card.
+    if(!$('#bf83-story-status')){
+      const live=document.createElement('div');
+      live.id='bf83-story-status';live.className='bf83-sr-only';
+      live.setAttribute('role','status');
+      live.setAttribute('aria-live','polite');
+      live.setAttribute('aria-atomic','true');
+      document.body.appendChild(live);
+    }
     sheet.addEventListener('click',e=>{
       if(e.target.closest('.bf83-close')||e.target.hasAttribute('data-close')){dismiss();return}
       const a=e.target.closest('[data-action]')?.dataset.action;if(!a)return;
@@ -48,7 +68,14 @@
     // The guided classroom route withholds the world readout on purpose, so
     // its entry leaves the sheet there.
     sheet.querySelector('[data-action="model"]').hidden=document.body.classList.contains('cl-route');
-    sheet.hidden=false;sheet.querySelector('.bf83-close').focus();
+    const app=$('#app');
+    reflectPriorAria=app?.getAttribute('aria-hidden')??null;
+    reflectPriorInert=!!app?.inert;
+    sheet.hidden=false;
+    btn.setAttribute('aria-expanded','true');
+    // Move keyboard focus first, then isolate the background game.
+    sheet.querySelector('.bf83-close').focus({preventScroll:true});
+    if(app){app.inert=true;app.setAttribute('aria-hidden','true');}
   }
   document.addEventListener('keydown',e=>{
     if(e.key!=='Escape')return;
@@ -69,6 +96,8 @@
     if(!btn){
       btn=document.createElement('button');btn.id='bf83-reflect-launch';btn.className='bf83-reflect';btn.type='button';btn.textContent='Reflect';
       btn.setAttribute('aria-haspopup','dialog');
+      btn.setAttribute('aria-controls','bf83-layer');
+      btn.setAttribute('aria-expanded','false');
       btn.setAttribute('aria-label','Reflect on this moment');
       btn.addEventListener('click',()=>open(btn));
     }
@@ -106,6 +135,9 @@
     const key=m.dataset.entry+':'+m.dataset.stage;
     if(key===pinKey)return;
     pinKey=key;playerScrolled=false;pinUntil=performance.now()+3000;
+    const live=$('#bf83-story-status');
+    const excerpt=m.querySelector('p')?.textContent?.trim()||'';
+    if(live)live.textContent=(m.dataset.stage==='choosing'?'A new story choice is available. ':'Story response recorded. ')+excerpt;
     clearInterval(pinTimer);pinTimer=setInterval(showMoment,120);showMoment();
   }
   function watchResult(){

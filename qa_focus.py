@@ -26,11 +26,20 @@ with sync_playwright() as pw:
         dialog=page.locator('#bf83-layer')
         assert dialog.is_visible(),name+' Reflect did not open'
         assert page.evaluate("document.activeElement?.classList.contains('bf83-close')"),name+' dialog did not receive focus'
+        assert page.evaluate("document.querySelector('#app').inert && document.querySelector('#app').getAttribute('aria-hidden')==='true'"),name+' background is not isolated'
+        assert reflect.get_attribute('aria-expanded')=='true',name+' Reflect state not expanded'
+        assert page.locator('#bf83-layer [role="dialog"]').get_attribute('aria-describedby')=='bf83-reflect-copy',name+' dialog description missing'
         page.keyboard.press('Shift+Tab')
         assert page.evaluate("document.activeElement?.closest('#bf83-layer') !== null"),name+' focus escaped modal'
+        page.keyboard.press('Tab')
+        assert page.evaluate("document.activeElement?.classList.contains('bf83-close')"),name+' forward Tab wrap failed'
         page.keyboard.press('Escape')
         assert not dialog.is_visible(),name+' Escape did not dismiss Reflect'
         assert page.evaluate("document.activeElement?.id==='bf83-reflect-launch'"),name+' focus was not restored'
+        assert not page.evaluate("document.querySelector('#app').inert"),name+' game remained inert'
+        assert page.evaluate("document.querySelector('#app').getAttribute('aria-hidden')!=='true'"),name+' game remained hidden from screen readers'
+        assert reflect.get_attribute('aria-expanded')=='false',name+' Reflect state not collapsed'
+        assert page.locator('#bf83-story-status').get_attribute('role')=='status',name+' story status missing'
         assert not errors,(name,errors)
         page.screenshot(path=str(OUT/f'{name}-reflect-closed.png'))
         print(name,'PASS: focus entry, modal tab containment, Escape, focus restoration',flush=True)
