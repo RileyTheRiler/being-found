@@ -41,6 +41,18 @@ def check(browser, label, width, height, mobile):
         assert s["resident"] == "Noor" and not s["beatVisible"],s
         assert s["overflow"] <= 2,s
         if mobile:
+            guide = page.evaluate("""() => {
+              const g=document.querySelector('#clGuide'),b=g?.querySelector('[data-cl="guideshow"]');
+              const style=g&&getComputedStyle(g),bst=b&&getComputedStyle(b);
+              return {hidden:g?.hidden, parent:g?.parentElement?.id||g?.parentElement?.tagName,
+                guideDisplay:style?.display, guideVisibility:style?.visibility,
+                guideRect:g?.getBoundingClientRect().toJSON(), buttonDisplay:bst?.display,
+                buttonRect:b?.getBoundingClientRect().toJSON(),
+                route:document.body.className, app:document.querySelector('#app')?.className,
+                html:g?.innerHTML.slice(0,450), overlayHidden:document.querySelector('#clOverlay')?.hidden};
+            }""")
+            print("PHONE GUIDE DIAGNOSTIC",guide,flush=True)
+            assert page.locator('#clGuide [data-cl="guideshow"]').is_visible(),guide
             page.locator('#clGuide [data-cl="guideshow"]').click()
         page.locator('#clGuide .cl-guide-skip[data-cl="dele"]').click()
         assert "next door" in page.locator("#clOverlay h2").inner_text().lower()
