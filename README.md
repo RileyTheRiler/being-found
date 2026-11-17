@@ -1,4 +1,4 @@
-# Being Found 8.3.11 (mobile story hint and cross-flat QA)
+# Being Found 8.4.0 (guided narrative and phenomenological reflection)
 
 Editable source for Being Found. This line continues from the 8.3.7 preview.
 
@@ -38,6 +38,7 @@ python3 qa_save_resume.py           # save, sandbox, reload, continue
 python3 qa_focus.py                 # Reflect background isolation, keyboard focus and restoration
 python3 qa_audio.py                 # soundtrack off by default, enable, volume and mute
 python3 qa_flats_stove.py           # kitchen actions in every flat; Dele's phone hint
+python3 qa_guided84.py              # guided narrative, Dele encounter, ending and reduced motion
 python3 menu_check.py               # title, rooms, routes, continue
 python3 e2e_sync.py 390x844 1024x1366
 python3 test_later.py 390x844
@@ -58,5 +59,10 @@ These are automated browser checks, **not** a substitute for real-device and ass
 - `shell.js`, `shell.css` (built as `bf83.*`): the 8.3 play screen shell and Reflect sheet.
 - `phase2.css` (built as `bf835.css`): the attempt dialog in words.
 - `phase3.css`, `phase3.js` (built as `bf837.*`): shared encounter styling and label cleanup.
+
+The 8.4 guided route keeps Noor → Dele encounter → authored Dele day → Walt →
+reflection. It now meets Dele at his door first, marks chapter transitions without
+locking input, and separates observed actions from unverified interpretations in the
+ending. The Ratcliffe note is optional and appears after the reflection fields.
 
 See `SAVE_NOTES.md` for the step log.

@@ -1,4 +1,4 @@
-# Being Found 8.3.11: mobile hint and cross-flat stove coverage
+# Being Found 8.4.0: guided story, encounter-first pacing and reflection
 
 ## Run it
     npm run build        # node build.js && node postbuild.js, no dependencies to install
@@ -25,6 +25,7 @@ python3 qa_save_resume.py           # persistent save, sandbox, reload and conti
 python3 qa_focus.py                 # Reflect modal isolation, focus and return focus
 python3 qa_audio.py                 # opt-in WebAudio, volume and mute
 python3 qa_flats_stove.py           # every resident's stove menu; Dele mobile story hint
+python3 qa_guided84.py              # guided chapters, Dele silence, debrief, reduced motion
 python3 menu_check.py
 python3 test_prop_states.py
 python3 e2e_sync.py 390x844
@@ -43,6 +44,19 @@ Python Playwright is required. Browser executable auto-detects `google-chrome` o
 - Mobile fictional inner-voice hint wraps with a touch-sized "Show me" button instead of squeezing Dele's longer instruction.
 - New cross-flat stove browser regression at 360x640, 390x844, and 1440x900; checks each resident's available actions and Dele's hint accessibility.
 - Confirm the current Actions run before claiming this batch passed.
+
+## Release 8.4.0 changes
+- Guided chapter transitions are brief, nonblocking, and absent when reduced motion is requested. A polite text status announces the chapter without forcing a delay.
+- The classroom route proceeds straight to Dele's door after the preceding bridge (Rooms retains the ordinary referral screen). His silence, boundaries and stated wishes remain central.
+- Shorter bridges separate the encounter from the fictional authored day, avoiding the implication that the day illustrates something independently verified about Dele.
+- The final exercise asks what is observed, what is inferred, and what is unknown. A source-linked Ratcliffe note stays collapsed until the learner chooses to read it.
+- Added `qa_guided84.py` for two viewport guided-route checks, Dele's pause and voluntary departure, final reflection, responsive overflow and a motion-preference check.
+- Verify the latest GitHub Actions run before reporting the full build and regression suite as passing.
+
+## Next suggested work
+- Observe real classroom users completing the route. Check whether the sequence feels cohesive and the ending takes 10–15 minutes without rushing.
+- Add careful lived-experience editorial review of Dele's inner voice, then test TalkBack/VoiceOver and real-device transitions.
+- Keep the 8.4.0 scoped release stable before another architectural refactor.
 
 ## Not yet checked
 Actual listening/audio quality, real devices, real screen readers (TalkBack/VoiceOver/NVDA), real-device stove and Dele hint behavior (automated browser coverage added). CI is not a substitute for assistive-technology validation.

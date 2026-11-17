@@ -1,8 +1,8 @@
 # Being Found — Development Roadmap
 
-**Status:** Proposed direction, based on the 8.3.8 source and handoff on 16 November 2026.  
+**Status:** Active roadmap. M0 regression baseline completed through 8.3.11; 8.4.0 implements the first guided narrative and final reflection pass. Browser validation is documented in `HANDOFF.md`.  
 **Canonical repository:** `RileyTheRiler/being-found`  
-**Baseline:** 8.3.8 on `main`. Read `HANDOFF.md` before any implementation.
+**Baseline:** 8.3.11 on `main` before the 8.4 implementation. Read `HANDOFF.md` before any implementation.
 
 ## Product thesis
 

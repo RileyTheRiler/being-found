@@ -5047,6 +5047,19 @@ body.cl-route:has(#clGuide:not([hidden])) #app.narrow .viewbar{opacity:0;pointer
  #app.narrow .story-thread .story-next{padding-top:5px}
 }
 @media(prefers-reduced-motion:reduce){#app .pin.target::before{animation:none}}
+/* Being Found 8.4: nonblocking chapter beats and an optional, source-linked reflection. */
+#clChapterBeat[hidden]{display:none}
+#clChapterBeat{position:fixed;inset:0;display:grid;place-items:center;z-index:2147483000;pointer-events:none;background:linear-gradient(180deg,rgba(19,28,38,.19),rgba(19,28,38,.48));text-align:center;padding:18px;color:#fff}
+#clChapterBeat span{font:600 clamp(17px,3.8vw,28px)/1.35 Georgia,serif;letter-spacing:.02em;background:rgba(17,27,36,.9);border:1px solid rgba(255,255,255,.28);padding:18px 25px;border-radius:12px;box-shadow:0 12px 38px rgba(0,0,0,.2)}
+#clChapterBeat.enter{animation:cl84Beat 1.2s ease-in-out both}
+@keyframes cl84Beat{0%{opacity:0}17%,68%{opacity:1}100%{opacity:0}}
+#clChapterStatus{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+#clOverlay .cl-phenomenology{border:1px solid #d5dfd9;background:#f4f8f5;border-radius:13px;padding:10px 13px}
+#clOverlay .cl-phenomenology summary{cursor:pointer;color:#254c41;font-weight:750;font-size:14px;line-height:1.4;padding:5px 0}
+#clOverlay .cl-phenomenology p{font-size:13px;line-height:1.5;margin:9px 0 0}
+#clOverlay .cl-phenomenology a{color:#205f92;text-decoration:underline}
+#clOverlay .cl-phenomenology a:focus-visible,#clOverlay .cl-phenomenology summary:focus-visible{outline:3px solid #2a6fdb;outline-offset:3px}
+@media(prefers-reduced-motion:reduce){#clChapterBeat{display:none!important;animation:none!important}}
 </style>
 <script>
 /* Being Found 5.5: classroom route. All responses are local to this browser session.
@@ -5060,6 +5073,22 @@ document.body.append(panel,guide);
 function syncGuide(){ const dock=document.getElementById('dock'), within=run.active&&['noor','room'].includes(run.stage)&&document.getElementById('app')?.classList.contains('tablet-land'); if(within&&dock&&guide.parentElement!==dock)dock.prepend(guide);else if(!within&&guide.parentElement!==document.body)document.body.appendChild(guide); }
 const run={active:false,stage:'idle',noor:new Set(),dele:new Set(),pre:{},post:{},dVisit:null,wVisit:null,seen:0,previousSave:null,guideCollapsed:false};
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let chapterTimer=0;
+const chapter=document.createElement('div');
+chapter.id='clChapterBeat';chapter.hidden=true;chapter.setAttribute('aria-hidden','true');
+chapter.innerHTML='<span></span>';document.body.appendChild(chapter);
+const chapterStatus=document.createElement('div');
+chapterStatus.id='clChapterStatus';chapterStatus.setAttribute('role','status');
+chapterStatus.setAttribute('aria-live','polite');document.body.appendChild(chapterStatus);
+function chapterBeat(line){
+ clearTimeout(chapterTimer);chapter.hidden=true;chapter.classList.remove('enter');
+ chapterStatus.textContent=line;
+ if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+ chapter.querySelector('span').textContent=line;
+ void chapter.offsetWidth;
+ chapter.hidden=false;chapter.classList.add('enter');
+ chapterTimer=setTimeout(()=>{chapter.hidden=true;chapter.classList.remove('enter');},1200);
+}
 function isStage(k){return run.active&&run.stage===k;}
 function modal(html){guide.hidden=true;syncGuide();document.getElementById('app').inert=true;panel.innerHTML='<div class="cl-card">'+html+'</div>';panel.hidden=false;panel.querySelectorAll('textarea[data-clanswer]').forEach(x=>{x.style.height=Math.min(112,Math.max(42,x.scrollHeight+2))+'px';});setTimeout(()=>{const h=panel.querySelector('h2');if(h){h.tabIndex=-1;h.focus({preventScroll:true});}else panel.querySelector('button')?.focus({preventScroll:true});},0);}
 function hideModal(){panel.hidden=true;panel.innerHTML='';document.getElementById('app').inert=false;}
@@ -5067,7 +5096,7 @@ function snapshot(){const d=window.LWDele?.state;if(d&&d.stage!=='closed')run.dV
 function snapWalt(){const e=window.LWEncounter?.state;if(e){run.wVisit={told:[...(e.told||[])],actions:[...(e.you||[])],note:{...(e.note||{})}};}}
 function questionInputs(phase){const prompt=phase==='pre'?[
  'What might you be assuming?', 'What do you not know yet?', 'What would you ask or do first?'
-]:['Which assumption would you now question?', 'What remains unknown until the client communicates it?', 'What would you do first, and how would you adapt?'];return '<div class="cl-questions">'+prompt.map((p,i)=>'<label>'+esc(p)+'<textarea data-clanswer="'+phase+'" data-i="'+i+'" rows="1" placeholder="Optional, in your own words">'+esc(run[phase][i]||'')+'</textarea></label>').join('')+'</div><p class="cl-muted cl-privacy">Your answers stay in this browser session. Nothing is graded or transmitted.</p>';}
+]:['What did you observe, without deciding what the person feels?', 'What might you infer, and what remains unknown?', 'What could you ask or offer while respecting the person’s communication and choices?'];return '<div class="cl-questions">'+prompt.map((p,i)=>'<label>'+esc(p)+'<textarea data-clanswer="'+phase+'" data-i="'+i+'" rows="1" placeholder="Optional, in your own words">'+esc(run[phase][i]||'')+'</textarea></label>').join('')+'</div><p class="cl-muted cl-privacy">Your answers stay in this browser session. Nothing is graded or transmitted.</p>';}
 function preserveInput(){panel.querySelectorAll('textarea[data-clanswer]').forEach(x=>{run[x.dataset.clanswer][x.dataset.i]=x.value;});}
 function begin(){if(run.active){resume();return;}run.active=true;run.stage='intro';run.noor.clear();run.dele.clear();run.pre={};run.post={};run.dVisit=null;run.wVisit=null;run.guideCollapsed=false;try{run.previousSave=localStorage.getItem('lifeworld.v1');}catch(e){run.previousSave=null;}document.body.classList.add('cl-route');
  try{window.LW.closeModals();}catch(e){};
@@ -5079,19 +5108,83 @@ function renderGuide(){if(!run.active||!['noor','room'].includes(run.stage)){gui
  else {guide.classList.remove('collapsed');guide.innerHTML='<div class="cl-guide-head"><strong>'+label+'</strong><span class="cl-progress">'+count+'/2 explored</span><button class="cl-guide-fold" data-cl="guidehide" aria-expanded="true" aria-label="Collapse classroom guide">Collapse ▴</button></div><p>'+(noor?'Try a practical action and one that draws Noor in. Notice what seems possible before she decides. If you have a minute, try her front door.':'This is one authored day, not Dele’s confirmed experience. Try an effortful action and a closed possibility. His front door is one.')+'</p><div class="cl-pips" role="progressbar" aria-label="Room exploration" aria-valuemin="0" aria-valuemax="2" aria-valuenow="'+count+'"><i class="'+(done[0]?'done':'')+'"></i><i class="'+(done[1]?'done':'')+'"></i></div><div class="cl-guide-actions"><button class="cl-guide-primary" data-cl="'+action+'" '+(!ready?'disabled aria-disabled="true"':'')+'>'+next+'</button>'+(ready?'':'<button class="cl-guide-skip" data-cl="'+action+'">Skip this exploration →</button>')+'<button class="secondary cl-guide-exit" data-cl="end">Exit</button></div>';}
  guide.hidden=false; syncGuide();
 }
-function stageNoor(){run.stage='noor';run.guideCollapsed=window.matchMedia('(max-width:650px)').matches;hideModal();try{window.LW.closeModals();window.LW.startFlat(0);}catch(e){console.error(e);}renderGuide();}
-function stageDele(){run.stage='dele';hideModal();guide.hidden=true;try{window.LWDele.open();}catch(e){console.error(e);modal('<h2>Dele’s encounter could not open</h2><button data-cl="noor">Back to Noor</button>');}}
-function beforeDele(){preserveInput();run.stage='between';modal('<div class="cl-kicker">After Noor</div><h2>What made the room feel ordinary?</h2><p>Noor could use objects, anticipate people, and expect tomorrow to differ from today without explaining why. You saw an <b>authored ordinary day</b>, not a universal baseline.</p><p>Next you will meet Dele <b>before</b> seeing the model of his day. Notice what you infer from Mara’s report, and what Dele actually tells you.</p><div class="cl-actions"><button data-cl="deledo">Meet Dele at his door</button><button class="secondary" data-cl="noor">Return to Noor</button></div>');}
-function toDeleRoom(){if(!isStage('dele'))return;snapshot();try{window.LWDele.close(true);}catch(e){}run.stage='room';try{window.LW.closeModals();window.LW.startFlat(2);}catch(e){};
- modal('<div class="cl-kicker">After Dele’s visit</div><h2>A room is not an answer key</h2><p>Dele was able to set limits or choose what he wanted to disclose. Your record contains only what he communicated. The room that follows is a <b>fictional phenomenological illustration</b> of one possible altered sense of possibility.</p><p>A closed action in this room does not establish why Dele stopped painting, what every day is like, or what he wants from you.</p><div class="cl-actions"><button data-cl="roomgo">Look at this authored day</button><button class="secondary" data-cl="end">Leave classroom mode</button></div>');}
-function stageRoom(){run.stage='room';run.guideCollapsed=window.matchMedia('(max-width:650px)').matches;hideModal();renderGuide();}
-function beforeWalt(){run.stage='waltbridge';hideModal();modal('<div class="cl-kicker">After Dele’s day</div><h2>From a changed horizon to clinical listening</h2><p>In the authored day, ordinary actions may remain physically possible while no longer feeling inviting or worth beginning. But the room has not verified Dele’s private experience.</p><p>Now meet Walt, who has aphasia. His communication difficulty cannot tell you whether his motivation, goals, or sense of future possibility has changed. June’s referral is not Walt’s account.</p><div class="cl-actions"><button data-cl="walt">Start Walt’s visit</button><button class="secondary" data-cl="roomgo">Return to Dele’s room</button></div>');}
-function stageWalt(){run.stage='walt';hideModal();guide.hidden=true;try{window.LWEncounter.open();}catch(e){console.error(e);modal('<h2>Walt’s encounter could not open</h2><button data-cl="waltbridge">Try again</button>');}}
+function stageNoor(){
+ run.stage='noor';run.guideCollapsed=window.matchMedia('(max-width:650px)').matches;
+ hideModal();try{window.LW.closeModals();window.LW.startFlat(0);}catch(e){console.error(e);}
+ renderGuide();chapterBeat('01 · Noor’s morning');
+ requestAnimationFrame(()=>guide.querySelector('.cl-guide-fold')?.focus({preventScroll:true}));
+}
+function stageDele(){
+ run.stage='dele';hideModal();guide.hidden=true;
+ try{
+   window.LWDele.open();
+   // In the guided route the preceding chapter already supplied Mara's report.
+   // Begin at the door instead of repeating the explanatory referral card.
+   document.querySelector('#dlCard [data-dlu="begin"]')?.click();
+   chapterBeat('02 · At Dele’s door');
+   requestAnimationFrame(()=>document.querySelector('#dlMoves .dl-move')?.focus({preventScroll:true}));
+ }catch(e){console.error(e);modal('<h2>Dele’s encounter could not open</h2><button data-cl="noor">Back to Noor</button>');}
+}
+function beforeDele(){
+ preserveInput();run.stage='between';
+ modal('<div class="cl-kicker">After Noor · Chapter 2</div><h2>The next door is still closed.</h2>'+
+ '<p>Noor’s morning was one authored account of what felt available. At Dele’s door, you have only Mara’s report that his routines have changed.</p>'+
+ '<p>You do not yet know what Dele wants, or why anything has changed. Notice what he says, what he chooses, and what remains unsaid.</p>'+
+ '<div class="cl-actions"><button data-cl="deledo">Knock on Dele’s door</button><button class="secondary" data-cl="noor">Return to Noor</button></div>');
+}
+function toDeleRoom(){
+ if(!isStage('dele'))return;
+ snapshot();try{window.LWDele.close(true);}catch(e){}
+ run.stage='room';try{window.LW.closeModals();window.LW.startFlat(2);}catch(e){console.error(e);}
+ modal('<div class="cl-kicker">After the encounter · Chapter 3</div><h2>A room cannot confirm an inner life.</h2>'+
+ '<p>You heard Dele’s words and saw how he chose to respond. His explanations and preferences may be incomplete, and that uncertainty matters.</p>'+
+ '<p>Next is a <b>separate fictional account</b> of how ordinary possibilities might appear altered. It is not a replay of what Dele told you, and it does not establish his diagnosis or private experience.</p>'+
+ '<div class="cl-actions"><button data-cl="roomgo">Enter the authored day</button><button class="secondary" data-cl="end">Leave classroom mode</button></div>');
+}
+function stageRoom(){
+ run.stage='room';run.guideCollapsed=window.matchMedia('(max-width:650px)').matches;
+ hideModal();renderGuide();chapterBeat('03 · An authored day');
+ requestAnimationFrame(()=>guide.querySelector('.cl-guide-fold')?.focus({preventScroll:true}));
+}
+function beforeWalt(){
+ run.stage='waltbridge';hideModal();
+ modal('<div class="cl-kicker">After Dele’s authored day · Chapter 4</div><h2>The same action. A different possibility.</h2>'+
+ '<p>A stove or a front door can remain physically usable even when an action does not feel inviting or worth starting. That is one way to illustrate a changed <em>sense of possibility</em>, not a claim about everyone with depression.</p>'+
+ '<p>Now meet Walt. June reports less participation. Walt’s speech difficulty cannot, on its own, tell you what he wants, what matters to him, or what he feels is possible.</p>'+
+ '<div class="cl-actions"><button data-cl="walt">Begin Walt’s session</button><button class="secondary" data-cl="roomgo">Return to Dele’s day</button></div>');
+}
+function stageWalt(){
+ run.stage='walt';hideModal();guide.hidden=true;
+ try{window.LWEncounter.open();chapterBeat('04 · Walt’s session');}
+ catch(e){console.error(e);modal('<h2>Walt’s encounter could not open</h2><button data-cl="waltbridge">Try again</button>');}
+}
 function toFinal(){if(!isStage('walt'))return;snapWalt();try{window.LWEncounter.close();window.LW.closeModals();}catch(e){}run.stage='complete';finale();}
 function beforeAnswers(){const labels=['Assumption','Unknown','First step'];return '<section class="cl-before" aria-label="Your starting reflections"><h3>Your starting notes</h3><p class="cl-muted">These are your own words from before Noor, Dele, and Walt. Compare them with what you think now.</p>'+labels.map((label,i)=>'<div class="cl-before-line"><b>'+label+'</b><span>'+esc(run.pre[i]?.trim()||'Not answered')+'</span></div>').join('')+'</section>';}
-function finale(){preserveInput();run.stage='complete';modal('<div class="cl-kicker">Classroom pathway · Final reflection</div><h2>What would you reconsider now?</h2>'+beforeAnswers()+'<div class="cl-ref"><p><b>New client:</b> A person with dysarthria uses fewer spoken words in group. A colleague says they have “withdrawn.” The person has not explained the change.</p></div>'+questionInputs('post')+'<div class="cl-actions cl-intro-actions cl-final-actions"><button data-cl="copy">Copy before and after</button><button class="secondary" data-cl="debrief">Facilitator questions</button><button class="secondary" data-cl="end">Finish</button></div><p id="clStatus" role="status" class="cl-muted">No score. These two cases cannot establish a change in empathy.</p>');}
-function debrief(){preserveInput();modal('<div class="cl-kicker">For a class discussion</div><h2>Observe, do not rank</h2><p>Invite learners to describe an assumption that changed, distinguish third-party reports from what a person communicated, and suggest a first response that offers real choice.</p><div class="cl-steps"><div class="cl-step">Noor<br><b>Ordinary possibility</b></div><div class="cl-step">Dele<br><b>Unknowns remain</b></div><div class="cl-step">Walt<br><b>Clinical transfer</b></div></div><p><b>Counterexample test:</b> After playing a second Walt context, ask learners to propose a support action that always works. Have them explain why even listening, waiting, or asking preferences must be responsive to the particular person.</p><p><b>Comparison:</b> If evaluating learning, use a matched written vignette with equal time and a predefined clinical reasoning rubric. A small class does not establish gains in radical empathy.</p><p class="cl-muted">No data are transmitted. Include a first-person account and appropriate review before using this as a classroom teaching intervention.</p><div class="cl-actions"><button data-cl="final">Return to your reflection</button><button class="secondary" data-cl="copy">Copy responses</button></div><p id="clStatus" role="status"></p>');}
-function copy(){preserveInput();let fmt=(group,qs)=>qs.map((q,i)=>q+'\n'+(run[group][i]||'[not answered]')).join('\n\n');let t='BEING FOUND 6.1: CLASSROOM REFLECTION (fictional vignettes; no score)\n\nBEFORE: missed group visits\n\n'+fmt('pre',['Assumption','Unknown','First step'])+'\n\nAFTER: reduced speaking in group\n\n'+fmt('post',['Assumption reconsidered','Unknown','First step and adaptation'])+'\n\nNot a validated assessment. The two vignettes differ and these responses cannot establish a gain in empathy.';
+function finale(){
+ preserveInput();run.stage='complete';
+ modal('<div class="cl-kicker">Afterward · Final reflection</div><h2>What can you know from the outside?</h2>'+
+ '<p class="cl-muted">Return to the distinction between visible behavior, your interpretation, and the person’s own account. There is no preferred response.</p>'+
+ beforeAnswers()+
+ '<div class="cl-ref"><p><b>New encounter:</b> A person with dysarthria speaks less during a group session. A colleague says they have “withdrawn.” The person has not explained the change.</p></div>'+
+ questionInputs('post')+
+ '<details class="cl-phenomenology"><summary>After writing: a note on existential feelings</summary>'+
+ '<p><b>Ratcliffe’s distinction:</b> An existential feeling is a background sense of how the surroundings, other people, and future actions are available or possible, not simply a named emotion. The same object can be present without presenting the same possibilities.</p>'+
+ '<p><b>Limit:</b> Noor and Dele are fictional perspectives. Dele’s encounter did not verify the authored day. Walt’s language access does not establish his motivation. Listen for the person’s account and remain open to alternatives.</p>'+
+ '<p><a href="https://doi.org/10.1093/med/9780199206469.003.0002" target="_blank" rel="noopener noreferrer">Ratcliffe (2008), existential feelings</a></p></details>'+
+ '<div class="cl-actions cl-intro-actions cl-final-actions"><button data-cl="copy">Copy before and after</button><button class="secondary" data-cl="debrief">Facilitator questions</button><button class="secondary" data-cl="end">Finish</button></div>'+
+ '<p id="clStatus" role="status" class="cl-muted">No score. These different vignettes do not measure a change in empathy.</p>');
+}
+function debrief(){
+ preserveInput();
+ modal('<div class="cl-kicker">Classroom discussion · No answer key</div><h2>What remains possible to know?</h2>'+
+ '<p>Ask learners to name one behavior they observed, one interpretation they made, and one question they cannot answer without the person. Discuss which communication supports could make that question accessible.</p>'+
+ '<div class="cl-steps"><div class="cl-step">Noor<br><b>Ordinary possibility</b></div><div class="cl-step">Dele<br><b>Consent and uncertainty</b></div><div class="cl-step">Walt<br><b>Communication access</b></div></div>'+
+ '<p><b>Phenomenological question:</b> How could the same kitchen or door remain physically unchanged while its possibilities appear different to someone? Do not treat the author’s fictional answer as a patient report.</p>'+
+ '<p><b>Counterexample:</b> Ask whether silence, offering help, or waiting is always the right clinical response. A person’s goals, context, and consent determine what is useful.</p>'+
+ '<p><b>Evaluation limit:</b> If studying learning, use a predefined reasoning rubric and comparable cases. This activity does not validate empathy gains. Seek compensated lived-experience and accessibility review before classroom deployment.</p>'+
+ '<div class="cl-actions"><button data-cl="final">Return to reflection</button><button class="secondary" data-cl="copy">Copy responses</button></div><p id="clStatus" role="status"></p>');
+}
+function copy(){preserveInput();let fmt=(group,qs)=>qs.map((q,i)=>q+'\n'+(run[group][i]||'[not answered]')).join('\n\n');let t='BEING FOUND 8.4: CLASSROOM REFLECTION (fictional vignettes; no score)\n\nBEFORE: missed group visits\n\n'+fmt('pre',['Assumption','Unknown','First step'])+'\n\nAFTER: reduced speaking in group\n\n'+fmt('post',['Observed without inference','Possible inference and unknown','Consent-based first step'])+'\n\nNot a validated assessment. The two vignettes differ and these responses cannot establish a gain in empathy.';
  const status=panel.querySelector('#clStatus');const result=x=>{if(status)status.textContent=x;};try{if(navigator.clipboard?.writeText)navigator.clipboard.writeText(t).then(()=>result('Copied to clipboard.')).catch(()=>fallback(t,result));else fallback(t,result);}catch(e){fallback(t,result);}}
 function fallback(t,cb){const el=document.createElement('textarea');el.value=t;el.style.position='fixed';el.style.top='0';el.style.left='0';document.body.appendChild(el);el.focus();el.select();let ok=false;try{ok=document.execCommand('copy');}catch(e){}el.remove();cb(ok?'Copied to clipboard.':'Copy unavailable. Select and copy the text from your reflection fields.');}
 function end(){run.active=false;run.stage='idle';hideModal();guide.hidden=true;syncGuide();document.body.classList.remove('cl-route');try{if(window.LWDele&&!document.getElementById('dele').hidden)window.LWDele.close(true);}catch(e){}try{if(window.LWEncounter&&!document.getElementById('enc').hidden)window.LWEncounter.close();}catch(e){};try{if(run.previousSave===null)localStorage.removeItem('lifeworld.v1');else localStorage.setItem('lifeworld.v1',run.previousSave);if(typeof load==='function')load();}catch(e){}try{window.LW.closeModals();window.LW.showFlats?.();}catch(e){}}
