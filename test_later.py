@@ -1,6 +1,6 @@
 from pathlib import Path
 from playwright.sync_api import sync_playwright
-import json,base64,re,sys
+import json,base64,re,os,shutil,sys
 root=Path(__file__).parent
 html=(root/'dist/index.html').read_text()
 dist=root/'dist'
@@ -10,7 +10,7 @@ assets={c:'data:image/webp;base64,'+base64.b64encode((root/'assets'/f'{c}_atlas.
 html=html.replace('</head>','<script>window.__BFRigAssetOverrides='+json.dumps(assets)+';</script></head>')
 ports=[tuple(map(int,x.split('x'))) for x in sys.argv[1:]] or [(1024,1366)]
 with sync_playwright() as p:
- b=p.chromium.launch(headless=True,executable_path='/usr/bin/chromium',args=['--no-sandbox','--disable-web-security'])
+ b=p.chromium.launch(headless=True,executable_path=os.environ.get('BF_CHROME') or shutil.which('google-chrome') or shutil.which('chromium'),args=['--no-sandbox','--disable-web-security'])
  for w,h in ports:
   ctx=b.new_context(viewport={'width':w,'height':h});page=ctx.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
   page.route('**/*',lambda route:route.abort())
