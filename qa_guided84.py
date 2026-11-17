@@ -75,7 +75,15 @@ def check(browser, label, width, height, mobile):
             page.locator('#dlMoves [data-dla="leave"]').click()
         page.wait_for_function("window.LWDele?.state?.stage==='ended'")
         page.locator('#dlMoves [data-dla="reflect"]').click()
-        assert "What Dele communicated" in page.locator('#dlCard').inner_text()
+        review = page.evaluate("""() => {
+          const c=document.querySelector('#dlCard');
+          return {stage:LWDele?.state?.stage,hidden:c?.hidden,
+            text:c?.textContent.slice(0,1000),
+            actions:[...(c?.querySelectorAll('button')||[])].map(b=>b.dataset.dlu)};
+        }""")
+        print("DELE REVIEW",review,flush=True)
+        page.locator('#dlCard [data-dlu="note"]').wait_for(state="visible",timeout=8000)
+        assert "What Dele communicated" in (page.locator('#dlCard').text_content() or ""),review
         page.locator('#dlCard [data-dlu="note"]').click()
         page.locator('#dlCard [data-dlu="classRoom"]').click()
         page.wait_for_function("window.LWClass?.stage==='room'")
