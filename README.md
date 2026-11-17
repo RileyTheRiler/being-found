@@ -1,4 +1,4 @@
-# Being Found 8.3.8 (work in progress)
+# Being Found 8.3.9 (quality pass)
 
 Editable source for Being Found. This line continues from the 8.3.7 preview.
 
