@@ -1,0 +1,154 @@
+/* Being Found 7.6.1 — Action sheet presentation.
+   The active choices live in a top-level dialog, never underneath the story
+   dock, room tabs or other positioned panels. */
+#bf-action-backdrop {
+  position:fixed;
+  inset:0;
+  z-index:110;
+  background:rgba(15,24,29,.46);
+  -webkit-backdrop-filter:blur(2px);
+  backdrop-filter:blur(2px);
+  touch-action:none;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .16s ease;
+}
+#bf-action-backdrop[hidden] {display:none!important}
+body.bf-action-dialog-open #bf-action-backdrop {opacity:1;pointer-events:auto}
+/* The dice dialog temporarily takes precedence. If a roll is reconsidered,
+   the original action sheet is still available underneath. */
+body.bf-check-open #bf-action-backdrop,
+body.bf-check-open > #bubbles.bf-action-sheet {display:none!important}
+
+/* Portal the existing #bubbles element rather than cloning it. The original
+   action listeners still receive clicks on the exact same buttons. */
+body > #bubbles.bf-action-sheet {
+  position:fixed!important;
+  inset:auto;
+  z-index:111!important;
+  display:flex!important;
+  flex-direction:column;
+  gap:8px!important;
+  box-sizing:border-box;
+  padding:13px!important;
+  background:#fafaf7!important;
+  color:#26352f;
+  border:1px solid #d9dfda;
+  border-radius:19px!important;
+  box-shadow:0 18px 55px rgba(7,20,19,.38)!important;
+  isolation:isolate;
+  opacity:1!important;
+  -webkit-backdrop-filter:none!important;
+  backdrop-filter:none!important;
+  overflow-x:hidden!important;
+  overflow-y:auto!important;
+  overscroll-behavior:contain;
+  scrollbar-width:thin;
+  transform:none!important;
+  animation:bf-action-enter .16s ease-out both;
+}
+body > #bubbles.bf-action-sheet .bub-toolbar {
+  width:100%;display:flex;align-items:center;justify-content:space-between;
+  gap:10px;flex:none;position:sticky;top:-13px;z-index:2;
+  background:#fafaf7!important;padding:2px 0 9px!important;
+  border-bottom:1px solid #e4e9e4;
+}
+body > #bubbles.bf-action-sheet .bub-head {
+  margin:0!important;max-width:calc(100% - 52px);
+  background:#263747;color:#fff;line-height:1.2;letter-spacing:.05em;
+  padding:7px 11px;animation:none!important;
+}
+body > #bubbles.bf-action-sheet .bub-dismiss {
+  flex:none;min-width:44px;min-height:44px;width:44px;height:44px;
+  border-radius:50%;background:#edf0eb!important;border:1px solid #d9dfd7;
+  box-shadow:none!important;color:#31433c;font-size:25px;
+}
+body > #bubbles.bf-action-sheet .bub {
+  width:100%;min-width:0;min-height:52px!important;
+  display:flex;flex:none;align-items:center;gap:11px;
+  margin:0!important;
+  padding:9px 12px 9px 9px!important;
+  border-radius:13px!important;
+  border-width:2px;
+  background:#fff!important;
+  color:#253431;
+  box-shadow:0 1px 2px rgba(22,38,32,.045)!important;
+  -webkit-backdrop-filter:none!important;
+  backdrop-filter:none!important;
+  opacity:1!important;
+  mix-blend-mode:normal!important;
+  transform:none!important;
+  translate:none!important;
+  animation:none!important;
+  font-size:14px!important;
+  line-height:1.25;
+  text-align:left;
+  white-space:normal;
+  touch-action:manipulation;
+}
+body > #bubbles.bf-action-sheet .bub .lab {flex:1;min-width:0;overflow-wrap:anywhere}
+body > #bubbles.bf-action-sheet .bub .ki {min-width:32px;min-height:32px;background:var(--kc);color:#fff}
+body > #bubbles.bf-action-sheet .bub .tag {
+  background:#f1f2ee!important;color:#4a5653!important;
+  opacity:1!important;white-space:normal;
+}
+body > #bubbles.bf-action-sheet .bub.s-hollow {background:#f6f8fa!important;color:#59627a!important}
+body > #bubbles.bf-action-sheet .bub.s-hollow .ki {background:#f6f8fa!important;color:var(--kc)!important}
+body > #bubbles.bf-action-sheet .bub.s-sealed {background:#eceff1!important;color:#7b8593!important}
+body > #bubbles.bf-action-sheet .bub.s-heavy {background:#eceff3!important;color:#3a4152!important;touch-action:none!important;-webkit-touch-callout:none}
+body > #bubbles.bf-action-sheet .bub.s-dominant {background:#bd4332!important;color:#fff!important}
+body > #bubbles.bf-action-sheet .bub.s-dominant .ki {background:#fff!important;color:#bd4332!important}
+body > #bubbles.bf-action-sheet .bub.s-dominant .tag {background:#fff!important;color:#a83527!important}
+body > #bubbles.bf-action-sheet .bub:focus-visible,
+body > #bubbles.bf-action-sheet .bub-dismiss:focus-visible {outline:3px solid #b38649;outline-offset:2px}
+body > #bubbles.bf-action-sheet .bub:active {filter:brightness(.965)}
+
+/* The inactive text dock and view controls are removed from the composition,
+   not merely darkened behind semi-transparent choices. */
+body.bf-action-dialog-open #app #dock,
+body.bf-action-dialog-open #app #sdock,
+body.bf-action-dialog-open #app .viewbar,
+body.bf-action-dialog-open #app .room-nav,
+body.bf-action-dialog-open #app .room-tabs,
+body.bf-action-dialog-open #app .room-switcher,
+body.bf-action-dialog-open #app [role="tablist"] {
+  opacity:0!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
+
+/* Phone and iPad portrait: a genuine bottom sheet with an opaque surface. */
+@media(orientation:portrait) {
+  body > #bubbles.bf-action-sheet {
+    left:50%!important;right:auto!important;top:auto!important;
+    bottom:max(12px,env(safe-area-inset-bottom))!important;
+    width:min(560px,calc(100vw - 20px))!important;
+    max-width:calc(100vw - 20px)!important;
+    max-height:min(54dvh,540px)!important;
+    transform:translateX(-50%)!important;
+    padding:13px!important;
+    border-radius:19px!important;
+  }
+}
+/* Short landscape phones: choices use a compact right-hand rail. */
+@media(orientation:landscape) and (max-height:520px) {
+  body > #bubbles.bf-action-sheet {
+    left:auto!important;right:max(9px,env(safe-area-inset-right))!important;
+    top:auto!important;bottom:max(8px,env(safe-area-inset-bottom))!important;
+    width:min(320px,43vw)!important;
+    max-width:calc(100vw - 18px)!important;
+    max-height:calc(100dvh - 18px)!important;
+    padding:9px!important;
+    gap:5px!important;
+    border-radius:16px!important;
+  }
+  body > #bubbles.bf-action-sheet .bub-toolbar {top:-9px;padding:0 0 5px!important}
+  body > #bubbles.bf-action-sheet .bub {min-height:44px!important;font-size:12.5px!important;padding:6px 9px!important;gap:8px}
+  body > #bubbles.bf-action-sheet .bub .ki {width:29px;height:29px;min-width:29px;min-height:29px}
+  body > #bubbles.bf-action-sheet .bub .tag {font-size:9px}
+}
+@keyframes bf-action-enter {from{opacity:.97;filter:brightness(.98)}to{opacity:1;filter:none}}
+@media(prefers-reduced-motion:reduce) {
+  body > #bubbles.bf-action-sheet {animation:none!important}
+  #bf-action-backdrop {transition:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+}

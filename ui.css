@@ -1,0 +1,138 @@
+/* Being Found 6.9 — narrative-first, responsive UI layer.
+   Scoped to the main game; encounter screens and cinematic are untouched. */
+#app .topbar {min-width:0}
+#app .topbar button, #app .viewbar button {touch-action:manipulation}
+#app .bub:focus-visible, #app .pin:focus-visible,
+#app .panbtn:focus-visible, #bf-guide-toggle:focus-visible {outline:3px solid #b58043;outline-offset:3px}
+#app .result .rc-text {line-height:1.53}
+#app .bubbles.on .bub {touch-action:manipulation}
+
+/* The room can be viewed without the academic sidebars, while story cards remain. */
+#app.wide.bf-focus-mode .layout {grid-template-columns:minmax(0,1fr)!important}
+#app.wide.bf-focus-mode #colLeft, #app.wide.bf-focus-mode #colRight {display:none!important}
+#app.wide.bf-focus-mode #scene {min-width:0}
+#app.wide.bf-focus-mode #sdock {max-width:620px}
+#bf-focus-toggle {font-weight:700}
+#bf-guide-toggle {display:none;min-width:44px;min-height:38px;align-items:center;justify-content:center;gap:5px;border:1px solid #ffffff55;border-radius:10px;background:#eef2ed;color:#273e36;padding:6px 11px;font:700 12px system-ui;cursor:pointer;white-space:nowrap}
+#bf-guide-toggle[aria-expanded="true"] {background:#315345;color:white}
+
+@media (max-width:899px) {
+  /* One 42px navigation strip, not a scaled-down desktop toolbar. */
+  #app .topbar {padding:4px 7px!important;gap:5px!important;min-height:43px;max-height:48px;border-radius:13px}
+  #app .brand {font-size:14px;gap:5px;flex-shrink:0}
+  #app .brand .logo {width:15px;height:15px;border-width:3px}
+  #app .where {gap:4px;padding-left:1px;min-width:0}
+  #app .where .flatno, #app .where .atpill {display:none!important}
+  #app .where .who {font-size:13px;max-width:100px}
+  #app .clockbox {gap:4px;margin-left:auto;flex:none}
+  #app .clocktxt b {font-size:11px}
+  #app .clocktxt small {display:none!important}
+  #app #btnTerms {display:none!important}
+  #app .audioctl {width:auto;min-width:0;gap:0}
+  #app .audioctl input, #app .audioctl small {display:none!important}
+  #app #musicToggle, #app #btnFlats {width:38px;min-width:38px;min-height:38px;padding:6px!important;display:grid;place-items:center}
+  #app #btnFlats span {display:none!important}
+  #app .side-nav {max-width:min(100%,350px);min-width:0;overflow-x:auto;scrollbar-width:none}
+  #app .side-nav::-webkit-scrollbar {display:none}
+  #app .side-nav button {min-height:37px;padding:6px 10px;white-space:nowrap}
+  #app .viewbar button {min-height:40px;min-width:40px}
+  #app .pin {width:44px;height:44px;margin:-22px 0 0 -22px}
+  #app .pin .ico {width:18px;height:18px}
+  #app .panbtn {width:44px;height:48px;font-size:26px;border-radius:13px}
+  #app .bubbles.on {gap:6px!important}
+  #app .bubbles.on .bub {min-height:49px!important;font-size:14px;line-height:1.3;padding:10px 12px}
+  #app .bubbles.on .bub-head {padding:5px 4px;line-height:1.3}
+  #app .narrow .result, #app.narrow .result {min-width:0}
+  #app.narrow .rc-text {font-size:14px;line-height:1.45}
+  #app.narrow .rc-meta {gap:4px}
+  #app.narrow .rc-note, #app.narrow .rc-emo {display:none}
+  #app.narrow .viewbar {top:7px;right:7px}
+  #app.narrow .viewbar button span {display:none}
+  #app.narrow .pin .tip {pointer-events:none}
+  body.cl-route #app.narrow #btnFlats {display:none!important}
+  /* The classroom prompt is one click away, not permanently in front of the set. */
+  body.cl-route #app.narrow #bf-guide-toggle {display:flex!important}
+  body.bf-guide-closed #clGuide:not([hidden]) {display:none!important}
+  body.cl-route #clGuide:not([hidden]) {max-height:calc(100dvh - 64px);overflow-y:auto;overscroll-behavior:contain;z-index:36}
+  #clGuide button {min-height:42px!important}
+}
+
+@media (max-width:899px) and (orientation:landscape), (max-width:899px) and (max-height:480px) {
+  /* Recover room width from the existing 44%-wide story dock. */
+  #app.narrow.land .layout {gap:6px!important;min-width:0}
+  #app.narrow.land .scene {flex:1 1 auto!important;width:auto!important;min-width:0!important}
+  #app.narrow.land .dock {flex:0 0 min(270px,32%)!important;width:min(270px,32%)!important;max-height:none!important;min-width:0;gap:5px;overflow:auto;scrollbar-width:thin}
+  #app.narrow.land .dock .result {max-height:100%!important;overflow-y:auto;padding:9px 10px;gap:5px;border-radius:14px}
+  #app.narrow.land .dock .goalbar {padding:7px 9px;gap:3px}
+  #app.narrow.land .dock .rc-idle {font-size:12px}
+  #app.narrow.land .dock .rc-eyebrow {font-size:10px}
+  #app.narrow.land .dock .rc-text {font-size:13.5px;line-height:1.37;margin:3px 0}
+  #app.narrow.land .dock .rc-meta {display:flex;gap:4px;flex-wrap:wrap}
+  #app.narrow.land .dock .chip {font-size:9.5px;padding:2px 5px}
+  #app.narrow.land .stage {min-width:0}
+  #app.narrow.land .bubbles.on {position:fixed!important;left:auto!important;right:8px!important;top:auto!important;bottom:max(8px,env(safe-area-inset-bottom))!important;transform:none!important;width:min(300px,39vw)!important;max-width:none!important;max-height:calc(100dvh - 66px)!important;overflow-y:auto!important;padding:10px!important;border-radius:17px!important;background:rgba(250,249,245,.97)!important;box-shadow:0 8px 32px #10201866!important;z-index:37!important}
+  body.bf-actions-open #app.narrow.land .dock {visibility:hidden;pointer-events:none}
+  body.cl-route #clGuide:not([hidden]) {top:52px!important;right:7px!important;width:min(320px,42vw)!important}
+  #app .topbar {max-height:44px}
+  #app .brand span {display:none}
+  #app .brand .logo {width:19px;height:19px}
+}
+
+@media (max-width:899px) and (orientation:portrait) and (min-height:481px) {
+  #app.narrow .scene {flex:1 1 auto!important;min-height:50dvh!important}
+  #app.narrow .dock {max-height:32dvh!important;gap:5px}
+  #app.narrow .dock .result {max-height:22dvh!important;padding:10px 12px;border-radius:13px}
+  #app.narrow .dock .goalbar {padding:8px 10px}
+  #app.narrow .bubbles.on {position:fixed!important;left:50%!important;right:auto!important;top:auto!important;bottom:max(8px,env(safe-area-inset-bottom))!important;transform:translateX(-50%)!important;width:calc(100vw - 16px)!important;max-width:480px!important;max-height:44dvh!important;overflow-y:auto!important;padding:12px!important;border-radius:18px!important;background:rgba(250,249,245,.98)!important;box-shadow:0 -7px 32px #10201855!important;z-index:37!important}
+  body.bf-actions-open #app.narrow .dock {opacity:.3;pointer-events:none}
+  body.cl-route #clGuide:not([hidden]) {top:auto!important;bottom:8px;left:8px;right:8px;width:auto!important;max-height:52dvh!important}
+}
+
+/* Dice occupy the information area rather than hiding the set behind a full-screen card. */
+#bf-check {align-items:flex-end!important;justify-content:flex-end!important;pointer-events:none;padding:12px max(12px,env(safe-area-inset-right)) max(12px,env(safe-area-inset-bottom)) 12px!important}
+#bf-check .bf-shade {pointer-events:auto;background:rgba(15,26,23,.29)!important;backdrop-filter:blur(1.5px)!important}
+#bf-check .bf-dialog {pointer-events:auto;margin:0;width:min(368px,100%);padding:15px 17px 12px;max-height:calc(100dvh - 24px);border-radius:18px;box-shadow:0 12px 40px #07150c70}
+#bf-check h2 {font-size:21px}
+#bf-check .bf-description {font-size:11.5px;margin:0 0 7px}
+#bf-check .bf-dice-row {margin:2px 0 8px;gap:10px}
+#bf-check .bf-cube {width:69px;height:69px}
+#bf-check #bf-face {width:58px;height:58px;font-size:27px;border-radius:12px}
+#bf-check .bf-modes button {min-height:46px;font-size:12.5px}
+#bf-check .bf-cta button {min-height:44px}
+#bf-check .bf-footer {margin:7px 0 0}
+#bf-check .bf-x {min-width:44px;min-height:44px}
+@media(max-width:899px) and (orientation:landscape), (max-height:480px) {
+  #bf-check {padding:5px max(7px,env(safe-area-inset-right)) 5px 7px!important}
+  #bf-check .bf-dialog {width:min(304px,40vw)!important;padding:9px 11px 7px;max-height:calc(100dvh - 10px);border-radius:13px}
+  #bf-check h2 {font-size:17px}
+  #bf-check .bf-header {margin-bottom:0}
+  #bf-check .bf-kicker {font-size:9px}
+  #bf-check .bf-act {font-size:12px;margin-bottom:3px}
+  #bf-check .bf-description {font-size:10px;line-height:1.25;margin-bottom:3px}
+  #bf-check .bf-dice-row {margin:0 0 5px;gap:6px}
+  #bf-check .bf-cube {width:49px;height:49px}
+  #bf-check #bf-face {width:43px;height:43px;font-size:22px}
+  #bf-check .bf-numbers strong {font-size:14px}
+  #bf-check .bf-numbers span, #bf-check .bf-numbers small {font-size:10px}
+  #bf-check .bf-modes {margin-bottom:5px;gap:4px}
+  #bf-check .bf-modes button {min-height:39px;font-size:11.5px}
+  #bf-check .bf-modes button small {font-size:9.5px}
+  #bf-check .bf-cta button {min-height:39px;padding:6px;font-size:12px}
+  #bf-check .bf-outcome {padding:7px 9px;margin-bottom:5px}
+  #bf-check .bf-outcome p {font-size:11px;line-height:1.3}
+  #bf-check .bf-outcome strong {font-size:13px}
+  #bf-check .bf-footer {font-size:9px;padding-top:5px;margin-top:4px}
+}
+@media(max-width:899px) and (orientation:portrait) and (min-height:481px) {
+  #bf-check {justify-content:center!important;padding:8px 8px max(8px,env(safe-area-inset-bottom))!important}
+  #bf-check .bf-dialog {width:min(480px,100%)!important;border-radius:18px 18px 15px 15px}
+}
+@media(prefers-reduced-motion:reduce) {
+  #app .stage, #app .pin, #app .panel {transition:none!important}
+  #app .pin.invite::after, #app .pin.signif::after {animation:none!important}
+}
+#bf-guide-toggle[hidden] {display:none!important}
+@media (max-width:899px) {
+  #app .bub-dismiss {min-width:44px;min-height:44px}
+  #app.narrow .thought {display:none!important}
+}

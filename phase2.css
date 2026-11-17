@@ -1,0 +1,31 @@
+
+/* Being Found 8.3.5 · narrative presentation; numbers remain optional, mechanics remain unchanged. */
+#bf-check .bf83-mechanics,
+#bf-check .bf83-result-details{display:block;border:1px solid #d8ded8;border-radius:12px;padding:10px 12px;margin:10px 0;background:#f5f7f2}
+#bf-check .bf83-mechanics>summary,
+#bf-check .bf83-result-details>summary{cursor:pointer;font-size:14px;font-weight:750;color:#325448;min-height:34px;display:list-item;list-style-position:inside}
+#bf-check .bf83-mechanics .bf-dice-row{margin-top:9px}
+#bf-check .bf-factor b{display:none}
+#bf-check .bf-modes small{display:none}
+#bf-check .bf-kicker{font-size:12px;letter-spacing:.08em}
+#bf-check .bf-dialog{background:#fffefa!important;color:#243d34!important}
+#bf-check .bf-dialog button{min-height:48px!important}
+#bf-check .bf-description{font-size:15px!important;line-height:1.55!important}
+#bf-check #bf-context{display:flex!important;flex-wrap:wrap!important;gap:6px!important}
+#bf-check .bf-factor{font-size:13px!important;line-height:1.35!important}
+#app.bf-shell-ready #scene #bf-room-nav{z-index:30!important}
+@media(max-width:980px) and (orientation:portrait){
+ #app.bf-shell-ready .topbar{position:relative!important}
+ #app.bf-shell-ready #scene{height:clamp(248px,37dvh,410px)!important;min-height:248px!important}
+ #app.bf-shell-ready .dock{margin-bottom:max(10px,env(safe-area-inset-bottom))!important}
+ #app.bf-shell-ready #result{padding:14px!important}
+ #app.bf-shell-ready .result .bf-moment{padding:10px!important}
+ #app.bf-shell-ready .story-next button,#app.bf-shell-ready .bf-moment-options button{min-height:48px!important}
+}
+@media(max-width:700px) and (orientation:landscape){
+ #app.bf-shell-ready .layout{display:grid!important;grid-template-columns:minmax(0,1.35fr) minmax(230px,.9fr)!important;grid-template-rows:auto!important;gap:8px!important}
+ #app.bf-shell-ready #scene{height:calc(100dvh - 86px)!important;max-height:none!important;min-height:235px!important}
+ #app.bf-shell-ready .dock{grid-column:2!important}
+ #app.bf-shell-ready .story-text{font-size:15px!important}
+}
+@media(prefers-reduced-motion:reduce){#bf-check *{animation:none!important;transition:none!important}}

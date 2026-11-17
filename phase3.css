@@ -1,0 +1,87 @@
+
+/* Being Found 8.3.6 — common presentation system for Dele's door and Walt's session.
+   Preserves each encounter's art, narrative copy, timings, and authored outcomes. */
+:root {
+  --bf836-paper:#fffefa;
+  --bf836-ink:#263a32;
+  --bf836-muted:#4e6458;
+  --bf836-line:#d6dfd6;
+  --bf836-accent:#2b5847;
+  --bf836-bg:#e8eee8;
+  --bf836-ring:#b4894b;
+  --bf836-shadow:0 9px 26px rgba(18,33,27,.12);
+}
+#dele:not([hidden]), #enc:not([hidden]){
+  background:linear-gradient(155deg,#edf2eb 0%,#e4ece4 100%)!important;
+  color:var(--bf836-ink)!important;
+  font-family:Figtree,system-ui,sans-serif!important;
+  padding:clamp(8px,1.25vw,18px)!important;
+  gap:10px!important;
+  overscroll-behavior:contain;
+}
+#dele .dl-top, #enc .enc-top{
+  box-sizing:border-box!important;
+  background:var(--bf836-paper)!important;
+  border:1px solid var(--bf836-line)!important;
+  border-radius:16px!important;
+  box-shadow:var(--bf836-shadow)!important;
+  padding:10px 12px!important;
+  min-height:58px!important;
+  max-width:1180px!important;
+  width:100%!important;
+  color:var(--bf836-ink)!important;
+}
+#dele .dl-top *,#enc .enc-top *{letter-spacing:normal}
+#dele button,#enc button{
+  font-family:Figtree,system-ui,sans-serif!important;
+  font-size:max(14px, .94rem)!important;
+  line-height:1.38!important;
+  min-height:48px!important;
+  touch-action:manipulation!important;
+}
+#dele button:focus-visible,#enc button:focus-visible{
+  outline:3px solid var(--bf836-ring)!important;
+  outline-offset:3px!important;
+}
+#dele :is(.dl-top,.dl-nav) button,
+#enc :is(.enc-top,.enc-nav) button{
+  border-radius:12px!important;
+  background:var(--bf836-paper)!important;
+  border:1px solid var(--bf836-line)!important;
+  color:var(--bf836-ink)!important;
+}
+#dele :is(.dl-top,.dl-nav) button:hover,
+#enc :is(.enc-top,.enc-nav) button:hover{background:#edf4ed!important;}
+#dele :is(.dl-scene,.dl-room,.dl-stage),
+#enc .enc-scene{
+  border:1px solid var(--bf836-line)!important;
+  border-radius:16px!important;
+  overflow:hidden;
+  box-shadow:var(--bf836-shadow)!important;
+}
+#dele :is(.dl-card,.dl-log,.dl-panel,.dl-bottom,.dl-options,.dl-moves),
+#enc :is(.enc-card,.enc-log,.enc-panel,.enc-bottom,.enc-opts,.enc-moves){
+  color:var(--bf836-ink);
+}
+#dele :is(.dl-log,.dl-card,.dl-panel),
+#enc :is(.enc-log,.enc-card,.enc-panel){
+  line-height:1.52!important;
+}
+#dele :is(.dl-opt,.dl-mv,.dl-choice),
+#enc :is(.enc-opt,.enc-mv,.enc-choice){
+  border-radius:12px!important;
+  min-height:48px!important;
+  padding:10px 12px!important;
+}
+#dele [data-bf-internal-label="true"],
+#enc [data-bf-internal-label="true"]{display:none!important;}
+@media(max-width:720px){
+ #dele:not([hidden]),#enc:not([hidden]){padding:7px!important;gap:7px!important}
+ #dele .dl-top,#enc .enc-top{min-height:54px!important;padding:8px!important;border-radius:13px!important}
+ #dele button,#enc button{font-size:14px!important;min-height:46px!important}
+ #dele :is(.dl-opt,.dl-mv,.dl-choice),
+ #enc :is(.enc-opt,.enc-mv,.enc-choice){min-height:48px!important;padding:10px!important}
+}
+@media(prefers-reduced-motion:reduce){
+ #dele *,#enc *{animation-duration:0.001ms!important;transition-duration:0.001ms!important}
+}

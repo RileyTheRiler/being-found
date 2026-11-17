@@ -1,0 +1,54 @@
+{
+  "version": "7.5",
+  "authoring": "Rendered from a single procedural 3D model and hierarchical joint animation clips",
+  "cellWidth": 112,
+  "cellHeight": 144,
+  "columns": 15,
+  "directions": 8,
+  "sheet": "noor_atlas.webp",
+  "frames": {
+    "idle": [
+      0,
+      1
+    ],
+    "walk": [
+      1,
+      6
+    ],
+    "reach": [
+      7,
+      4
+    ],
+    "sit": [
+      11,
+      1
+    ],
+    "phone": [
+      12,
+      1
+    ],
+    "attend": [
+      13,
+      1
+    ],
+    "reflect": [
+      14,
+      1
+    ]
+  },
+  "anchor": [
+    56.0,
+    129
+  ],
+  "directionConvention": "0 front, 1 front-right, 2 right, 3 back-right, 4 back, 5 back-left, 6 left, 7 front-left",
+  "animations": [
+    "idle",
+    "walk",
+    "reach",
+    "sit",
+    "phone",
+    "attend",
+    "reflect"
+  ],
+  "sourceModel": "noor_rig.glb"
+}

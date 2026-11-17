@@ -1,0 +1,4 @@
+/* Being Found 7.4 — rendered-character preference, fits the existing View menu. */
+#viewMenu .bf-rig-toggle {min-height:42px}
+#viewMenu .bf-rig-toggle:focus-visible {outline:3px solid #467d6c;outline-offset:2px}
+@media(prefers-reduced-motion:reduce){#viewMenu .bf-rig-toggle{transition:none}}

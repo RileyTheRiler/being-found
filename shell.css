@@ -1,0 +1,177 @@
+
+:root{--bf83-ink:#243a34;--bf83-border:#d7dfd8;--bf83-bg:#f5f6f1;--bf83-paper:#fffefa;--bf83-forest:#28473e;--bf83-shadow:0 8px 26px rgba(27,43,38,.1)}
+html:has(#app.bf-shell-ready),body.bf83-body{min-height:100%;height:auto!important;overflow-x:hidden!important;overflow-y:auto!important}
+body.bf83-body{margin:0!important;background:var(--bf83-bg);font-family:Figtree,system-ui,sans-serif}
+#app.bf-shell-ready{width:100%!important;max-width:none!important;min-height:100dvh!important;height:auto!important;overflow:visible!important;margin:0!important;padding:0 14px 14px!important;box-sizing:border-box}
+#app.bf-shell-ready .topbar{position:relative!important;z-index:45!important;min-height:60px!important;height:auto!important;display:flex!important;align-items:center!important;gap:8px!important;margin:0 0 10px!important;padding:8px 12px!important;border:1px solid var(--bf83-border)!important;border-radius:0 0 16px 16px!important;background:#fffefa!important;box-shadow:0 2px 12px rgba(23,43,38,.06)!important}
+#app.bf-shell-ready .topbar .brand{font-size:20px!important}
+#app.bf-shell-ready #btnTerms{display:none!important}
+#app.bf-shell-ready #btnFlats{min-height:46px!important;min-width:46px!important;font-size:13px!important}
+#app.bf-shell-ready #musicToggle{min-width:44px!important;min-height:44px!important}
+#app.bf-shell-ready.wide .layout,#app.bf-shell-ready .layout{position:relative!important;display:grid!important;grid-template-columns:minmax(0,1.9fr) minmax(335px,.95fr)!important;grid-template-rows:minmax(0,1fr)!important;gap:14px!important;width:100%!important;min-width:0!important;max-width:none!important;min-height:calc(100dvh - 92px)!important;height:auto!important;overflow:visible!important;align-items:stretch!important}
+#app.bf-shell-ready #scene{position:relative!important;grid-column:1!important;grid-row:1!important;width:100%!important;max-width:none!important;min-width:0!important;min-height:min(70dvh,660px)!important;height:calc(100dvh - 96px)!important;max-height:900px!important;margin:0!important;border:1px solid var(--bf83-border)!important;border-radius:18px!important;overflow:hidden!important;background:#b8c7b9!important;box-shadow:var(--bf83-shadow)!important}
+#app.bf-shell-ready #stage{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;overflow:hidden!important}
+#app.bf-shell-ready #stage canvas{display:block;width:100%;height:100%}
+#app.bf-shell-ready .viewbar,#app.bf-shell-ready #simBtn{display:none!important}
+#app.bf-shell-ready .dock{position:relative!important;grid-column:2!important;grid-row:1!important;display:block!important;min-width:0!important;width:100%!important;max-width:none!important;height:auto!important;max-height:none!important;overflow:visible!important;align-self:start!important;margin:0!important;padding:0!important}
+#app.bf-shell-ready .dock .result,#app.bf-shell-ready #result{box-sizing:border-box!important;position:relative!important;display:block!important;width:100%!important;max-height:none!important;height:auto!important;overflow:visible!important;margin:0!important;padding:18px 18px 22px!important;border-radius:18px!important;border:1px solid var(--bf83-border)!important;background:var(--bf83-paper)!important;color:var(--bf83-ink)!important;box-shadow:var(--bf83-shadow)!important}
+#app.bf-shell-ready .story-header{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:8px!important;flex-wrap:wrap!important;margin-bottom:12px!important}
+#app.bf-shell-ready .story-header h3{font-size:13px!important;line-height:1.4!important;letter-spacing:.06em!important}
+#app.bf-shell-ready .story-text{font-size:17px!important;line-height:1.58!important;color:var(--bf83-ink)!important}
+#app.bf-shell-ready .result p,#app.bf-shell-ready .result .rc-text,#app.bf-shell-ready .result .bf-moment>p{font-size:max(15px,1rem)!important;line-height:1.5!important}
+#app.bf-shell-ready .result button{min-height:48px!important;font-size:15px!important;touch-action:manipulation!important}
+#app.bf-shell-ready .story-next,#app.bf-shell-ready .bf-moment-options{position:sticky!important;bottom:0!important;z-index:4!important;padding:8px 0!important;background:var(--bf83-paper)!important}
+#app.bf-shell-ready .story-next button,#app.bf-shell-ready .bf-moment-options button{min-height:48px!important;border-radius:12px!important}
+#app.bf-shell-ready #bf-room-nav{position:absolute!important;inset:auto auto 12px 50%!important;transform:translateX(-50%)!important;z-index:30!important;display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:center!important;gap:3px!important;max-width:calc(100% - 20px)!important;width:max-content!important;min-height:54px!important;margin:0!important;padding:5px!important;border:1px solid rgba(218,230,220,.5)!important;border-radius:999px!important;background:#273f36!important;box-shadow:0 6px 18px rgba(7,25,19,.28)!important;backdrop-filter:none!important}
+#app.bf-shell-ready #bf-room-nav button{display:inline-flex!important;justify-content:center!important;align-items:center!important;flex:0 0 auto!important;min-height:44px!important;min-width:66px!important;padding:0 13px!important;font-size:14px!important;border-radius:999px!important;white-space:nowrap!important}
+#app.bf-shell-ready [data-bf-duplicate-nav="true"]{display:none!important}
+#app.bf-shell-ready .pin{min-width:46px!important;min-height:46px!important;touch-action:manipulation!important}
+#app.bf-shell-ready .bf83-reflect{border:1px solid #d5dfd6!important;border-radius:999px!important;background:#edf4ed!important;color:#22473a!important;padding:5px 12px!important;min-height:44px!important;font-size:14px!important;font-weight:750!important;white-space:nowrap!important;cursor:pointer!important}
+#app.bf-shell-ready [data-bf-internal-label="true"]{display:none!important}
+body > #bubbles.bf-action-sheet{background:#fffefa!important;border:1px solid #dae1d9!important;box-shadow:0 20px 60px rgba(13,24,20,.34)!important;max-width:calc(100vw - 20px)!important;max-height:75dvh!important;overflow-y:auto!important;opacity:1!important;isolation:isolate!important}
+body > #bubbles.bf-action-sheet .bub,body > #bubbles.bf-action-sheet button{background-color:#fffefa!important;opacity:1!important;min-height:48px!important;color:#233d34!important;z-index:1!important;position:relative!important}
+#bf83-layer[hidden],#bf83-layer [hidden]{display:none!important}
+#bf83-layer{position:fixed;inset:0;z-index:2147483590;display:grid;place-items:center;padding:14px;box-sizing:border-box}
+#bf83-layer .bf83-backdrop{position:absolute;inset:0;background:rgba(13,27,22,.56)}
+#bf83-layer .bf83-panel{position:relative;z-index:1;width:min(440px,100%);max-height:min(84dvh,740px);overflow:auto;border:1px solid #d4ddd6;border-radius:20px;background:#fffefa;color:#243c33;padding:24px;box-shadow:0 24px 65px rgba(7,27,18,.28);font:16px/1.55 Figtree,system-ui,sans-serif}
+#bf83-layer .bf83-panel h2{font:700 24px/1.2 Fredoka,system-ui,sans-serif;margin:0 0 10px}
+#bf83-layer .bf83-panel p{margin:0 0 16px}
+#bf83-layer .bf83-actions{display:grid;gap:8px}
+#bf83-layer .bf83-actions button,#bf83-layer .bf83-close{min-height:48px;border:1px solid #ccdad0;background:#f4f7f1;color:#234136;border-radius:12px;padding:10px 13px;font:700 15px/1.3 Figtree,system-ui,sans-serif;text-align:left;cursor:pointer}
+#bf83-layer .bf83-close{float:right;min-width:48px;text-align:center;margin:-4px -4px 12px 12px}
+#bf83-layer .bf83-note{font-size:13px;opacity:.85;margin-top:12px}
+@media(max-width:980px){
+ #app.bf-shell-ready{padding:0 10px 20px!important}
+ #app.bf-shell-ready.wide .layout,#app.bf-shell-ready .layout{display:flex!important;flex-direction:column!important;gap:10px!important;min-height:0!important;height:auto!important;overflow:visible!important}
+ #app.bf-shell-ready #scene{flex:0 0 auto!important;min-height:0!important;height:clamp(258px,44dvh,510px)!important;max-height:none!important;border-radius:14px!important}
+ #app.bf-shell-ready .dock{width:100%!important;min-height:0!important;overflow:visible!important}
+ #app.bf-shell-ready .dock .result,#app.bf-shell-ready #result{padding:16px!important;border-radius:15px!important}
+ #app.bf-shell-ready .topbar{min-height:56px!important;padding:7px 9px!important;gap:5px!important}
+ #app.bf-shell-ready #bf-room-nav{bottom:8px!important;min-height:48px!important;padding:3px!important}
+ #app.bf-shell-ready #bf-room-nav button{min-height:44px!important;min-width:55px!important;padding:0 11px!important;font-size:13px!important}
+}
+@media(max-width:390px){
+ #app.bf-shell-ready .topbar .brand{font-size:17px!important}
+ #app.bf-shell-ready #scene{height:clamp(230px,40dvh,370px)!important}
+ #app.bf-shell-ready .story-text{font-size:16px!important}
+ #app.bf-shell-ready .story-header h3{font-size:12px!important}
+}
+@media(prefers-reduced-motion:reduce){#app.bf-shell-ready *,#bf83-layer *{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* ===== Being Found 8.3.8: Tune-a-World keeps its controls and its readout on screen. =====
+   Focus mode hid both side columns and the goal bar, which left the sandbox with
+   no way to change a variable. */
+
+/* The stray world-panel strip under the story card goes: Reflect opens that panel. */
+#app.bf-shell-ready #dock>.wstrip{display:none!important}
+
+/* Phones: a Tune bar above the hint opens the bottom sheet. */
+#app.bf-shell-ready.narrow.sandbox #dock .goalbar:not(:has(#btnNext)){display:flex!important;margin:0 0 8px!important;padding:0!important}
+#app.bf-shell-ready.narrow.sandbox #dock .goalbtn{flex:1 1 auto;min-height:48px!important;font-size:15px!important;border-radius:14px!important}
+
+/* Tablets and laptops: variables on one side, the five readings on the other. */
+#app.bf-shell-ready.wide.bf-focus-mode.sandbox #colLeft,
+#app.bf-shell-ready.wide.bf-focus-mode.sandbox #colRight{display:flex!important;visibility:visible!important;position:relative!important;min-width:0!important;min-height:0!important;overflow-y:auto!important;padding:2px 2px 8px!important;overscroll-behavior:contain}
+#app.bf-shell-ready.wide.sandbox #colLeft #simPanel,
+#app.bf-shell-ready.wide.sandbox #colLeft #goalPanel,
+#app.bf-shell-ready.wide.sandbox .col .sheet-close{display:none!important}
+@media (orientation:landscape){
+  #app.bf-shell-ready.wide.sandbox .layout{display:grid!important;grid-template-columns:minmax(270px,320px) minmax(0,1fr) minmax(290px,360px)!important;grid-template-rows:auto minmax(0,1fr)!important;flex:none!important;height:min(calc(100dvh - 96px),900px)!important;min-height:0!important}
+  #app.bf-shell-ready.wide.sandbox #colLeft{grid-column:1!important;grid-row:1/3!important}
+  #app.bf-shell-ready.wide.sandbox #scene{grid-column:2!important;grid-row:1/3!important;height:100%!important;min-height:0!important}
+  #app.bf-shell-ready.wide.sandbox #dock{grid-column:3!important;grid-row:1!important}
+  #app.bf-shell-ready.wide.sandbox #colRight{grid-column:3!important;grid-row:2!important}
+}
+@media (orientation:portrait){
+  #app.bf-shell-ready.wide.sandbox .layout{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;grid-template-rows:auto auto minmax(0,1fr)!important;flex:none!important;height:calc(100dvh - 96px)!important;min-height:0!important;gap:10px!important}
+  #app.bf-shell-ready.wide.sandbox #scene{grid-column:1/-1!important;grid-row:1!important;height:44dvh!important;min-height:0!important;max-height:none!important;flex:none!important}
+  #app.bf-shell-ready.wide.sandbox #sdock{grid-column:1/-1!important;grid-row:2!important;justify-self:center;margin:0 auto!important;max-height:20dvh!important;flex:none!important}
+  #app.bf-shell-ready.wide.sandbox #dock{display:none!important}
+  #app.bf-shell-ready.wide.sandbox #colLeft{grid-column:1!important;grid-row:3!important}
+  #app.bf-shell-ready.wide.sandbox #colRight{grid-column:2!important;grid-row:3!important}
+}
+
+/* The five variables come first in the Tune panel. The link rules, which explain
+   how the variables move each other, follow them. */
+#tunePanel .tune>.reading{order:7}
+#tunePanel .tune>.linkbox{order:8}
+
+/* ===== Being Found 8.3.8: small and sideways phones. ===== */
+
+/* The body check-in lives in the Reflect sheet, so no copy of its button shows. */
+#app.bf-shell-ready [data-bf-legacy-body="true"]{display:none!important}
+
+/* Short phones: while a choice waits, the story takes more of the screen and the
+   collapsed inner-voice bar steps aside. */
+@media (max-width:899px) and (orientation:portrait) and (max-height:740px){
+  #app.bf-shell-ready.narrow:has(#result.bf-choice-priority) #scene{height:38dvh!important;flex-basis:38dvh!important;max-height:38dvh!important;min-height:0!important}
+  #app.bf-shell-ready.narrow #result.bf-choice-priority .story-thread{display:none!important}
+}
+
+/* Phones held sideways: the room on the left, the story on the right, each at
+   full height. The story column scrolls on its own. */
+@media (orientation:landscape) and (max-height:560px){
+  #app.bf-shell-ready.bf-new-room{padding:0 8px 8px!important}
+  #app.bf-shell-ready.bf-new-room .topbar{min-height:48px!important;margin:0 0 6px!important;padding:4px 9px!important}
+  #app.bf-shell-ready.bf-new-room .layout{display:grid!important;grid-template-columns:minmax(0,1.5fr) minmax(250px,1fr)!important;grid-template-rows:minmax(0,1fr)!important;gap:8px!important;flex:none!important;height:calc(100dvh - 70px)!important;min-height:0!important}
+  #app.bf-shell-ready.bf-new-room.bf-focus-mode #scene{grid-column:1!important;grid-row:1!important;width:100%!important;height:100%!important;min-height:0!important;max-height:none!important;flex:none!important}
+  #app.bf-shell-ready.bf-new-room.bf-focus-mode #dock{grid-column:2!important;grid-row:1!important;width:100%!important;height:100%!important;max-height:100%!important;min-height:0!important;overflow-y:auto!important;align-self:stretch!important;margin:0!important;overscroll-behavior:contain}
+  #app.bf-shell-ready.bf-new-room #result{padding:12px!important}
+}
+
+/* ===== Being Found 8.3.8: one Reflect button, and every Reflect action works. ===== */
+
+/* Reflect holds the bottom-right corner of the room at every size. */
+#app.bf-shell-ready #scene>#bf83-reflect-launch{position:absolute!important;right:12px!important;bottom:12px!important;z-index:31!important;min-height:44px!important;padding:5px 14px!important;background:#fffefa!important;box-shadow:0 4px 14px rgba(13,27,22,.22)!important}
+
+/* Wide screens: "Five possibilities" opens the world readout as a side drawer.
+   The sandbox already shows the readout, so the drawer never applies there. */
+body:not(.cl-route) #app.bf-shell-ready.wide.bf-focus-mode.bf-world-open:not(.sandbox) #colRight{display:flex!important;visibility:visible!important;position:fixed!important;z-index:2147483500!important;top:12px!important;right:12px!important;bottom:12px!important;left:auto!important;width:min(420px,calc(100vw - 24px))!important;max-height:none!important;overflow-y:auto!important;padding:14px!important;border:1px solid #d4ddd6!important;border-radius:20px!important;background:#fffefa!important;box-shadow:0 24px 65px rgba(7,27,18,.28)!important;transform:none!important;overscroll-behavior:contain}
+body:not(.cl-route) #app.bf-shell-ready.wide.bf-world-open:not(.sandbox) #colRight .sheet-close{display:inline-flex!important}
+
+/* ===== Being Found 8.3.8: tablets and laptops read at arm's length. =====
+   The story card kept phone-sized type on wide screens and left most of its
+   column empty. Wide screens now get larger story type, and the story column
+   holds a steady reading width. */
+#app.bf-shell-ready.wide #result .rc-text,
+#app.bf-shell-ready.wide #result .bf-moment p{font-size:18px!important;line-height:1.5!important}
+#app.bf-shell-ready.wide #result blockquote{font-size:18px!important;line-height:1.45!important}
+#app.bf-shell-ready.wide #result .rc-eyebrow{font-size:12.5px!important}
+#app.bf-shell-ready.wide #result .bf-moment-options button{font-size:17px!important;min-height:52px!important}
+#app.bf-shell-ready.wide #result{padding:20px!important}
+@media (min-width:981px) and (orientation:landscape){
+  #app.bf-shell-ready.wide:not(.sandbox) .layout{grid-template-columns:minmax(0,1fr) clamp(380px,34vw,560px)!important}
+}
+@media (min-width:900px) and (orientation:portrait){
+  #app.bf-shell-ready.wide.bf-new-room:not(.sandbox) #sdock{width:min(860px,calc(100% - 20px))!important;max-width:none!important}
+  #app.bf-shell-ready.wide.bf-new-room:not(.sandbox) #sdock #result{width:100%!important;max-width:none!important}
+}
+
+/* ===== Being Found 8.3.8: laptops keep the world readout open under the story. =====
+   The story column ended well above the bottom of the room. Outside the guided
+   classroom route, which withholds the readout on purpose, the five readings
+   now sit below the story card and scroll on their own. */
+@media (min-width:981px) and (orientation:landscape) and (min-height:561px){
+  body:not(.cl-route) #app.bf-shell-ready.wide.bf-focus-mode:not(.sandbox):not(.bf-world-open) .layout{grid-template-rows:fit-content(66%) minmax(0,1fr)!important;flex:none!important;height:min(calc(100dvh - 96px),900px)!important;min-height:0!important}
+  body:not(.cl-route) #app.bf-shell-ready.wide.bf-focus-mode:not(.sandbox):not(.bf-world-open) #scene{grid-column:1!important;grid-row:1/3!important;height:100%!important;min-height:0!important}
+  body:not(.cl-route) #app.bf-shell-ready.wide.bf-focus-mode:not(.sandbox):not(.bf-world-open) #dock{grid-column:2!important;grid-row:1!important;max-height:100%!important;min-height:0!important;overflow-y:auto!important;overscroll-behavior:contain}
+  body:not(.cl-route) #app.bf-shell-ready.wide.bf-focus-mode:not(.sandbox):not(.bf-world-open) #colRight{display:flex!important;visibility:visible!important;position:relative!important;grid-column:2!important;grid-row:2!important;min-width:0!important;min-height:0!important;overflow-y:auto!important;padding:2px 2px 8px!important;overscroll-behavior:contain}
+  body:not(.cl-route) #app.bf-shell-ready.wide.bf-focus-mode:not(.sandbox):not(.bf-world-open) #colRight .sheet-close{display:none!important}
+}
+
+/* ===== Being Found 8.3.8: the world readout reads at the same distance as the story. =====
+   Its labels ran 11.5 to 13 px. On tablets and laptops the whole panel scales
+   up by a quarter, which brings them to about 14.5 to 16 px. */
+#app.bf-shell-ready.wide #worldPanel{zoom:1.25}
+
+/* ===== Being Found 8.3.8: four destinations. =====
+   The title offers Story, Rooms, Sandbox and About. The Rooms menu groups its
+   rooms under four headings. */
+#mTitle .bf-dest{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:14px 0 6px}
+#mTitle .bf-dest .cta{min-height:52px!important;font-size:16px!important;justify-content:center;width:100%;margin:0!important}
+#mTitle [hidden],#mFlats [hidden]{display:none!important}
+#mTitle details.title-more .btnrow .cta{min-height:46px}
+#mFlats .mcard>h2{margin-top:2px}
+#mFlats .mcard>.eyebrow:not(:first-child){margin-top:22px}
+#mFlats .bf-menu-row{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin:8px 0 2px}
+#mFlats .bf-menu-row .cta{min-height:48px;justify-content:center;width:100%;margin:0!important}

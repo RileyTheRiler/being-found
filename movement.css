@@ -1,0 +1,5 @@
+/* No extra controls. The floor/path presentation remains the native canvas. */
+#scene{isolation:isolate}
+@media(prefers-reduced-motion:reduce){
+ #scene.bf-cinema-focused #bf-cinema-shade{display:none!important}
+}
