@@ -35,6 +35,7 @@ In another terminal:
 ```sh
 python3 qa_smoke.py                 # five viewport smoke suite
 python3 qa_save_resume.py           # save, sandbox, reload, continue
+python3 qa_focus.py                 # Reflect keyboard focus, Escape and return focus
 python3 menu_check.py               # title, rooms, routes, continue
 python3 e2e_sync.py 390x844 1024x1366
 python3 test_later.py 390x844
