@@ -61,6 +61,9 @@ jobs:
           cat /tmp/being-found-http.log
           exit 1
 
+      - name: Authored text and production editorial guard
+        run: python3 qa_editorial.py
+
       - name: Guided classroom 8.4 chapter and reflection regression
         run: python3 qa_guided84.py
 

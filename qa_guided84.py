@@ -91,6 +91,16 @@ def check(browser, label, width, height, mobile):
         assert "A room cannot confirm" in page.locator('#clOverlay h2').inner_text()
         page.locator('#clOverlay [data-cl="roomgo"]').click()
         assert state(page)["resident"] == "Dele", state(page)
+        editorial = page.evaluate("""() => ({
+          scope:LW.S.flat.scope,
+          intro:LW.S.flat.intro,
+          note:LW.S.flat.phases[0].goals[0].note.text,
+          point:LW.S.flat.debrief.point
+        })""")
+        assert "authored account" in editorial["scope"],editorial
+        assert "kettle and brushes" in editorial["intro"],editorial
+        assert "not Dele’s abilities" in editorial["note"],editorial
+        assert "Saturday differed" in editorial["point"],editorial
         if mobile:
             open_mobile_guide(page)
         page.locator('#clGuide .cl-guide-skip[data-cl="waltbridge"]').click()

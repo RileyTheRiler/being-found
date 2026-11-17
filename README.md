@@ -1,4 +1,4 @@
-# Being Found 8.4.0 (guided narrative and phenomenological reflection)
+# Being Found 8.4.1 (Dele narrative and phenomenological editorial pass)
 
 Editable source for Being Found. This line continues from the 8.3.7 preview.
 
@@ -39,6 +39,7 @@ python3 qa_focus.py                 # Reflect background isolation, keyboard foc
 python3 qa_audio.py                 # soundtrack off by default, enable, volume and mute
 python3 qa_flats_stove.py           # kitchen actions in every flat; Dele's phone hint
 python3 qa_guided84.py              # guided narrative, Dele encounter, ending and reduced motion
+python3 qa_editorial.py             # source + production narrative wording guard
 python3 menu_check.py               # title, rooms, routes, continue
 python3 e2e_sync.py 390x844 1024x1366
 python3 test_later.py 390x844
@@ -64,5 +65,9 @@ The 8.4 guided route keeps Noor → Dele encounter → authored Dele day → Wal
 reflection. It now meets Dele at his door first, marks chapter transitions without
 locking input, and separates observed actions from unverified interpretations in the
 ending. The Ratcliffe note is optional and appears after the reflection fields.
+
+The 8.4.1 Dele editorial pass removes categorical claims about depression and
+makes variation and the scene's fictional status more explicit. See
+`EDITORIAL_REVIEW.md` for the source audit and outstanding lived-experience review.
 
 See `SAVE_NOTES.md` for the step log.

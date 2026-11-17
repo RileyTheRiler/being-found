@@ -1,6 +1,6 @@
 # Being Found — Development Roadmap
 
-**Status:** Active roadmap. M0 regression baseline completed through 8.3.11; 8.4.0 implements the first guided narrative and final reflection pass. Browser validation is documented in `HANDOFF.md`.  
+**Status:** Active roadmap. M0 regression baseline completed; 8.4.0 implements the first guided narrative and final reflection pass; 8.4.1 begins M2 textual editorial review of Dele. Lived-experience consultation and classroom pilot remain outstanding. Browser validation is documented in `HANDOFF.md`.  
 **Canonical repository:** `RileyTheRiler/being-found`  
 **Baseline:** 8.3.11 on `main` before the 8.4 implementation. Read `HANDOFF.md` before any implementation.
 
@@ -79,6 +79,8 @@ Acceptance:
 - The debrief tests a distinction between observation and interpretation, not memorization of a diagnosis.
 
 ### M2 — Phenomenological and narrative review
+
+**8.4.1 progress:** Completed a source-grounded desk pass on Dele’s introduction, interpretive notes, day sequence, and debrief. Added `EDITORIAL_REVIEW.md` and source/production editorial guards. This is **not** lived-experience review or M2 acceptance.
 
 **Goal:** Prevent mechanics from making misleading claims about people.
 

@@ -1,4 +1,4 @@
-# Being Found 8.4.0: guided story, encounter-first pacing and reflection
+# Being Found 8.4.1: first phenomenological editorial pass
 
 ## Run it
     npm run build        # node build.js && node postbuild.js, no dependencies to install
@@ -26,6 +26,7 @@ python3 qa_focus.py                 # Reflect modal isolation, focus and return 
 python3 qa_audio.py                 # opt-in WebAudio, volume and mute
 python3 qa_flats_stove.py           # every resident's stove menu; Dele mobile story hint
 python3 qa_guided84.py              # guided chapters, Dele silence, debrief, reduced motion
+python3 qa_editorial.py             # authored source and compiled text guard
 python3 menu_check.py
 python3 test_prop_states.py
 python3 e2e_sync.py 390x844
@@ -53,6 +54,13 @@ Python Playwright is required. Browser executable auto-detects `google-chrome` o
 - Added `qa_guided84.py` for two viewport guided-route checks, Dele's pause and voluntary departure, final reflection, responsive overflow and a motion-preference check.
 - The completed 8.4.0 implementation has passed the full production build and browser suite; see the verified run below.
 
+## Release 8.4.1 editorial pass
+- Rewrote Dele’s opening, meal/painting/social/temporal study notes, and final debrief to avoid suggesting all depressive experiences follow the same course. Retained one severe fictional case and its mechanics.
+- The original Saturday summary insertion silently did nothing because its search text no longer existed. It now appends the actual day-to-day qualification once.
+- `EDITORIAL_REVIEW.md` documents source grounding, narrative risks, items not yet reviewed, and recommended paid lived-experience feedback. This was a desk audit only.
+- Added `qa_editorial.py` to protect the edited source and production HTML; expanded guided browser regression to confirm edited passages appear in the running game.
+- The release’s build/browser status must be verified against its own GitHub Actions run before declaring it passed.
+
 ## Verified 8.4.0 baseline for next chat
 - **Branch:** `main` of `RileyTheRiler/being-found`.
 - **Last implementation commit verified by the full suite:** `889ec1edb0b48988ae7fafa8d484585b74fc4dc0`.
@@ -60,7 +68,7 @@ Python Playwright is required. Browser executable auto-detects `google-chrome` o
 - **Current release:** `package.json` 8.4.0. This handoff documentation was finalized after the successful implementation run; read the current `main` SHA and verify its own Actions status before subsequent edits.
 - **Known bugs fixed while validating:** `syncGuide()` no longer relocates the desktop classroom Guide into a hidden tablet dock at 1440×900; asynchronous stage-start focus no longer steals keyboard focus from Reflect. The mobile Guide is intentionally hidden until the topbar Guide toggle opens it.
 - **Untested outside headless Chrome:** physical Android/iPhone/iPad behavior; real screen readers; actual audio listening; classroom learning outcomes and duration; lived-experience review of Dele and other narratives. Do not claim a Vercel deployment from GitHub Actions.
-- **Next code priority:** a controlled qualitative/phenomenological editorial audit of sensitive scenes and the full 10–15 minute classroom pacing, followed by real-device/assistive-tech tests. Do not start a 3D renderer rewrite.
+- **Next code priority after 8.4.1:** Extend the desk audit to the remaining sensitive scenes; seek lived-experience review; measure the full 10–15 minute classroom pacing with first-time users. Do not start a 3D renderer rewrite.
 
 ## Next suggested work
 - Observe real classroom users completing the route. Check whether the sequence feels cohesive and the ending takes 10–15 minutes without rushing.

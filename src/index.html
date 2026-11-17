@@ -1305,10 +1305,10 @@ const FLATS = [
   { id:'depression', no:3, name:'Dele', P:'Kofi', F:'Mara', feel:'depleted',
     look:{wall:'#eadfc8', floor:'#d2a56f', sofa:'#5ba68a', duvet:'#e0a83c', rug:'#eedab8', rugRing:'#5ba68a', door:'#2f5d50', pot:'#c9744f'},
     char:{skin:'#7a4e33', hair:'#1c1614', shirt:'#d9a531', pants:'#39404f'},
-    blurb:'No loss, no bad news.',
-    scope:'This is one person’s depression, in a severe form. Many people with depression keep more interest and connection than Dele does.',
+    blurb:'A familiar kitchen, unused brushes, and unanswered calls.',
+    scope:'An authored account of one severe depressive experience, not a typical course or a clinical assessment. Interest and connection can remain, disappear, or vary across situations and days.',
     refs:'Experiences of Depression · Fusar-Poli et al. (2023) · Wedema et al. (2025)',
-    intro:'Dele has had no loss and no bad news. His partner Kofi is at work. Something has gone from the world itself.',
+    intro:'The kettle and brushes are where Dele left them. Kofi is at work. The room is familiar. Beginning the day does not feel familiar anymore.',
     phases:[
       { day:'Tue', sub:'', clock:11*60, dusk:.15,
         vars:{attune:'depleted', amt:1, kinds:{entice:'sealed',practical:'heavy',shared:'sealed',change:'sealed',threat:'hum'}, time:'frozen', people:15, friction:12},
@@ -1316,18 +1316,18 @@ const FLATS = [
         idle:'Look for an orange bubble anywhere in Dele’s flat. The grey ones need a long press.',
         goals:[
           {id:'g1', text:'I should eat. Nothing sounds good.', pin:'stove', test:e=>e.type==='act'&&e.obj==='stove'&&e.state!=='sealed',
-           note:{text:'Look at the bubbles. This flat has no orange. One meal losing its appeal would be a single instance. Here the whole kind has dropped out, so nothing at all can show up as inviting.', terms:'loss of a kind of possibility · Possibility_Horizon: Foreclosed'}},
+           note:{text:'The bubbles mark possibilities in this authored Tuesday, not Dele’s abilities. Even familiar activities are not drawing him in. A change in the background sense of what is available can affect several actions at once.', terms:'loss of a kind of possibility · Possibility_Horizon: Foreclosed'}},
           {id:'g2', text:'I used to love painting. Maybe if I try.', hint:'Tap a sealed bubble.', test:e=>e.type==='act'&&e.state==='sealed'&&e.kind==='entice',
-           note:{text:'Sealed bubbles are still physically possible. Dele could pick up a brush. Painting has stopped showing up as something for him.', terms:'existential feeling, as distinct from ability or belief'}},
+           note:{text:'The brush is within reach. Dele remembers caring about painting, but starting no longer feels like an invitation. The scene distinguishes a felt possibility from physical ability or a judgment about effort.', terms:'existential feeling, as distinct from ability or belief'}},
           {id:'g3', text:'The phone. It’s Mara.', pin:'phone', needsPrev:true, ring:true, toast:'Mara is calling', test:e=>e.type==='act'&&e.obj==='phone',
-           note:{text:'Other lives still look full of possibility. Ratcliffe stresses this: things appear possible for others and closed to you. He adds that other people are what make a situation look changeable, so when connection goes, the future closes too.', terms:'Interpersonal_Scaffolding · “to be done by others but impossible for me”'}}
+           note:{text:'Dele sees plans taking shape for other people while his own future feels difficult to picture. Ratcliffe discusses changes in possibility and interpersonal connection, but they do not follow one fixed pattern or establish a cause in a particular person.', terms:'Interpersonal_Scaffolding · “to be done by others but impossible for me”'}}
         ],
         next:{label:'Skip to tomorrow', fade:['Wednesday','']}
       },
       { day:'Wed', sub:'', clock:11*60, dusk:.15, resetLook:true,
         vars:{attune:'depleted', amt:1, kinds:{entice:'sealed',practical:'heavy',shared:'sealed',change:'sealed',threat:'hum'}, time:'frozen', people:15, friction:12},
         peopleDesc:'Right there, and out of reach',
-        idle:'Wednesday. The list is back, unticked. Do it again or skip again. It comes to the same day.',
+        idle:'Wednesday. The list returns, unticked. You can try one thing or move on. It is difficult for Dele to imagine much changing.',
         goals:[
           {id:'h1', text:'I should eat.', pin:'stove', optional:true, test:e=>e.type==='act'&&e.obj==='stove'&&e.state!=='sealed'},
           {id:'h2', text:'I used to love this.', optional:true, test:e=>e.type==='act'&&e.state==='sealed'&&e.kind==='entice'},
@@ -1338,7 +1338,7 @@ const FLATS = [
       { day:'Thu?', sub:'', clock:11*60, dusk:.15, resetLook:true,
         vars:{attune:'depleted', amt:1, kinds:{entice:'sealed',practical:'heavy',shared:'sealed',change:'sealed',threat:'hum'}, time:'frozen', people:15, friction:12},
         peopleDesc:'Right there, and out of reach',
-        idleNote:{text:'In Tomas’s flat, skipping ahead changed everything. Here it changes nothing. Ratcliffe describes days that can’t be told apart and a future that offers only more of the same. For Dele this week, nothing moves. Depression can also fluctuate, as his Saturday shows.', terms:'Temporal_Flow: Frozen Stasis'},
+        idleNote:{text:'For Dele, these scripted days have begun to feel hard to distinguish, and the future does not seem to promise a change. Altered experiences of time are reported by some people with depression; other people and other weeks can differ.', terms:'Temporal_Flow: Frozen Stasis'},
         idle:'The same list again.',
         goals:[
           {id:'i1', text:'I should eat.', pin:'stove', optional:true, test:e=>e.type==='act'&&e.obj==='stove'&&e.state!=='sealed'},
@@ -1350,8 +1350,8 @@ const FLATS = [
     ],
     over:{},
     debrief:{
-      rows:{attune:'Depleted. Nothing bad happened in the flat. The flat itself went quiet.', horizon:'Enticing, Shared and Change sealed. Practical survives as effort.', time:'Frozen. Skipping ahead produced the same day.', people:'Mara and Kofi were right there, and out of reach.', friction:'Low. Nothing clashes when nothing is expected.'},
-      point:'Dele lost no one. He lost access to whole kinds of possibility: nothing can show up as inviting, as shared, or as able to change. Ratcliffe argues these go together. Other people are what make a situation look changeable, so when connection drops out, the future closes and time stalls. This flat is an authored depiction of one possible severe depressive experience, informed by first-person accounts. It cannot establish what another person experiences or how their depression will unfold. People do recover, even when that possibility currently feels inaccessible.'
+      rows:{attune:'Depleted. The room stayed familiar while the possibilities it seemed to offer changed.', horizon:'Enticing, Shared and Change sealed. Practical survives as effort.', time:'Several days felt hard to distinguish.', people:'Mara and Kofi remained present, though Dele felt distant from their plans.', friction:'Low in this authored model, even while initiating activities remains effortful.'},
+      point:'In this authored account, familiar actions rarely appear inviting or shared, and the coming days are difficult for Dele to imagine as different. Ratcliffe describes changes in the background sense of what is possible, including relations with other people and time. These dimensions need not change together or for the same reasons in everyone. This fictional room cannot confirm what Dele communicated at his door or what another person experiences. Recovery is possible even when it does not presently feel imaginable.'
     }
   },
   { id:'unreal', no:4, name:'Wren', P:'Sol', F:'Pia', feel:'detached',
@@ -2003,8 +2003,8 @@ FLATS[8].debrief.slp.push('Some evenings the right first move is no question at 
     next:{label:'Leave Flat 3', end:true} });
   D.debrief.rows.horizon = 'Enticing, Shared and Change sealed. Practical survives as effort. On Saturday Enticing flickered to faint, then gave way.';
   D.debrief.rows.time = 'Frozen. Skipping ahead produced the same day three times, then a Saturday that let a little through.';
-  D.debrief.point = D.debrief.point.replace('This flat shows', 'Days are not exact copies. The last one let a little through, faintly, and it could close again tomorrow. This flat shows');
-  D.debrief.point += ' Dele’s depression is severe and close to total. Many people with depression keep moments of interest or connection alongside the flatness, and what helps recovery differs from person to person.';
+  D.debrief.point += ' Saturday differed: a faint invitation to paint returned without guaranteeing a lasting change. A later day may be different again.';
+  D.debrief.point += ' Some people retain interest and connection during depression; the severity and course of any one experience cannot be inferred from a diagnosis.';
 })();
 const ICONS = {
   stove:'<ellipse cx="9.7" cy="13" rx="6.4" ry="4.3"/><path d="M15.8 11.8L22 8"/><path d="M7 7c-1.5-1.8 1.6-2.5 0-4M12 7c-1.5-1.8 1.6-2.5 0-4"/>',
