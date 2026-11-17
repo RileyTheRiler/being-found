@@ -20,7 +20,32 @@ Static site. Vercel uses the build command `npm run build` and the output direct
 
 ## Tests
 
-`python3 e2e_sync.py 390x844 1024x1366`, `python3 test_later.py`, and `python3 test_prop_states.py`. They need Playwright for Python and Chrome at `/usr/bin/chromium`.
+CI in [`.github/workflows/quality.yml`](.github/workflows/quality.yml) runs on pushes to `main` and pull requests. It builds the production site, serves `dist/`, and runs browser regressions.
+
+Locally, install Python Playwright and use a Chrome/Chromium browser:
+
+```sh
+npm run build
+python3 -m pip install playwright
+python3 -m http.server 8770 --directory dist
+```
+
+In another terminal:
+
+```sh
+python3 qa_smoke.py                 # five viewport smoke suite
+python3 qa_save_resume.py           # save, sandbox, reload, continue
+python3 menu_check.py               # title, rooms, routes, continue
+python3 e2e_sync.py 390x844 1024x1366
+python3 test_later.py 390x844
+python3 test_prop_states.py
+python3 dele_check.py
+python3 visit_check.py
+```
+
+Set `BF_CHROME` to an installed Chrome executable if auto-detection fails. `BF_TEST_URL` overrides the local URL, and `BF_TEST_ARTIFACTS` overrides the screenshot directory (default `qa-artifacts/`). Screenshot artifacts from CI are downloadable from the Actions run.
+
+These are automated browser checks, **not** a substitute for real-device and assistive-technology testing.
 
 ## Layers
 
