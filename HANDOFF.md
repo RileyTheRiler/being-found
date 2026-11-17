@@ -1,4 +1,4 @@
-# Being Found 8.3.10: accessibility and sound-control regression
+# Being Found 8.3.11: mobile hint and cross-flat stove coverage
 
 ## Run it
     npm run build        # node build.js && node postbuild.js, no dependencies to install
@@ -24,6 +24,7 @@ python3 qa_smoke.py                 # five viewport smoke check
 python3 qa_save_resume.py           # persistent save, sandbox, reload and continue
 python3 qa_focus.py                 # Reflect modal isolation, focus and return focus
 python3 qa_audio.py                 # opt-in WebAudio, volume and mute
+python3 qa_flats_stove.py           # every resident's stove menu; Dele mobile story hint
 python3 menu_check.py
 python3 test_prop_states.py
 python3 e2e_sync.py 390x844
@@ -38,8 +39,13 @@ Python Playwright is required. Browser executable auto-detects `google-chrome` o
 - Follow-up choices and answers announce in a short polite live region; the full story card remains readable without automatic focus moves.
 - CI now includes headless Chrome checks for soundtrack off-by-default, opt-in play, volume slider input and mute on phone and desktop.
 
+## Release 8.3.11 changes
+- Mobile fictional inner-voice hint wraps with a touch-sized "Show me" button instead of squeezing Dele's longer instruction.
+- New cross-flat stove browser regression at 360x640, 390x844, and 1440x900; checks each resident's available actions and Dele's hint accessibility.
+- Confirm the current Actions run before claiming this batch passed.
+
 ## Not yet checked
-Actual listening/audio quality, real devices, real screen readers (TalkBack/VoiceOver/NVDA), other residents at the stove, the hint line under the story card in Dele's flat on phones. CI is not a substitute for assistive-technology validation.
+Actual listening/audio quality, real devices, real screen readers (TalkBack/VoiceOver/NVDA), real-device stove and Dele hint behavior (automated browser coverage added). CI is not a substitute for assistive-technology validation.
 
 ## Notes
 - CSS is a specificity war with `!important`; `.layout` is a flex item, so fixed heights need `flex:none!important`.

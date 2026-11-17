@@ -178,3 +178,30 @@ body:not(.cl-route) #app.bf-shell-ready.wide.bf-world-open:not(.sandbox) #colRig
 
 /* 8.3.10: concise story updates, available to screen readers only. */
 #bf83-story-status.bf83-sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+
+
+/* 8.3.11: Dele's long "next" hint is a readable line, not a one-line squeeze
+   beside Show me. Both remain in the story card and its own scroll region. */
+@media (max-width:650px){
+  #app.bf-shell-ready.narrow #result .story-thread .story-next{
+    flex-wrap:wrap!important;
+    align-items:flex-start!important;
+    gap:8px!important;
+  }
+  #app.bf-shell-ready.narrow #result .story-thread .story-next>span{
+    flex:1 1 185px!important;
+    min-width:0!important;
+    overflow-wrap:anywhere!important;
+    font-size:13px!important;
+    line-height:1.4!important;
+  }
+  #app.bf-shell-ready.narrow #result .story-thread .story-next>button[data-story-target]{
+    flex:0 0 auto!important;
+    min-height:44px!important;
+    padding:9px 14px!important;
+  }
+  #app.bf-shell-ready.narrow #result .rc-idle>span{
+    min-width:0!important;
+    overflow-wrap:anywhere!important;
+  }
+}

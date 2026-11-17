@@ -76,6 +76,9 @@ jobs:
       - name: Opt-in soundtrack regression
         run: python3 qa_audio.py
 
+      - name: Five flats stove and mobile Dele hint
+        run: python3 qa_flats_stove.py
+
       - name: Existing state-preservation test
         run: python3 test_prop_states.py
 

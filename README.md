@@ -1,4 +1,4 @@
-# Being Found 8.3.10 (accessibility and sound controls)
+# Being Found 8.3.11 (mobile story hint and cross-flat QA)
 
 Editable source for Being Found. This line continues from the 8.3.7 preview.
 
@@ -37,6 +37,7 @@ python3 qa_smoke.py                 # five viewport smoke suite
 python3 qa_save_resume.py           # save, sandbox, reload, continue
 python3 qa_focus.py                 # Reflect background isolation, keyboard focus and restoration
 python3 qa_audio.py                 # soundtrack off by default, enable, volume and mute
+python3 qa_flats_stove.py           # kitchen actions in every flat; Dele's phone hint
 python3 menu_check.py               # title, rooms, routes, continue
 python3 e2e_sync.py 390x844 1024x1366
 python3 test_later.py 390x844
