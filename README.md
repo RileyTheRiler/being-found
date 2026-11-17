@@ -1,4 +1,4 @@
-# Being Found 8.4.1 (Dele narrative and phenomenological editorial pass)
+# Being Found 8.4.2 (narrative review and classroom pilot readiness)
 
 Editable source for Being Found. This line continues from the 8.3.7 preview.
 
@@ -40,6 +40,7 @@ python3 qa_audio.py                 # soundtrack off by default, enable, volume 
 python3 qa_flats_stove.py           # kitchen actions in every flat; Dele's phone hint
 python3 qa_guided84.py              # guided narrative, Dele encounter, ending and reduced motion
 python3 qa_editorial.py             # source + production narrative wording guard
+python3 qa_wren_ilse.py            # Wren/Ilse runtime editorial assertions on phone and desktop
 python3 menu_check.py               # title, rooms, routes, continue
 python3 e2e_sync.py 390x844 1024x1366
 python3 test_later.py 390x844
@@ -69,5 +70,10 @@ ending. The Ratcliffe note is optional and appears after the reflection fields.
 The 8.4.1 Dele editorial pass removes categorical claims about depression and
 makes variation and the scene's fictional status more explicit. See
 `EDITORIAL_REVIEW.md` for the source audit and outstanding lived-experience review.
+
+The 8.4.2 pass also revises Wren and Ilse to avoid universal diagnostic claims and
+makes visitor consent explicit. The guided facilitator panel shows local-only
+chapter timing, with no data sent or stored. See `CLASSROOM_PILOT.md` for a
+human usability and pacing protocol; no pilot results exist yet.
 
 See `SAVE_NOTES.md` for the step log.

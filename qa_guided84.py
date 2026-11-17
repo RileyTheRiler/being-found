@@ -125,8 +125,13 @@ def check(browser, label, width, height, mobile):
         assert "not simply a named emotion" in page.locator('#clOverlay .cl-phenomenology').inner_text()
         assert state(page)["overflow"] <= 2,state(page)
         page.screenshot(path=str(OUT / (label + "-guided84-final.png")))
+        pacing = page.evaluate("() => LWClass.state.paceMarks.map(m => m.stage)")
+        assert pacing == ["intro","noor","between","dele","roombridge","room","waltbridge","walt","complete"],pacing
         page.locator('#clOverlay [data-cl="debrief"]').click()
         assert "no answer key" in page.locator('#clOverlay').inner_text().lower()
+        pacing_display = page.locator('#clPacing').inner_text()
+        assert "Elapsed " in pacing_display and "Dele encounter" in pacing_display,pacing_display
+        assert "includes pauses and idle time" in pacing_display,pacing_display
         page.locator('#clOverlay [data-cl="final"]').click()
         assert answers.nth(0).input_value() == "The person spoke less during this session."
         page.locator('#clOverlay [data-cl="end"]').click()

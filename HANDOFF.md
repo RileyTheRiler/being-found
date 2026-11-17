@@ -1,4 +1,4 @@
-# Being Found 8.4.1: first phenomenological editorial pass
+# Being Found 8.4.2: Wren / Ilse editorial review and classroom timing
 
 ## Run it
     npm run build        # node build.js && node postbuild.js, no dependencies to install
@@ -27,6 +27,7 @@ python3 qa_audio.py                 # opt-in WebAudio, volume and mute
 python3 qa_flats_stove.py           # every resident's stove menu; Dele mobile story hint
 python3 qa_guided84.py              # guided chapters, Dele silence, debrief, reduced motion
 python3 qa_editorial.py             # authored source and compiled text guard
+python3 qa_wren_ilse.py            # runtime narrative and viewport assertions for both flats
 python3 menu_check.py
 python3 test_prop_states.py
 python3 e2e_sync.py 390x844
@@ -61,16 +62,24 @@ Python Playwright is required. Browser executable auto-detects `google-chrome` o
 - Added `qa_editorial.py` to protect the edited source and production HTML; expanded guided browser regression to confirm edited passages appear in the running game.
 - The release’s build/browser status must be verified against its own GitHub Actions run before declaring it passed.
 
+## Release 8.4.2: Wren, Ilse and pacing
+- Edited Wren’s fictional depersonalization narrative and Ilse’s psychosis-related narrative to distinguish reported experience from observed action, avoid diagnostic universals and unproven causal models, and keep reflection on uncertainty. Changed both visitors’ suggested actions to request consent before intervention; did not change numeric outcomes or mechanics.
+- Added in-tab chapter elapsed timing, with a section-duration summary visible only from **Facilitator questions** and in a user-triggered reflection copy. There is **no telemetry, score, persistent timer or on-screen countdown**. It includes idle time and is not evidence of 10–15-minute completion.
+- Added `CLASSROOM_PILOT.md` with instructions to collect independent completion times and comprehension feedback. Updated `EDITORIAL_REVIEW.md` with literature, scene inventory and limits.
+- Added `qa_wren_ilse.py`, expanded `qa_editorial.py` and `qa_guided84.py` to cover scene phrasing, runtime content and local pacing. **Verify 8.4.2 GitHub Actions before claiming complete success.**
+- **Baseline at start of this release:** 8.4.1 commit `265cd0db2cebdf360c1844f45384e1194ff0d5c1`, successful Actions run [44181478986](https://github.com/RileyTheRiler/being-found/actions/runs/44181478986) (24/24 steps).
+
 ## Verified 8.4.0 baseline for next chat
 - **Branch:** `main` of `RileyTheRiler/being-found`.
 - **Last implementation commit verified by the full suite:** `889ec1edb0b48988ae7fafa8d484585b74fc4dc0`.
 - **Successful GitHub Actions run:** [44122144223](https://github.com/RileyTheRiler/being-found/actions/runs/44122144223). The `Being Found quality` workflow completed successfully with all 23 steps passing: production `npm run build`, guided story 8.4 regression, five viewport smoke test, menu routes, save/resume, Reflect keyboard focus, opt-in audio controls, all-five-flat stove interactions, state preservation, existing story/follow-up checks, and separate Dele/visit checks.
-- **Current release:** `package.json` 8.4.0. This handoff documentation was finalized after the successful implementation run; read the current `main` SHA and verify its own Actions status before subsequent edits.
+- **Historical verified release:** 8.4.0; see above. Package version is now 8.4.2; see the 8.4.2 release section and verify its own Actions before calling it passed.
 - **Known bugs fixed while validating:** `syncGuide()` no longer relocates the desktop classroom Guide into a hidden tablet dock at 1440×900; asynchronous stage-start focus no longer steals keyboard focus from Reflect. The mobile Guide is intentionally hidden until the topbar Guide toggle opens it.
 - **Untested outside headless Chrome:** physical Android/iPhone/iPad behavior; real screen readers; actual audio listening; classroom learning outcomes and duration; lived-experience review of Dele and other narratives. Do not claim a Vercel deployment from GitHub Actions.
-- **Next code priority after 8.4.1:** Extend the desk audit to the remaining sensitive scenes; seek lived-experience review; measure the full 10–15 minute classroom pacing with first-time users. Do not start a 3D renderer rewrite.
+- **Next code priority after 8.4.2:** Audit Mika, Kai, Walt, Ruth and Tomas; collect real first-time 10–15-minute pacing and living-experience feedback; test TalkBack/VoiceOver on actual devices. Do not start a 3D renderer rewrite.
 
 ## Next suggested work
+- Run the real classroom pilot in `CLASSROOM_PILOT.md`; local timing is available in the facilitator panel but automated tests cannot validate human pacing.
 - Observe real classroom users completing the route. Check whether the sequence feels cohesive and the ending takes 10–15 minutes without rushing.
 - Add careful lived-experience editorial review of Dele's inner voice, then test TalkBack/VoiceOver and real-device transitions.
 - Keep the 8.4.0 scoped release stable before another architectural refactor.

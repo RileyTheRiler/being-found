@@ -64,6 +64,9 @@ jobs:
       - name: Authored text and production editorial guard
         run: python3 qa_editorial.py
 
+      - name: Wren and Ilse runtime narrative regression
+        run: python3 qa_wren_ilse.py
+
       - name: Guided classroom 8.4 chapter and reflection regression
         run: python3 qa_guided84.py
 

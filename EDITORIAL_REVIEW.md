@@ -1,4 +1,4 @@
-# Being Found 8.4.1 — phenomenological editorial review (desk pass)
+# Being Found 8.4.2 — phenomenological editorial review (desk passes)
 
 **Status:** Textual source audit only. No compensated lived-experience review, clinical validation, or classroom study has taken place. The fictional Dele material remains open to correction. The 8.4.1 revision does **not** alter action rules, dice, saving, room navigation, or encounter choices.
 
@@ -27,11 +27,39 @@ The learner should recognize a distinction between an action that is physically 
 
 **Limits:** This document reports an editorial desk review, not research with participants. The game does not assess depression, suggest therapy efficacy, or make a player's clicks into measures of empathy. References do not establish that its fictional voice matches any particular lived experience.
 
+## 8.4.2 desk pass: Wren and Ilse
+
+**Scope:** Text-only revision informed by phenomenological and qualitative literature; not participant validation. Action conditions, difficulty modifiers, visual states, and save rules are unchanged.
+
+| Fictional scene | Risk identified | 8.4.2 revision | Evidence basis and remaining check |
+| --- | --- | --- | --- |
+| Wren’s breakfast and mirror | “Everything works” and “people in this state…” suggested intact function or insight is universal | Describes only what Wren does and reports; explicitly marks the friction meter as an authored teaching device | Colombetti & Ratcliffe (2012); seek DPDR lived-experience review |
+| Wren’s monitoring, bodily layers and sensory actions | Suggested an established causal checking loop and reliable grounding treatment | Presents one interpretation, not a mechanism; notes grounding variability and avoids prescriptive claims | Colombetti & Ratcliffe (2012), Shashoua (2025), and qualitative DPDR identity narratives |
+| Wren’s visitor response | Visitor imposed cold-water contact as a best action | Visitor asks Wren before offering a glass; response does not assume the sensation cured detachment | Participant-defined preferences still require review |
+| Ilse’s sofa, ordinary task and phone | Statements such as “nothing is wrong” implied reality testing had been assessed; loss of trust was made a sufficient cause | Notes explicitly distinguish visible object from Ilse’s account and refuse to infer causation from her friend’s call | Jaspers/Ratcliffe conceptual account; first-person psychosis reviews |
+| Ilse’s checking and debrief | Suggested delusional atmosphere necessarily leads to delusion | Clarifies that it is one reported interpretation, and beliefs/course cannot be determined from a fictional scene | Fusar-Poli et al. (2022); Noiriel et al. (2020); participant feedback needed |
+| Ilse’s visitor response | Declared a universally “safe” position for sitting | Visitor asks where Ilse wants them to sit; outcome preserves her control of the encounter | Interview-based work on psychosis emphasizes agency and meaning |
+
+### Literature checked for this pass
+
+- Colombetti, G., & Ratcliffe, M. (2012). *Bodily feeling in depersonalization: a phenomenological account*. https://doi.org/10.1177/1754073911430131 — Conceptual framework, not a quantitative treatment trial.
+- Shashoua, R. (2025). *Experiences of identity in waking and dreaming life in people with DPDR*. University of Essex thesis. https://repository.essex.ac.uk/41245/ — Qualitative thesis; should not be misrepresented as a peer-reviewed intervention.
+- *Dispositional traits, characteristic adaptations, and narrative identity reconstructions in individuals with depersonalization and derealization* (2025). https://pmc.ncbi.nlm.nih.gov/articles/PMC12053820/ — Qualitative interviews emphasize heterogeneity of identity and agency.
+- Fusar-Poli, P., et al. (2022). *The lived experience of psychosis: a bottom-up review co-written by experts by experience and academics*. https://doi.org/10.1002/wps.20959 — Co-produced evidence synthesis emphasizing differences in meanings, course and agency.
+- Noiriel, A., et al. (2020). *The lived experience of first-episode psychosis: a systematic review and metasynthesis of qualitative studies*. https://pubmed.ncbi.nlm.nih.gov/33120385/ — Qualitative synthesis rather than a template for one diagnostic trajectory.
+- *Lived experiences of negative symptoms in first-episode psychosis: a qualitative secondary analysis* (2018). https://pubmed.ncbi.nlm.nih.gov/29573562/ — Challenges interpreting reduced activity solely as diminished capacity.
+
+**Remaining concern:** The visual variables still use binary/graded words such as “hollow,” “suspect,” and “dominant.” A fictional person’s lived experience should not be mistaken for a numerical symptom profile. Lived-experience review has not happened.
+
+## Classroom pilot preparation
+
+8.4.2 adds a local-only timing marker at each chapter transition and an elapsed/section-duration summary in **Facilitator questions**, plus copyable timing for consenting playtest participants. No countdown, server telemetry, storage, or score is added. See [CLASSROOM_PILOT.md](CLASSROOM_PILOT.md). **No human duration or learning data has been collected.**
+
 ## Next review order
 
 1. **Dele** — get paid feedback from people with relevant lived experience on ordinary-language plausibility, variability, what feels omitted, and whether the "sealed" mechanics distort their experiences. Obtain explicit permission for any shared feedback; keep feedback anonymous by default.
-2. **Wren and Ilse** — audit depersonalization and psychosis scenes for misleading links between diagnosis, reality testing, and agency.
+2. **Wren and Ilse** — desk pass completed in 8.4.2; obtain paid first-person editorial review on reality-testing implications, agency, and visitor consent. Treat code review as incomplete until that input.
 3. **Mika, Kai, Walt, Ruth, Tomas** — check for universal claims about identity, autism, aphasia, motor-neuron disease, and bereavement. Invite relevant first-person and discipline-specific reviewers.
 4. **Classroom pilot** — observe first-time users, record completion time and blocked steps without treating time as a grading criterion; ask participants to separate what they saw, inferred, and still do not know. Evaluate both phone and tablet.
 
-This is the initial M2 pass, **not** M2 acceptance. Other sensitive scenes have not yet completed editorial review.
+M2 remains **in progress**. Dele, Wren and Ilse received desk passes; other sensitive scenes and all lived-experience consultations remain unreviewed.

@@ -1358,9 +1358,9 @@ const FLATS = [
     look:{wall:'#ebd5da', floor:'#d6ae7e', sofa:'#9b8ad8', duvet:'#f0b7a4', rug:'#f5e8ee', rugRing:'#9b8ad8', door:'#8e5572', pot:'#cf8a6b'},
 char:{skin:'#f0c9a8', hair:'#a5522d', shirt:'#8f7cd6', pants:'#4b4660'},
     blurb:'Everything in perfect order.',
-    scope:'This is one person’s depersonalization. Other people describe it in other ways.',
+    scope:'Wren is an invented person describing detachment. Depersonalization and derealization can affect people in different ways; this room is not a diagnostic test.'
     refs:'Colombetti & Ratcliffe (2012) · Feelings of Being · Shashoua (2025)',
-    intro:'Wren’s flat is in perfect order, and so is Wren, on paper. Watch the ring above her head.',
+    intro:'A mug beside the kettle. A clear mirror. Wren can list what is here, but describing what being here feels like is harder.'
     phases:[
       { day:'Tue', sub:'', clock:9*60+10, dusk:0,
         vars:{attune:'detached', amt:1, kinds:{entice:'hollow',practical:'hollow',shared:'hollow',change:'hollow',threat:'hum'}, time:'dreamlike', people:35, friction:78},
@@ -1368,21 +1368,21 @@ char:{skin:'#f0c9a8', hair:'#a5522d', shirt:'#8f7cd6', pants:'#4b4660'},
         idle:'Every bubble in this flat still works. Try breakfast, and watch what happens after you tap.',
         goals:[
           {id:'g1', text:'Breakfast. I know I’m supposed to be hungry.', pin:'stove', test:e=>e.type==='act'&&e.obj==='stove',
-           note:{text:'Everything works. Wren’s hands do the task. The missing part is the feeling of being the one who does it, here, in a real kitchen. Ratcliffe counts that feeling as part of experience, and it can go while everything else stays.', terms:'sense of reality · an existential feeling of detachment'}},
+           note:{text:'Wren completes an ordinary task but says it does not quite feel like her action. This fictional gap between doing and feeling involved cannot be seen by watching her hands; her account matters.', terms:'sense of reality · an existential feeling of detachment'}},
           {id:'g2', text:'Is that really my face?', pin:'mirror', test:e=>e.type==='act'&&e.obj==='mirror',
-           note:{text:'Wren has the facts straight: this is her face. People in this state feel as though things are unreal while knowing they are real. The friction meter tracks that gap between knowing and feeling.', terms:'Frictional_Tension · “feeling as though p” without “believing that p”'}},
+           note:{text:'Wren identifies the reflection as her own but describes it as unfamiliar. Feeling estranged from something need not mean believing it is literally unreal. The friction meter is an authored teaching device, not a measure of anyone’s reality testing.', terms:'Frictional_Tension · “feeling as though p” without “believing that p”'}},
           {id:'g3', text:'Pia is calling. I should feel glad.', pin:'phone', needsPrev:true, ring:true, toast:'Pia is calling', test:e=>e.type==='act'&&e.obj==='phone'&&e.act==='call',
-           note:{text:'Pia is on the line and feels a long way off. People describe being behind glass, or watching a film of their own life.', terms:'Interpersonal_Scaffolding'}},
+           note:{text:'Pia’s voice is familiar, but Wren describes feeling distant from it today. Some first-person accounts use metaphors such as being behind glass; others experience detachment differently.', terms:'Interpersonal_Scaffolding'}},
           {id:'g3b', text:'I wish someone understood what this is like.', pin:'phone', test:e=>e.type==='act'&&e.act==='explain',
-           note:{who:'Lived experience research', text:'People with depersonalization often describe how hard it is to put into words, and how lonely it is when others hear only tiredness or stress. Interviews also describe a changed sense of who they are. Ask, and believe the description you get.', terms:'identity · being misunderstood · Shashoua (2025)', src:'On identity: Shashoua (2025)'}},
+           note:{who:'Lived experience research', text:'Wren struggles to explain this to Pia. Qualitative accounts describe difficulties finding words for detachment and changes in identity, but they do not speak for every person. Ask what the experience means to the person, without supplying the answer.', terms:'identity · being misunderstood · Shashoua (2025)', src:'On identity: Shashoua (2025)'}},
           {id:'g4', text:'Is this body mine?', hint:'Tap Wren.', pin:'sim', test:e=>e.type==='body',
-           note:{text:'Here the body layers split. As an object, the body is loud: Wren keeps checking it. As a lens, it has gone quiet, so the world stops reaching her. Colombetti and Ratcliffe use this split to explain what feeling unreal is like.', terms:'noematic feeling heightened · noetic feeling diminished'}},
+           note:{text:'Colombetti and Ratcliffe distinguish attention to the body as an object from bodily feeling that ordinarily stays in the background. The two body layers visualize one interpretation of Wren’s account; they do not measure how someone’s body works.', terms:'noematic feeling heightened · noetic feeling diminished'}},
           {id:'g4b', text:'Am I real? I need to check again.', pin:'mirror', test:e=>e.type==='act'&&e.act==='recheck',
-           note:{text:'This is the distress that the tidy flat hides. Clinical accounts describe depersonalization as unpleasant and disabling, and Colombetti and Ratcliffe list continuous reflection on one’s own condition among its features. Checking is an attempt to get reality back. It keeps the body in the position of an object, and that position is the trouble.', terms:'excessive rumination · noematic feeling heightened', src:'Colombetti & Ratcliffe (2012)'}},
+           note:{text:'Here repeated checking is Wren’s attempt to regain familiarity, and in this scene it leaves her more distressed. Some accounts describe repeated monitoring; the story cannot establish that checking causes detachment or that stopping it would resolve the experience.', terms:'excessive rumination · noematic feeling heightened', src:'Colombetti & Ratcliffe (2012)'}},
           {id:'g4c', text:'Stop checking. Look at the room.', pin:'mirror', test:e=>e.type==='act'&&e.act==='redirect',
-           note:{who:'A caution', text:'Naming things in the room helped a little and wore off. Strategies like this help some people, some of the time. Offer them as things to try, and ask afterwards how it went.', terms:'grounding strategies vary'}},
+           note:{who:'A caution', text:'Naming things in the room helped Wren briefly in this scene. Grounding is neither a test of effort nor a guaranteed treatment. Ask whether the person wants to try it and what effect, if any, they notice.', terms:'grounding strategies vary'}},
           {id:'g5', text:'I need to feel one real thing.', hint:'Try the window.', pin:'window', needsPrev:true, test:e=>e.type==='act'&&e.act==='sill',
-           note:{text:'Touch still carries the world in, for a second. Some people with depersonalization find that attending to something outside themselves steadies them for a while. For others it does little. Offer it as something to try.', terms:'touch as a noetic bodily feeling that survives'}}
+           note:{text:'Wren describes a brief change while touching the sill. Attending to sensation can be meaningful for some people and unhelpful for others. The scene illustrates her account, not a treatment recommendation.', terms:'touch as a noetic bodily feeling that survives'}}
         ],
         next:{label:'Leave Flat 4', end:true}
       }
@@ -1391,35 +1391,35 @@ char:{skin:'#f0c9a8', hair:'#a5522d', shirt:'#8f7cd6', pants:'#4b4660'},
         {id:'explain', kind:'shared', lab:'Try to explain it to {F}', st:'hollow', fxLab:'Not understood', fxCls:'dn', res:{hollow:'“It is like I am behind glass,” you say. “You are just tired,” Pia says, kindly. You say yes, probably. Being misunderstood turns out to be lonelier than saying nothing.'}}],
       mirror:[
         {id:'recheck', kind:'threat', lab:'Check again whether you feel real', st:'hum', fxLab:'Checking feeds it', fxCls:'dn', res:{hum:'You look at your hands. They are yours. You know that, and you check anyway, for the ninth time this morning, and the checking makes them stranger. You are frightened by this, and tired of being frightened.'}},
-        {id:'redirect', kind:'practical', lab:'Stop, and name five things in the room', fixed:'open', fxLab:'Helps a little', res:{open:'Kettle. Blue mug. The crack in the tile. Radio. Sol’s keys. For a minute your attention is out in the room. Then you notice yourself noticing, and you are back at your hands. It helped some. Often it only helps some.'}}],
+        {id:'redirect', kind:'practical', lab:'Stop, and name five things in the room', fixed:'open', fxLab:'Helps a little', res:{open:'Kettle. Blue mug. The crack in the tile. Radio. Sol’s keys. For a minute your attention is out in the room. Then you notice yourself noticing, and you are back at your hands. It helped briefly this time, and you do not know what tomorrow will be like.'}}],
       window:[{id:'sill', kind:'practical', lab:'Press your palms on the cold sill', fixed:'open', pulse:true, res:{open:'Cold. Real cold, through your skin. For a second the room has an inside and you are in it. Then it thins out again.'}}] },
     over:{},
     debrief:{
       rows:{attune:'Detached. Everything in place and nothing quite real.', horizon:'Every kind present as if: known about, unfelt.', time:'Dreamlike. The day ran like a film of a day.', people:'Pia sounded warm from behind glass.', friction:'High. Wren knows the face is hers, and it feels like a stranger’s.'},
-      point:'Wren holds no false beliefs. She feels as though things are unreal and knows they are real. Colombetti and Ratcliffe explain this through the body: it has gone quiet as the lens that lets the world reach her, and loud as an object she keeps inspecting. Feeling real turns out to be something the body normally does in the background. Wren’s calm is on the surface. She finds this frightening and tiring, and other people with depersonalization describe it in other ways.'
+      point:'Wren says she recognizes her own face while feeling unfamiliar with it. Colombetti and Ratcliffe offer a phenomenological interpretation in which ordinarily background bodily feeling becomes disrupted, even while the person attends closely to the body as an object. Wren finds this frightening and tiring; another person may report something different. An observer cannot establish these sensations from a tidy room or from a completed task.'
     }
   },
   { id:'uncanny', no:5, name:'Ilse', P:'Marek', F:'Jun', feel:'uncanny',
     look:{wall:'#eee6ba', floor:'#c9a066', sofa:'#d9725b', duvet:'#5c9e8f', rug:'#efe3bc', rugRing:'#d9725b', door:'#42628f', pot:'#c26d4c'},
     char:{skin:'#ebc2a0', hair:'#d9b46a', shirt:'#3f8f5b', pants:'#3d4455'},
     blurb:'Nothing has moved since yesterday.',
-    scope:'This is one possible form of an early psychotic experience. Many experiences of psychosis look nothing like Ilse’s.',
+    scope:'Ilse is fictional. Her sense of ominous significance illustrates one reported experience associated with psychosis, not a necessary symptom, cause, or path toward a delusion.'
     refs:'Real Hallucinations · Fusar-Poli et al. (2022) · Noiriel et al. (2020)',
     intro:'Nothing in Ilse’s flat has moved since yesterday. Try to have an ordinary afternoon.',
     phases:[
       { day:'Tue', sub:'', clock:15*60+20, dusk:.45,
         vars:{attune:'uncanny', amt:1, kinds:{entice:'strange',practical:'strange',shared:'suspect',change:'looming',threat:'dominant'}, time:'looming', people:10, friction:90},
-        peopleDesc:'No longer to be trusted',
+        peopleDesc:'Difficult to read today',
         idle:'Ilse wants a quiet afternoon. Start by sitting down.',
         goals:[
           {id:'g1', text:'I just want to sit down for a minute.', pin:'sofa', test:e=>e.type==='act'&&e.obj==='sofa',
-           note:{text:'Ratcliffe’s own example is a sofa that stops looking like something to sit on and starts looking menacing. Ilse sees the room accurately. The change is in the kind of meaning things have.', terms:'delusional atmosphere (Jaspers) · mismatch between anticipated and experienced significance'}},
+           note:{text:'The sofa is unchanged in the drawing, but Ilse describes it as menacing. A change in felt significance is one possible experience described in phenomenological accounts; it cannot be inferred merely by looking at Ilse.', terms:'delusional atmosphere (Jaspers) · mismatch between anticipated and experienced significance'}},
           {id:'g2', text:'Do something normal. Anything normal.', hint:'Try a green bubble.', test:e=>e.type==='act'&&e.kind==='practical'&&e.obj!=='sofa',
-           note:{text:'You chose something ordinary and got something else. Ratcliffe describes this mismatch: you anticipate one kind of significance and meet another. Jaspers called the result delusional atmosphere: everything gets a new meaning, and the person cannot say what it is.', terms:'anticipating p and experiencing q · Possibility_Horizon: practical significance turned strange'}},
+           note:{text:'Ilse expects an ordinary action to feel ordinary; instead she experiences an unclear significance. Jaspers described some such experiences as a delusional atmosphere. This is one interpretive description, not something all people with psychosis experience.', terms:'anticipating p and experiencing q · Possibility_Horizon: practical significance turned strange'}},
           {id:'g3', text:'Jun is calling. Why now?', pin:'phone', needsPrev:true, ring:true, toast:'Jun is calling', test:e=>e.type==='act'&&e.obj==='phone',
-           note:{text:'Trust in other people normally runs in the background and keeps the ordinary world in place. Ratcliffe ties this atmosphere to losing that trust, which is why Jun’s reassurance can’t get in.', terms:'Interpersonal_Scaffolding · loss of trust (Real Hallucinations, ch. 5 and 6)'}},
+           note:{text:'Jun means to reassure Ilse, but his call feels difficult to interpret today. Ratcliffe considers how interpersonal trust and felt reality relate; one phone call cannot show what caused Ilse’s experience.', terms:'Interpersonal_Scaffolding · loss of trust (Real Hallucinations, ch. 5 and 6)'}},
           {id:'g4', text:'Something has changed. I have to check.', hint:'Red bubbles are threat.', test:e=>e.type==='act'&&e.kind==='threat',
-           note:{text:'Checking settles nothing, because no single fact is wrong. Jaspers thought a definite explanation, even a frightening one, comes as a relief. Delusions take shape inside this atmosphere, so understanding one means understanding the changed world around it.', terms:'Frictional_Tension · delusions as embedded in a changed sense of reality'}}
+           note:{text:'Checking does not resolve Ilse’s unease in this fictional afternoon. Some accounts describe a search for explanations when everyday things seem newly significant. Neither this scene nor a diagnosis determines what beliefs a person will form.', terms:'Frictional_Tension · delusions as embedded in a changed sense of reality'}}
         ],
         next:{label:'Leave Flat 5', end:true}
       }
@@ -1427,7 +1427,7 @@ char:{skin:'#f0c9a8', hair:'#a5522d', shirt:'#8f7cd6', pants:'#4b4660'},
     over:{},
     debrief:{
       rows:{attune:'Uncanny. The same room, charged with a meaning no one can name.', horizon:'Threat everywhere. Practical and Enticing turned strange, Shared turned suspect.', time:'Looming. Something is already happening, and about to.', people:'Jun’s kindness arrived as a question mark.', friction:'Very high. What things should mean and what they seemed to mean kept clashing.'},
-      point:'Ilse sees her flat accurately. Nothing looks different and everything means something else. Jaspers called this delusional atmosphere. Ratcliffe reads it as a mismatch between the kind of significance things are expected to have and the kind they turn up with, and he ties it to losing the background trust in other people that normally keeps a world steady. A delusion makes sense only inside a changed world like this one. Delusional atmosphere is one way that psychosis can begin. It is far from the only way, and first-person accounts of psychosis vary widely.'
+      point:'Ilse reports that ordinary objects have acquired an unfamiliar, ominous significance. The story uses Jaspers’s concept of delusional atmosphere and Ratcliffe’s account of felt significance as interpretive tools, not as a test of perception or evidence of a particular belief. Experiences associated with psychosis vary in content, distress, meaning, and course. A person’s own account and preferences are essential; the game cannot determine them from the room.'
     }
   }
 ];
@@ -1475,17 +1475,17 @@ const VISITS = [
           ask:{t:'“Like being behind glass,” she says. “I know I am here. It just feels nothing like here.”'},
           out2:{t:'You could walk her round the block again. From in here you can tell the street would be more of the same film.', land:1},
           fine2:{t:'She already believes everything you could tell her. You say nothing, and she seems relieved.', land:0} },
-    fit:{lab:'Hand her something cold to hold', pulse:true, t:'A glass of ice water. She wraps both hands round it. “That is cold,” she says, surprised, and for a moment she sounds nearer.', people:8, friction:-6,
-      note:{text:'Reassurance aims at beliefs, and Wren’s beliefs are fine. What has changed is felt, so what helps is felt too. Colombetti and Ratcliffe note that touch often survives in depersonalization, and that attending to something outside yourself can help. It may do little. Offer it, and let her tell you.', terms:'noetic bodily feeling · feeling as though vs believing that'}} },
+    fit:{lab:'Ask if she wants something cold to hold', pulse:true, t:'You ask if she would like a glass of cold water. Wren agrees and takes it in both hands. “That is cold,” she says. She sounds a little nearer for a moment, though she does not say that she feels different.', people:8, friction:-6,
+      note:{text:'Wren already told you that she recognizes her surroundings. You ask before offering a sensory option, then listen to how it goes for her. Some people find attention to sensation helpful; others do not. Touch is not a diagnostic test or an established fix for depersonalization.', terms:'noetic bodily feeling · feeling as though vs believing that'}} },
   { flat:4, clock:16*60+40, dusk:.5, npc:{pose:'stand', pos:[1.9,4.1], face:'back', at:'window', pin:[1.9,4.1,2.5]}, spot:[2.75,3.45],
     intro:'Ilse is at the window, watching the street.',
     res:{ out:{t:'She looks at the door, then at you. “Who asked you to get me outside?”', land:0, people:-3},
           fine:{t:'“Nothing is going on.” You have just denied the one thing she is sure of. She watches your mouth while you talk.', land:0, people:-3},
           ask:{t:'“Everything is the same and all of it is different,” she says. You leave that uncorrected. She keeps talking.'},
           out2:{t:'From in here the stairwell is holding its breath. You drop the idea.', land:0},
-          fine2:{t:'No single fact is wrong for her, so no fact you offer can fix it. You stop offering facts.', land:0} },
-    fit:{lab:'Sit where she can see your hands', pose:'sit', t:'You sit down slowly, in plain view, and stay ordinary. After a while her shoulders come down a centimetre.', people:7,
-      note:{text:'Arguing about facts misses where the change is. Ratcliffe ties this atmosphere to lost trust in other people, and he adds that how others respond can play a part in how it turns out. The first thing a visitor can offer is to be predictable and safe.', terms:'trust · the interpersonal world of psychosis'}} }
+          fine2:{t:'You realize that telling Ilse nothing has changed does not answer the experience she describes. You stop arguing and ask what might help.', land:0} },
+    fit:{lab:'Ask where she would like you to sit', pose:'sit', t:'You ask where she would prefer you to sit. Ilse points to the other chair. You sit there and listen without asking her to agree with your explanation.', people:7,
+      note:{text:'For Ilse today, asking permission and remaining predictable may make conversation easier. This does not mean one response always works or that a visitor can know her private experience. Ask what she wants and take her account seriously.', terms:'trust · the interpersonal world of psychosis'}} }
 ];
 
 const PRESETS = {};
@@ -5071,8 +5071,24 @@ panel.id='clOverlay'; panel.hidden=true; panel.setAttribute('aria-label','Being 
 guide.id='clGuide'; guide.hidden=true;guide.setAttribute('aria-label','Classroom pathway guidance');
 document.body.append(panel,guide);
 function syncGuide(){ const dock=document.getElementById('dock'), app=document.getElementById('app'); const tabletDock=innerWidth>=900&&innerWidth<1300&&app?.classList.contains('tablet-land')&&dock?.getClientRects().length>0; const within=run.active&&['noor','room'].includes(run.stage)&&tabletDock; if(within&&guide.parentElement!==dock)dock.prepend(guide);else if(!within&&guide.parentElement!==document.body)document.body.appendChild(guide); }
-const run={active:false,stage:'idle',noor:new Set(),dele:new Set(),pre:{},post:{},dVisit:null,wVisit:null,seen:0,previousSave:null,guideCollapsed:false};
+const run={active:false,stage:'idle',noor:new Set(),dele:new Set(),pre:{},post:{},dVisit:null,wVisit:null,seen:0,previousSave:null,guideCollapsed:false,paceStarted:null,paceMarks:[]};
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+/* Local-only playtest timing. No server calls, storage, countdown, or scoring. */
+function paceMark(stage){
+ if(!run.active||run.paceStarted===null)return;
+ if(run.paceMarks.at(-1)?.stage===stage)return;
+ run.paceMarks.push({stage,at:Math.max(0,Math.round(performance.now()-run.paceStarted))});
+}
+function paceReport(){
+ if(run.paceStarted===null)return 'Timing unavailable.';
+ const elapsed=Math.max(0,Math.round(performance.now()-run.paceStarted));
+ const fmt=ms=>{const sec=Math.round(ms/1000);return Math.floor(sec/60)+':'+String(sec%60).padStart(2,'0');};
+ const labels={intro:'Opening',noor:'Noor',between:'Bridge to Dele',dele:'Dele encounter',roombridge:'Bridge to authored day',room:'Dele authored day',waltbridge:'Bridge to Walt',walt:'Walt encounter',complete:'Reflection'};
+ const groups={};
+ run.paceMarks.forEach((m,i)=>{const until=run.paceMarks[i+1]?.at??elapsed;const key=labels[m.stage]||m.stage;groups[key]=(groups[key]||0)+Math.max(0,until-m.at);});
+ const details=Object.entries(groups).map(([stage,ms])=>stage+' '+fmt(ms)).join(' · ');
+ return 'Elapsed '+fmt(elapsed)+' (includes pauses and idle time). '+details+'. These timings are local and not a score.';
+}
 let chapterTimer=0;
 const chapter=document.createElement('div');
 chapter.id='clChapterBeat';chapter.hidden=true;chapter.setAttribute('aria-hidden','true');
@@ -5098,7 +5114,7 @@ function questionInputs(phase){const prompt=phase==='pre'?[
  'What might you be assuming?', 'What do you not know yet?', 'What would you ask or do first?'
 ]:['What did you observe, without deciding what the person feels?', 'What might you infer, and what remains unknown?', 'What could you ask or offer while respecting the person’s communication and choices?'];return '<div class="cl-questions">'+prompt.map((p,i)=>'<label>'+esc(p)+'<textarea data-clanswer="'+phase+'" data-i="'+i+'" rows="1" placeholder="Optional, in your own words">'+esc(run[phase][i]||'')+'</textarea></label>').join('')+'</div><p class="cl-muted cl-privacy">Your answers stay in this browser session. Nothing is graded or transmitted.</p>';}
 function preserveInput(){panel.querySelectorAll('textarea[data-clanswer]').forEach(x=>{run[x.dataset.clanswer][x.dataset.i]=x.value;});}
-function begin(){if(run.active){resume();return;}run.active=true;run.stage='intro';run.noor.clear();run.dele.clear();run.pre={};run.post={};run.dVisit=null;run.wVisit=null;run.guideCollapsed=false;try{run.previousSave=localStorage.getItem('lifeworld.v1');}catch(e){run.previousSave=null;}document.body.classList.add('cl-route');
+function begin(){if(run.active){resume();return;}run.active=true;run.stage='intro';run.noor.clear();run.dele.clear();run.pre={};run.post={};run.dVisit=null;run.wVisit=null;run.guideCollapsed=false;run.paceStarted=performance.now();run.paceMarks=[{stage:'intro',at:0}];try{run.previousSave=localStorage.getItem('lifeworld.v1');}catch(e){run.previousSave=null;}document.body.classList.add('cl-route');
  try{window.LW.closeModals();}catch(e){};
  modal('<div class="cl-kicker">Noor’s flat · A story in three encounters</div><h2>One window is still lit.</h2><p class="cl-opening-line">Behind it, Noor is beginning an ordinary morning. Start with what the room offers her, not with a label or an explanation.</p><div class="cl-steps" aria-label="Three story chapters"><div class="cl-step active"><strong>1</strong>Noor’s room</div><div class="cl-step"><strong>2</strong>Dele’s door</div><div class="cl-step"><strong>3</strong>Walt’s session</div></div><details class="cl-journal"><summary><span>Open field notes</span><small>Optional reflection</small></summary><div class="cl-journal-paper"><p>A client has missed three therapy groups. Their partner says they seem “unmotivated.” You have not heard from the client. What can you actually know?</p>'+questionInputs('pre')+'</div></details><div class="cl-actions cl-intro-actions"><button data-cl="noor">Enter Noor’s room</button><button class="secondary" data-cl="end">Exit</button></div><p class="cl-muted cl-footnote">Fictional perspectives, not assessments. You can return to the notes later.</p>');}
 function renderGuide(){if(!run.active||!['noor','room'].includes(run.stage)){guide.hidden=true;return;}
@@ -5109,13 +5125,13 @@ function renderGuide(){if(!run.active||!['noor','room'].includes(run.stage)){gui
  guide.hidden=false; syncGuide();
 }
 function stageNoor(){
- run.stage='noor';run.guideCollapsed=window.matchMedia('(max-width:650px)').matches;
+ run.stage='noor';paceMark('noor');run.guideCollapsed=window.matchMedia('(max-width:650px)').matches;
  hideModal();try{window.LW.closeModals();window.LW.startFlat(0);}catch(e){console.error(e);}
  renderGuide();chapterBeat('01 · Noor’s morning');
 
 }
 function stageDele(){
- run.stage='dele';hideModal();guide.hidden=true;
+ run.stage='dele';paceMark('dele');hideModal();guide.hidden=true;
  try{
    window.LWDele.open();
    // In the guided route the preceding chapter already supplied Mara's report.
@@ -5126,7 +5142,7 @@ function stageDele(){
  }catch(e){console.error(e);modal('<h2>Dele’s encounter could not open</h2><button data-cl="noor">Back to Noor</button>');}
 }
 function beforeDele(){
- preserveInput();run.stage='between';
+ preserveInput();run.stage='between';paceMark('between');
  modal('<div class="cl-kicker">After Noor · Chapter 2</div><h2>The next door is still closed.</h2>'+
  '<p>Noor’s morning was one authored account of what felt available. At Dele’s door, you have only Mara’s report that his routines have changed.</p>'+
  '<p>You do not yet know what Dele wants, or why anything has changed. Notice what he says, what he chooses, and what remains unsaid.</p>'+
@@ -5135,33 +5151,33 @@ function beforeDele(){
 function toDeleRoom(){
  if(!isStage('dele'))return;
  snapshot();try{window.LWDele.close(true);}catch(e){}
- run.stage='room';try{window.LW.closeModals();window.LW.startFlat(2);}catch(e){console.error(e);}
+ run.stage='room';paceMark('roombridge');try{window.LW.closeModals();window.LW.startFlat(2);}catch(e){console.error(e);}
  modal('<div class="cl-kicker">After the encounter · Chapter 3</div><h2>A room cannot confirm an inner life.</h2>'+
  '<p>You heard Dele’s words and saw how he chose to respond. His explanations and preferences may be incomplete, and that uncertainty matters.</p>'+
  '<p>Next is a <b>separate fictional account</b> of how ordinary possibilities might appear altered. It is not a replay of what Dele told you, and it does not establish his diagnosis or private experience.</p>'+
  '<div class="cl-actions"><button data-cl="roomgo">Enter the authored day</button><button class="secondary" data-cl="end">Leave classroom mode</button></div>');
 }
 function stageRoom(){
- run.stage='room';run.guideCollapsed=window.matchMedia('(max-width:650px)').matches;
+ run.stage='room';paceMark('room');run.guideCollapsed=window.matchMedia('(max-width:650px)').matches;
  hideModal();renderGuide();chapterBeat('03 · An authored day');
 
 }
 function beforeWalt(){
- run.stage='waltbridge';hideModal();
+ run.stage='waltbridge';paceMark('waltbridge');hideModal();
  modal('<div class="cl-kicker">After Dele’s authored day · Chapter 4</div><h2>The same action. A different possibility.</h2>'+
  '<p>A stove or a front door can remain physically usable even when an action does not feel inviting or worth starting. That is one way to illustrate a changed <em>sense of possibility</em>, not a claim about everyone with depression.</p>'+
  '<p>Now meet Walt. June reports less participation. Walt’s speech difficulty cannot, on its own, tell you what he wants, what matters to him, or what he feels is possible.</p>'+
  '<div class="cl-actions"><button data-cl="walt">Begin Walt’s session</button><button class="secondary" data-cl="roomgo">Return to Dele’s day</button></div>');
 }
 function stageWalt(){
- run.stage='walt';hideModal();guide.hidden=true;
+ run.stage='walt';paceMark('walt');hideModal();guide.hidden=true;
  try{window.LWEncounter.open();chapterBeat('04 · Walt’s session');}
  catch(e){console.error(e);modal('<h2>Walt’s encounter could not open</h2><button data-cl="waltbridge">Try again</button>');}
 }
 function toFinal(){if(!isStage('walt'))return;snapWalt();try{window.LWEncounter.close();window.LW.closeModals();}catch(e){}run.stage='complete';finale();}
 function beforeAnswers(){const labels=['Assumption','Unknown','First step'];return '<section class="cl-before" aria-label="Your starting reflections"><h3>Your starting notes</h3><p class="cl-muted">These are your own words from before Noor, Dele, and Walt. Compare them with what you think now.</p>'+labels.map((label,i)=>'<div class="cl-before-line"><b>'+label+'</b><span>'+esc(run.pre[i]?.trim()||'Not answered')+'</span></div>').join('')+'</section>';}
 function finale(){
- preserveInput();run.stage='complete';
+ preserveInput();run.stage='complete';paceMark('complete');
  modal('<div class="cl-kicker">Afterward · Final reflection</div><h2>What can you know from the outside?</h2>'+
  '<p class="cl-muted">Return to the distinction between visible behavior, your interpretation, and the person’s own account. There is no preferred response.</p>'+
  beforeAnswers()+
@@ -5181,10 +5197,11 @@ function debrief(){
  '<div class="cl-steps"><div class="cl-step">Noor<br><b>Ordinary possibility</b></div><div class="cl-step">Dele<br><b>Consent and uncertainty</b></div><div class="cl-step">Walt<br><b>Communication access</b></div></div>'+
  '<p><b>Phenomenological question:</b> How could the same kitchen or door remain physically unchanged while its possibilities appear different to someone? Do not treat the author’s fictional answer as a patient report.</p>'+
  '<p><b>Counterexample:</b> Ask whether silence, offering help, or waiting is always the right clinical response. A person’s goals, context, and consent determine what is useful.</p>'+
- '<p><b>Evaluation limit:</b> If studying learning, use a predefined reasoning rubric and comparable cases. This activity does not validate empathy gains. Seek compensated lived-experience and accessibility review before classroom deployment.</p>'+
+ '<p><b>Evaluation limit:</b> If studying learning, use a predefined reasoning rubric and comparable cases. This activity does not validate empathy gains. Seek compensated lived-experience and accessibility review before classroom deployment.</p>'+ 
+ '<p class="cl-muted" id="clPacing">Playtest timing (local to this tab): '+esc(paceReport())+'</p>'+
  '<div class="cl-actions"><button data-cl="final">Return to reflection</button><button class="secondary" data-cl="copy">Copy responses</button></div><p id="clStatus" role="status"></p>');
 }
-function copy(){preserveInput();let fmt=(group,qs)=>qs.map((q,i)=>q+'\n'+(run[group][i]||'[not answered]')).join('\n\n');let t='BEING FOUND 8.4: CLASSROOM REFLECTION (fictional vignettes; no score)\n\nBEFORE: missed group visits\n\n'+fmt('pre',['Assumption','Unknown','First step'])+'\n\nAFTER: reduced speaking in group\n\n'+fmt('post',['Observed without inference','Possible inference and unknown','Consent-based first step'])+'\n\nNot a validated assessment. The two vignettes differ and these responses cannot establish a gain in empathy.';
+function copy(){preserveInput();let fmt=(group,qs)=>qs.map((q,i)=>q+'\n'+(run[group][i]||'[not answered]')).join('\n\n');let t='BEING FOUND 8.4: CLASSROOM REFLECTION (fictional vignettes; no score)\n\nBEFORE: missed group visits\n\n'+fmt('pre',['Assumption','Unknown','First step'])+'\n\nAFTER: reduced speaking in group\n\n'+fmt('post',['Observed without inference','Possible inference and unknown','Consent-based first step'])+'\n\nPLAYTEST TIMING (local only, includes idle time)\n'+paceReport()+'\n\nNot a validated assessment. The two vignettes differ and these responses cannot establish a gain in empathy.';
  const status=panel.querySelector('#clStatus');const result=x=>{if(status)status.textContent=x;};try{if(navigator.clipboard?.writeText)navigator.clipboard.writeText(t).then(()=>result('Copied to clipboard.')).catch(()=>fallback(t,result));else fallback(t,result);}catch(e){fallback(t,result);}}
 function fallback(t,cb){const el=document.createElement('textarea');el.value=t;el.style.position='fixed';el.style.top='0';el.style.left='0';document.body.appendChild(el);el.focus();el.select();let ok=false;try{ok=document.execCommand('copy');}catch(e){}el.remove();cb(ok?'Copied to clipboard.':'Copy unavailable. Select and copy the text from your reflection fields.');}
 function end(){run.active=false;run.stage='idle';hideModal();guide.hidden=true;syncGuide();document.body.classList.remove('cl-route');try{if(window.LWDele&&!document.getElementById('dele').hidden)window.LWDele.close(true);}catch(e){}try{if(window.LWEncounter&&!document.getElementById('enc').hidden)window.LWEncounter.close();}catch(e){};try{if(run.previousSave===null)localStorage.removeItem('lifeworld.v1');else localStorage.setItem('lifeworld.v1',run.previousSave);if(typeof load==='function')load();}catch(e){}try{window.LW.closeModals();window.LW.showFlats?.();}catch(e){}}
