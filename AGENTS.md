@@ -20,3 +20,8 @@ This repository is the canonical source for **Being Found**.
 - Never claim deployment to Vercel merely because code was pushed. Confirm deployment separately if requested or if deployment status is available.
 
 These instructions apply to future updates, not only the current working session.
+
+## Chat handoffs
+- Proactively tell the user when starting a new development chat is recommended: after a substantial completed milestone, after extended debugging, or when accumulated conversation context risks mistakes. Do not recommend a new chat merely because a new version exists.
+- Before suggesting a fresh chat, commit all completed work, record the current branch/commit, tests, outstanding bugs, and next step in `HANDOFF.md` and `SAVE_NOTES.md`.
+- In a new chat, begin by reading `HANDOFF.md` from GitHub again; do not rely on remembered code state.
