@@ -1,4 +1,4 @@
-# Being Found 8.3.9: QA foundation
+# Being Found 8.3.10: accessibility and sound-control regression
 
 ## Run it
     npm run build        # node build.js && node postbuild.js, no dependencies to install
@@ -22,7 +22,8 @@ python3 -m http.server 8770 --directory dist
 # In a second terminal:
 python3 qa_smoke.py                 # five viewport smoke check
 python3 qa_save_resume.py           # persistent save, sandbox, reload and continue
-python3 qa_focus.py                 # Reflect keyboard focus, Escape and return focus
+python3 qa_focus.py                 # Reflect modal isolation, focus and return focus
+python3 qa_audio.py                 # opt-in WebAudio, volume and mute
 python3 menu_check.py
 python3 test_prop_states.py
 python3 e2e_sync.py 390x844
@@ -32,8 +33,13 @@ python3 visit_check.py
 ```
 Python Playwright is required. Browser executable auto-detects `google-chrome` or `chromium`; override with `BF_CHROME`. Screenshots go to `qa-artifacts/` by default. Legacy test snapshots from `e2e_sync.py` and `test_prop_states.py` are written to the repository root and ignored by git.
 
+## Release 8.3.10 changes
+- Reflect hides the game from focus and screen-reader traversal only while its dialog is open, then restores the prior state and trigger focus on dismissal.
+- Follow-up choices and answers announce in a short polite live region; the full story card remains readable without automatic focus moves.
+- CI now includes headless Chrome checks for soundtrack off-by-default, opt-in play, volume slider input and mute on phone and desktop.
+
 ## Not yet checked
-Sound, real devices, screen readers, other residents at the stove, the hint line under the story card in Dele's flat on phones.
+Actual listening/audio quality, real devices, real screen readers (TalkBack/VoiceOver/NVDA), other residents at the stove, the hint line under the story card in Dele's flat on phones. CI is not a substitute for assistive-technology validation.
 
 ## Notes
 - CSS is a specificity war with `!important`; `.layout` is a flex item, so fixed heights need `flex:none!important`.
