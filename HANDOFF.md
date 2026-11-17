@@ -22,6 +22,7 @@ python3 -m http.server 8770 --directory dist
 # In a second terminal:
 python3 qa_smoke.py                 # five viewport smoke check
 python3 qa_save_resume.py           # persistent save, sandbox, reload and continue
+python3 qa_focus.py                 # Reflect keyboard focus, Escape and return focus
 python3 menu_check.py
 python3 test_prop_states.py
 python3 e2e_sync.py 390x844
