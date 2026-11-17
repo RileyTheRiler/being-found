@@ -34,6 +34,9 @@ jobs:
       - name: Build production game
         run: npm run build
 
+      - name: Parse source and built JavaScript
+        run: python3 qa_js_syntax.py
+
       - name: Install browser test runner
         run: python -m pip install 'playwright==1.58.0'
 

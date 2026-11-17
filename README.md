@@ -40,6 +40,7 @@ python3 qa_audio.py                 # soundtrack off by default, enable, volume 
 python3 qa_flats_stove.py           # kitchen actions in every flat; Dele's phone hint
 python3 qa_guided84.py              # guided narrative, Dele encounter, ending and reduced motion
 python3 qa_editorial.py             # source + production narrative wording guard
+python3 qa_js_syntax.py            # parse source and generated JavaScript, catch early syntax errors
 python3 qa_wren_ilse.py            # Wren/Ilse runtime editorial assertions on phone and desktop
 python3 menu_check.py               # title, rooms, routes, continue
 python3 e2e_sync.py 390x844 1024x1366
