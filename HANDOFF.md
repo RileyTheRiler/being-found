@@ -12,7 +12,7 @@
   (`shell.js/css` -> `bf83.js/css`, `phase2.css` -> `bf835.css`, `phase3.css/js` -> `bf837.css/js`).
 - `shell.js` / `shell.css`: 8.3.8 work: menus (Story, Rooms, Sandbox, About), world drawer, Reflect button, story reveal.
 - `room.js`: camera, markers, navigation; `sprite_rig.js` + `assets/`: sprite atlases (the `.glb` rigs build them).
-- `SAVE_NOTES.md`: step-by-step log (Steps 1 to 11). `README.md`: project readme.
+- `SAVE_NOTES.md`: step-by-step log through Step 15 and verification. `README.md`: project readme.
 
 ## Checks (Playwright for Python, Chrome, server on port 8770)
 GitHub Actions `.github/workflows/quality.yml` builds the site and runs regression checks on each push. See [Actions](https://github.com/RileyTheRiler/being-found/actions). On a clean local copy:
@@ -43,7 +43,7 @@ Python Playwright is required. Browser executable auto-detects `google-chrome` o
 ## Release 8.3.11 changes
 - Mobile fictional inner-voice hint wraps with a touch-sized "Show me" button instead of squeezing Dele's longer instruction.
 - New cross-flat stove browser regression at 360x640, 390x844, and 1440x900; checks each resident's available actions and Dele's hint accessibility.
-- Confirm the current Actions run before claiming this batch passed.
+- Covered by the verified 8.4.0 Actions baseline below.
 
 ## Release 8.4.0 changes
 - Guided chapter transitions are brief, nonblocking, and absent when reduced motion is requested. A polite text status announces the chapter without forcing a delay.
@@ -51,16 +51,16 @@ Python Playwright is required. Browser executable auto-detects `google-chrome` o
 - Shorter bridges separate the encounter from the fictional authored day, avoiding the implication that the day illustrates something independently verified about Dele.
 - The final exercise asks what is observed, what is inferred, and what is unknown. A source-linked Ratcliffe note stays collapsed until the learner chooses to read it.
 - Added `qa_guided84.py` for two viewport guided-route checks, Dele's pause and voluntary departure, final reflection, responsive overflow and a motion-preference check.
-- Verify the latest GitHub Actions run before reporting the full build and regression suite as passing.
+- The completed 8.4.0 implementation has passed the full production build and browser suite; see the verified run below.
 
-## 8.4 CI troubleshooting
-The first 8.4.0 run (44118272861) failed the new guided test, because it attempted to click the collapsed Guide panel on a phone. The diagnostic rerun (44119235896) confirmed the existing mobile shell intentionally hides that panel under `body.bf-guide-closed` until the top-bar `#bf-guide-toggle` is used. This is the established mobile UI, not a rendering regression. The new test now opens the Guide through the top bar, expands its directions, and repeats the sequence after the Dele room transition. The next run (44119952154) advanced through the Dele encounter and failed an immediate inner-text assertion on its review card. The test now waits for the review action, checks DOM text content and reports the review state; the new guided regression runs first after the build to speed diagnosis. Verify the next Actions run before claiming 8.4 fully passed.
-
-## Desktop guided Guide regression
-On 8.4 CI run 44121156638, the phone guided flow passed. At 1440×900, the Guide was hidden after `syncGuide` moved it into `#dock` because the app still had the `tablet-land` class. The source now limits dock relocation to 900–1299px only. Test both desktop and tablet-landscape after the change; do not claim 8.4 passed until CI is green.
-
-## 8.4 keyboard focus follow-up
-In the Actions run immediately after the desktop Guide fix (44121557331), guided 8.4 QA passed on phone and desktop, but the existing Reflect focus test failed on desktop. The new stage-start `requestAnimationFrame` calls could move focus to the Guide after the Reflect dialog opened. Those deferred focus moves have now been removed; chapter announcements remain in the polite status and don't take player focus. Rerun the full Actions suite.
+## Verified 8.4.0 baseline for next chat
+- **Branch:** `main` of `RileyTheRiler/being-found`.
+- **Last implementation commit verified by the full suite:** `889ec1edb0b48988ae7fafa8d484585b74fc4dc0`.
+- **Successful GitHub Actions run:** [44122144223](https://github.com/RileyTheRiler/being-found/actions/runs/44122144223). The `Being Found quality` workflow completed successfully with all 23 steps passing: production `npm run build`, guided story 8.4 regression, five viewport smoke test, menu routes, save/resume, Reflect keyboard focus, opt-in audio controls, all-five-flat stove interactions, state preservation, existing story/follow-up checks, and separate Dele/visit checks.
+- **Current release:** `package.json` 8.4.0. This handoff documentation was finalized after the successful implementation run; read the current `main` SHA and verify its own Actions status before subsequent edits.
+- **Known bugs fixed while validating:** `syncGuide()` no longer relocates the desktop classroom Guide into a hidden tablet dock at 1440×900; asynchronous stage-start focus no longer steals keyboard focus from Reflect. The mobile Guide is intentionally hidden until the topbar Guide toggle opens it.
+- **Untested outside headless Chrome:** physical Android/iPhone/iPad behavior; real screen readers; actual audio listening; classroom learning outcomes and duration; lived-experience review of Dele and other narratives. Do not claim a Vercel deployment from GitHub Actions.
+- **Next code priority:** a controlled qualitative/phenomenological editorial audit of sensitive scenes and the full 10–15 minute classroom pacing, followed by real-device/assistive-tech tests. Do not start a 3D renderer rewrite.
 
 ## Next suggested work
 - Observe real classroom users completing the route. Check whether the sequence feels cohesive and the ending takes 10–15 minutes without rushing.
