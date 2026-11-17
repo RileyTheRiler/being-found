@@ -1,10 +1,17 @@
 import sys
+import os
+import shutil
+from pathlib import Path
 from playwright.sync_api import sync_playwright
-URL="http://127.0.0.1:8770/index.html"; OUT="/home/claude/work/v837"
+URL=os.environ.get('BF_TEST_URL','http://127.0.0.1:8770/index.html')
+OUT=Path(os.environ.get('BF_TEST_ARTIFACTS','qa-artifacts'))
+OUT.mkdir(parents=True,exist_ok=True)
+CHROME=os.environ.get('BF_CHROME') or shutil.which('google-chrome') or shutil.which('chromium')
 VIS="(()=>[...document.querySelectorAll('button')].filter(b=>{const r=b.getBoundingClientRect();return r.width>2&&r.height>2&&b.checkVisibility({visibilityProperty:true})&&document.elementFromPoint(r.x+r.width/2,r.y+r.height/2)?.closest('button')===b}).map(b=>b.textContent.trim().replace(/\\s+/g,' ').slice(0,34)))()"
 SIZES={"phone":(390,844,True),"desk":(1440,900,False)}
+ok=True
 with sync_playwright() as p:
-    b=p.chromium.launch(headless=True,executable_path="/usr/bin/google-chrome",args=["--no-sandbox"])
+    b=p.chromium.launch(headless=True,executable_path=CHROME,args=["--no-sandbox"])
     for name,(w,h,touch) in SIZES.items():
         ctx=b.new_context(viewport={"width":w,"height":h},device_scale_factor=2,has_touch=touch,is_mobile=touch); page=ctx.new_page(); js=page.evaluate
         errs=[]; page.on("pageerror",lambda e:errs.append(str(e)[:120]))
@@ -24,6 +31,9 @@ with sync_playwright() as p:
             if st["flat"]=="Dele" and not st["modal"] and not js("!!document.querySelector('.dl-primary,.dl-move')?.checkVisibility()"): break
             t=js("""(()=>{const pick=[...document.querySelectorAll('button')].filter(b=>/Explore the authored day|^Enter|Begin|Start/.test(b.textContent.trim())||/dl-primary/.test(b.className)).find(b=>b.checkVisibility({visibilityProperty:true}));if(pick){pick.click();return pick.textContent.trim().slice(0,40)}return null})()"""); print("   ->",t); page.wait_for_timeout(2500)
             if not t: break
-        page.screenshot(path=f"{OUT}/dl_{name}_room.png") if False else None; page.wait_for_timeout(1500); page.screenshot(path=f"{OUT}/dl_{name}_flat.png"); print(name,"errors",errs)
+        page.screenshot(path=f"{OUT}/dl_{name}_room.png") if False else None; page.wait_for_timeout(1500); page.screenshot(path=f"{OUT}/dl_{name}_flat.png"); ok=ok and not errs and st['flat']=='Dele' and not st['modal']
+        print(name,'PASS' if not errs and st['flat']=='Dele' and not st['modal'] else 'FAIL', 'errors',errs)
         ctx.close()
     b.close()
+
+if not ok: raise SystemExit(1)
