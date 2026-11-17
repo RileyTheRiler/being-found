@@ -23,6 +23,21 @@ def state(page):
       overflow:document.documentElement.scrollWidth-innerWidth
     })""")
 
+def open_mobile_guide(page):
+    """Use the actual top-bar Guide control, then expand the chapter directions.
+
+    The closed panel is intentionally display:none on narrow screens.
+    """
+    fold=page.locator('#clGuide .cl-guide-fold')
+    if not fold.is_visible():
+        top=page.locator('#bf-guide-toggle')
+        assert top.is_visible(), "Mobile top-bar Guide must be visible"
+        top.click()
+    expand=page.locator('#clGuide [data-cl="guideshow"]')
+    if expand.is_visible():
+        expand.click()
+    assert page.locator('#clGuide [data-cl="guidehide"]').is_visible(), "Chapter guide cannot be expanded"
+
 def check(browser, label, width, height, mobile):
     ctx = browser.new_context(viewport={"width":width,"height":height},
         has_touch=mobile, is_mobile=mobile, reduced_motion="reduce")
@@ -41,19 +56,7 @@ def check(browser, label, width, height, mobile):
         assert s["resident"] == "Noor" and not s["beatVisible"],s
         assert s["overflow"] <= 2,s
         if mobile:
-            guide = page.evaluate("""() => {
-              const g=document.querySelector('#clGuide'),b=g?.querySelector('[data-cl="guideshow"]');
-              const style=g&&getComputedStyle(g),bst=b&&getComputedStyle(b);
-              return {hidden:g?.hidden, parent:g?.parentElement?.id||g?.parentElement?.tagName,
-                guideDisplay:style?.display, guideVisibility:style?.visibility,
-                guideRect:g?.getBoundingClientRect().toJSON(), buttonDisplay:bst?.display,
-                buttonRect:b?.getBoundingClientRect().toJSON(),
-                route:document.body.className, app:document.querySelector('#app')?.className,
-                html:g?.innerHTML.slice(0,450), overlayHidden:document.querySelector('#clOverlay')?.hidden};
-            }""")
-            print("PHONE GUIDE DIAGNOSTIC",guide,flush=True)
-            assert page.locator('#clGuide [data-cl="guideshow"]').is_visible(),guide
-            page.locator('#clGuide [data-cl="guideshow"]').click()
+            open_mobile_guide(page)
         page.locator('#clGuide .cl-guide-skip[data-cl="dele"]').click()
         assert "next door" in page.locator("#clOverlay h2").inner_text().lower()
         page.locator('#clOverlay [data-cl="deledo"]').click()
@@ -80,7 +83,7 @@ def check(browser, label, width, height, mobile):
         page.locator('#clOverlay [data-cl="roomgo"]').click()
         assert state(page)["resident"] == "Dele", state(page)
         if mobile:
-            page.locator('#clGuide [data-cl="guideshow"]').click()
+            open_mobile_guide(page)
         page.locator('#clGuide .cl-guide-skip[data-cl="waltbridge"]').click()
         assert "different possibility" in page.locator('#clOverlay h2').inner_text().lower()
         page.locator('#clOverlay [data-cl="walt"]').click()

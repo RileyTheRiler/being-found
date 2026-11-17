@@ -53,8 +53,8 @@ Python Playwright is required. Browser executable auto-detects `google-chrome` o
 - Added `qa_guided84.py` for two viewport guided-route checks, Dele's pause and voluntary departure, final reflection, responsive overflow and a motion-preference check.
 - Verify the latest GitHub Actions run before reporting the full build and regression suite as passing.
 
-## Current CI blocker
-The first 8.4.0 Actions run (44118272861) failed the new `qa_guided84.py` on its initial narrow-phone Guide expansion: `#clGuide [data-cl=guideshow]` exists but is not visible. The existing pre-8.4 tests through stove coverage passed. A diagnostic test patch prints Guide computed display, rectangle, parent, and route state; inspect the next run, fix any underlying mobile bug, and rerun all checks before release validation.
+## 8.4 CI troubleshooting
+The first 8.4.0 run (44118272861) failed the new guided test, because it attempted to click the collapsed Guide panel on a phone. The diagnostic rerun (44119235896) confirmed the existing mobile shell intentionally hides that panel under `body.bf-guide-closed` until the top-bar `#bf-guide-toggle` is used. This is the established mobile UI, not a rendering regression. The new test now opens the Guide through the top bar, expands its directions, and repeats the sequence after the Dele room transition. Verify the next Actions run before claiming 8.4 fully passed.
 
 ## Next suggested work
 - Observe real classroom users completing the route. Check whether the sequence feels cohesive and the ending takes 10–15 minutes without rushing.
