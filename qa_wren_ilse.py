@@ -17,15 +17,17 @@ def check(browser, width, height):
     page.on("pageerror",lambda e:errors.append(str(e)))
     try:
         page.goto(URL,wait_until="load")
+        page.wait_for_timeout(600)
+        page.wait_for_function("!!window.LW && typeof window.LW.startFlat === 'function'",timeout=10000)
         page.evaluate("document.querySelector('#plSkip')?.click()")
         for index,name in [(3,"Wren"),(4,"Ilse")]:
-            page.evaluate("(i) => {LW.closeModals();LW.startFlat(i);}",index)
+            page.evaluate("(i) => {window.LW.closeModals();window.LW.startFlat(i);}",index)
             data=page.evaluate("""() => ({
-              name: LW.S.flat.name,
-              scope: LW.S.flat.scope,
-              intro: LW.S.flat.intro,
-              notes: LW.S.flat.phases[0].goals.map(g=>g.note?.text || ''),
-              point: LW.S.flat.debrief.point,
+              name: window.LW.S.flat.name,
+              scope: window.LW.S.flat.scope,
+              intro: window.LW.S.flat.intro,
+              notes: window.LW.S.flat.phases[0].goals.map(g=>g.note?.text || ''),
+              point: window.LW.S.flat.debrief.point,
               overflow: document.documentElement.scrollWidth-innerWidth
             })""")
             assert data["name"]==name,data

@@ -66,7 +66,7 @@ Python Playwright is required. Browser executable auto-detects `google-chrome` o
 - Edited Wren’s fictional depersonalization narrative and Ilse’s psychosis-related narrative to distinguish reported experience from observed action, avoid diagnostic universals and unproven causal models, and keep reflection on uncertainty. Changed both visitors’ suggested actions to request consent before intervention; did not change numeric outcomes or mechanics.
 - Added in-tab chapter elapsed timing, with a section-duration summary visible only from **Facilitator questions** and in a user-triggered reflection copy. There is **no telemetry, score, persistent timer or on-screen countdown**. It includes idle time and is not evidence of 10–15-minute completion.
 - Added `CLASSROOM_PILOT.md` with instructions to collect independent completion times and comprehension feedback. Updated `EDITORIAL_REVIEW.md` with literature, scene inventory and limits.
-- Added `qa_wren_ilse.py`, expanded `qa_editorial.py` and `qa_guided84.py` to cover scene phrasing, runtime content and local pacing. **Verify 8.4.2 GitHub Actions before claiming complete success.**
+- Added `qa_wren_ilse.py`, expanded `qa_editorial.py` and `qa_guided84.py` to cover scene phrasing, runtime content and local pacing. The first 8.4.2 CI run failed on the new Wren/Ilse test's early `LW` access; the test now waits for game startup. **Verify the corrected 8.4.2 GitHub Actions before claiming success.**
 - **Baseline at start of this release:** 8.4.1 commit `265cd0db2cebdf360c1844f45384e1194ff0d5c1`, successful Actions run [44181478986](https://github.com/RileyTheRiler/being-found/actions/runs/44181478986) (24/24 steps).
 
 ## Verified 8.4.0 baseline for next chat
