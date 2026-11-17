@@ -59,6 +59,9 @@ The first 8.4.0 run (44118272861) failed the new guided test, because it attempt
 ## Desktop guided Guide regression
 On 8.4 CI run 44121156638, the phone guided flow passed. At 1440×900, the Guide was hidden after `syncGuide` moved it into `#dock` because the app still had the `tablet-land` class. The source now limits dock relocation to 900–1299px only. Test both desktop and tablet-landscape after the change; do not claim 8.4 passed until CI is green.
 
+## 8.4 keyboard focus follow-up
+In the Actions run immediately after the desktop Guide fix (44121557331), guided 8.4 QA passed on phone and desktop, but the existing Reflect focus test failed on desktop. The new stage-start `requestAnimationFrame` calls could move focus to the Guide after the Reflect dialog opened. Those deferred focus moves have now been removed; chapter announcements remain in the polite status and don't take player focus. Rerun the full Actions suite.
+
 ## Next suggested work
 - Observe real classroom users completing the route. Check whether the sequence feels cohesive and the ending takes 10–15 minutes without rushing.
 - Add careful lived-experience editorial review of Dele's inner voice, then test TalkBack/VoiceOver and real-device transitions.

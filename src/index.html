@@ -5112,7 +5112,7 @@ function stageNoor(){
  run.stage='noor';run.guideCollapsed=window.matchMedia('(max-width:650px)').matches;
  hideModal();try{window.LW.closeModals();window.LW.startFlat(0);}catch(e){console.error(e);}
  renderGuide();chapterBeat('01 · Noor’s morning');
- requestAnimationFrame(()=>guide.querySelector('.cl-guide-fold')?.focus({preventScroll:true}));
+
 }
 function stageDele(){
  run.stage='dele';hideModal();guide.hidden=true;
@@ -5122,7 +5122,7 @@ function stageDele(){
    // Begin at the door instead of repeating the explanatory referral card.
    document.querySelector('#dlCard [data-dlu="begin"]')?.click();
    chapterBeat('02 · At Dele’s door');
-   requestAnimationFrame(()=>document.querySelector('#dlMoves .dl-move')?.focus({preventScroll:true}));
+  
  }catch(e){console.error(e);modal('<h2>Dele’s encounter could not open</h2><button data-cl="noor">Back to Noor</button>');}
 }
 function beforeDele(){
@@ -5144,7 +5144,7 @@ function toDeleRoom(){
 function stageRoom(){
  run.stage='room';run.guideCollapsed=window.matchMedia('(max-width:650px)').matches;
  hideModal();renderGuide();chapterBeat('03 · An authored day');
- requestAnimationFrame(()=>guide.querySelector('.cl-guide-fold')?.focus({preventScroll:true}));
+
 }
 function beforeWalt(){
  run.stage='waltbridge';hideModal();
