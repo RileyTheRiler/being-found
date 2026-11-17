@@ -1,10 +1,16 @@
+import os
+import shutil
 import sys
+from pathlib import Path
 from playwright.sync_api import sync_playwright
-URL,OUT=sys.argv[1],sys.argv[2]
+URL=sys.argv[1] if len(sys.argv)>1 else os.environ.get('BF_TEST_URL','http://127.0.0.1:8770/index.html')
+OUT=Path(sys.argv[2] if len(sys.argv)>2 else os.environ.get('BF_TEST_ARTIFACTS','qa-artifacts'))
+OUT.mkdir(parents=True,exist_ok=True)
+CHROME=os.environ.get('BF_CHROME') or shutil.which('google-chrome') or shutil.which('chromium')
 VIS="(root=>[...document.querySelectorAll(root+' button, '+root+' summary')].filter(b=>{const r=b.getBoundingClientRect();return r.width>2&&r.height>2&&b.checkVisibility({contentVisibilityAuto:true,visibilityProperty:true})}).map(b=>(b.querySelector('b,strong,.fname')?.textContent||b.textContent).trim().replace(/\\s+/g,' ').slice(0,26)))"
 ok=True
 with sync_playwright() as p:
-    b=p.chromium.launch(headless=True,executable_path="/usr/bin/google-chrome",args=["--no-sandbox"])
+    b=p.chromium.launch(headless=True,executable_path=CHROME,args=["--no-sandbox"])
     for name,(w,h,touch) in {"phone":(390,844,True),"desk":(1440,900,False)}.items():
         ctx=b.new_context(viewport={"width":w,"height":h},device_scale_factor=2,has_touch=touch,is_mobile=touch); page=ctx.new_page(); js=page.evaluate
         errs=[]; page.on("pageerror",lambda e:errs.append(str(e)[:100]))
@@ -32,3 +38,5 @@ with sync_playwright() as p:
         ctx.close()
     b.close()
 print("ALL PASS" if ok else "SOME FAILED")
+
+if not ok: raise SystemExit(1)
