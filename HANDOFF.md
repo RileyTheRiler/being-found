@@ -56,6 +56,9 @@ Python Playwright is required. Browser executable auto-detects `google-chrome` o
 ## 8.4 CI troubleshooting
 The first 8.4.0 run (44118272861) failed the new guided test, because it attempted to click the collapsed Guide panel on a phone. The diagnostic rerun (44119235896) confirmed the existing mobile shell intentionally hides that panel under `body.bf-guide-closed` until the top-bar `#bf-guide-toggle` is used. This is the established mobile UI, not a rendering regression. The new test now opens the Guide through the top bar, expands its directions, and repeats the sequence after the Dele room transition. The next run (44119952154) advanced through the Dele encounter and failed an immediate inner-text assertion on its review card. The test now waits for the review action, checks DOM text content and reports the review state; the new guided regression runs first after the build to speed diagnosis. Verify the next Actions run before claiming 8.4 fully passed.
 
+## Desktop guided Guide regression
+On 8.4 CI run 44121156638, the phone guided flow passed. At 1440×900, the Guide was hidden after `syncGuide` moved it into `#dock` because the app still had the `tablet-land` class. The source now limits dock relocation to 900–1299px only. Test both desktop and tablet-landscape after the change; do not claim 8.4 passed until CI is green.
+
 ## Next suggested work
 - Observe real classroom users completing the route. Check whether the sequence feels cohesive and the ending takes 10–15 minutes without rushing.
 - Add careful lived-experience editorial review of Dele's inner voice, then test TalkBack/VoiceOver and real-device transitions.

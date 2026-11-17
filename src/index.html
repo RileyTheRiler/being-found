@@ -5070,7 +5070,7 @@ const panel=document.createElement('div'), guide=document.createElement('aside')
 panel.id='clOverlay'; panel.hidden=true; panel.setAttribute('aria-label','Being Found classroom pathway');panel.setAttribute('role','dialog');panel.setAttribute('aria-modal','true');
 guide.id='clGuide'; guide.hidden=true;guide.setAttribute('aria-label','Classroom pathway guidance');
 document.body.append(panel,guide);
-function syncGuide(){ const dock=document.getElementById('dock'), within=run.active&&['noor','room'].includes(run.stage)&&document.getElementById('app')?.classList.contains('tablet-land'); if(within&&dock&&guide.parentElement!==dock)dock.prepend(guide);else if(!within&&guide.parentElement!==document.body)document.body.appendChild(guide); }
+function syncGuide(){ const dock=document.getElementById('dock'), app=document.getElementById('app'); const tabletDock=innerWidth>=900&&innerWidth<1300&&app?.classList.contains('tablet-land')&&dock?.getClientRects().length>0; const within=run.active&&['noor','room'].includes(run.stage)&&tabletDock; if(within&&guide.parentElement!==dock)dock.prepend(guide);else if(!within&&guide.parentElement!==document.body)document.body.appendChild(guide); }
 const run={active:false,stage:'idle',noor:new Set(),dele:new Set(),pre:{},post:{},dVisit:null,wVisit:null,seen:0,previousSave:null,guideCollapsed:false};
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let chapterTimer=0;
