@@ -1,0 +1,88 @@
+name: Being Found quality
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  browser-regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      BF_TEST_URL: http://127.0.0.1:8770/index.html
+      BF_TEST_ARTIFACTS: qa-artifacts
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Build production game
+        run: npm run build
+
+      - name: Install browser test runner
+        run: python -m pip install 'playwright==1.58.0'
+
+      - name: Find Chrome
+        shell: bash
+        run: |
+          CHROME=$(command -v google-chrome || command -v chromium || true)
+          if [ -z "$CHROME" ]; then
+            echo "No Chrome/Chromium browser available on the runner"
+            exit 1
+          fi
+          echo "BF_CHROME=$CHROME" >> "$GITHUB_ENV"
+
+      - name: Serve built game
+        shell: bash
+        run: |
+          python3 -m http.server 8770 --directory dist > /tmp/being-found-http.log 2>&1 &
+          echo $! > /tmp/being-found-server.pid
+          for i in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:8770/index.html > /dev/null; then
+              exit 0
+            fi
+            sleep 1
+          done
+          cat /tmp/being-found-http.log
+          exit 1
+
+      - name: Five viewport smoke tests
+        run: python3 qa_smoke.py
+
+      - name: Route and menu tests
+        run: python3 menu_check.py
+
+      - name: Existing state-preservation test
+        run: python3 test_prop_states.py
+
+      - name: Existing story / follow-up tests
+        run: |
+          python3 e2e_sync.py 390x844
+          python3 test_later.py 390x844
+
+      - name: Encounter and visit checks
+        run: |
+          python3 dele_check.py
+          python3 visit_check.py
+
+      - name: Upload visual QA evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: being-found-qa
+          path: |
+            qa-artifacts/
+            v81_*.png
+          if-no-files-found: ignore
+          retention-days: 7
