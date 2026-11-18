@@ -99,12 +99,15 @@ def test(browser,name,width,height,touch):
         page.wait_for_timeout(550)
         left=sample(page)
         assert left["state"]=="walk" and left["face"]==6 and left["actualDirection"]==6,(name,"wrong left-facing pose",left)
-        # A sitter remains in the authored seated pose and on the fixed cushion.
+        # Use the real visible sofa action, not a synthetic pose assignment.
+        # The earlier regression forced the state and missed the user's issue.
         page.evaluate("""() => {
-          BFNavigation.cancel(LW.S);
-          const s=LW.S.sim;s.path=[];s.at='sofa';s.pose='sit';
-          BFNavigation.reset(LW.S);
+          LW.closeModals();LW.startFlat(0);BFSkillChecks.setEnabled(false);
         }""")
+        page.locator('#bf-room-nav [data-room="living"]').click(timeout=8000)
+        page.locator('.pin[data-obj="sofa"]').click(timeout=8000)
+        page.get_by_role("button",name="Sit down for a minute").click(timeout=8000)
+        page.wait_for_function("LW.S.sim.pose==='sit'&&LW.S.sim.at==='sofa'",timeout=15000)
         page.wait_for_timeout(220)
         seat=sample(page)
         assert seat["state"]=="sit",(name,"seated sprite not selected",seat)
