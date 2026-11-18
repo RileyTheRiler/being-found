@@ -8,9 +8,16 @@
  const S=window.LW?.S;
  const PAIR={rooted:'noor',grief:'tomas',depression:'dele'};
  const META={w:112,h:144,pivotY:129,cols:15,dirs:8};
- const reduce=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
+ // Motion follows the device setting unless the player explicitly opts in
+ // to walking motion using the View menu.
+ let forceWalking=false;
+ try{forceWalking=localStorage.getItem('beingfound.walk_motion')==='on';}catch(_){}
+ const systemReduced=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
+ const reduce=()=>systemReduced()&&!forceWalking;
+ const WALK_CYCLE=92;
+ const walkFrame=()=>1+(Math.floor(walkDistance/WALK_CYCLE*6)%6);
  const assets={};
- let enabled=true,lastFlat=null,lastPhase=null,lastX=null,lastY=null,movementDir=2,walkDistance=0,wasMoving=false,totalDraws=0,lastState='idle';
+ let enabled=true,lastFlat=null,lastPhase=null,lastX=null,lastY=null,movementDir=2,walkDistance=0,wasMoving=false,totalDraws=0,lastState='idle',lastFrameIndex=0,lastDirection=0;
  try{enabled=localStorage.getItem('beingfound.model_rig')!=='off';}catch(_){}
  function ensure(flat){
   const id=PAIR[flat];if(!id)return null;
@@ -65,9 +72,9 @@
   const sim=S.sim;
   if(o.pose==='sit'||o.pose==='floor')return ['sit',11];
   if(o.moving&&sim.path?.length&&!reduce()){
-   // Six authored walk frames form one complete step cycle per 112 canvas px.
-   // Walk cadence therefore follows the drawn feet, not a fixed time clock.
-   return ['walk',1+(Math.floor(walkDistance/112*6)%6)];
+   // A full authored 6-frame cycle advances per 92 scene px. The previous
+   // 112 px cycle was difficult to perceive at ordinary room scales.
+   return ['walk',walkFrame()];
   }
   if(sim.act&&o.bfMainActor){
    if(sim.at==='phone'&&window.BFArt?.holdingPhone?.(S))return ['phone',12];
@@ -86,12 +93,21 @@
   if(S?.mode==='visit')return false;
   if(!enabled||!asset?.loaded||asset.failed||window.BFArt?.enabled===false||!o?.bfMainActor||!o.char||o.ghost||o.pose==='lie'||S.place==='street')return false;
   const dir=direction(o),[anim,col]=frame(o);
-  lastState=anim;
+  lastState=anim;lastFrameIndex=col;lastDirection=dir;
   const scale=(o.scale||1)*.55,width=META.w*scale,height=META.h*scale;
   const left=x-META.w*.5*scale,top=y-META.pivotY*scale;
   ctx.save();
   if(o.alpha!=null)ctx.globalAlpha*=o.alpha;
-  if(!o.noShadow){ctx.beginPath();ctx.ellipse(x,y,o.pose==='sit'?14.5:12,4.6,0,0,Math.PI*2);ctx.fillStyle='rgba(22,30,42,.17)';ctx.fill();}
+  if(!o.noShadow&&o.pose!=='sit'){ctx.beginPath();ctx.ellipse(x,y,12,4.6,0,0,Math.PI*2);ctx.fillStyle='rgba(22,30,42,.17)';ctx.fill();}
+  // The atlas contains six gait poses; provide a visible, small vertical
+  // weight shift at each step so the model does not appear to glide.
+  // The contact shadow stays fixed at the floor while the feet lift.
+  if(anim==='walk'&&!reduce()){
+   const phase=walkDistance/WALK_CYCLE*2*Math.PI;
+   ctx.translate(x,y);
+   ctx.rotate(Math.sin(phase)*.018);
+   ctx.translate(-x,-y-1.9*Math.abs(Math.sin(phase)));
+  }
   ctx.drawImage(asset.atlas,col*META.w,dir*META.h,META.w,META.h,left,top,width,height);
   ctx.restore();totalDraws++;return true;
  }
@@ -106,6 +122,21 @@
    b.addEventListener('click',()=>{enabled=!enabled;b.setAttribute('aria-pressed',String(enabled));try{localStorage.setItem('beingfound.model_rig',enabled?'on':'off');}catch(_){}});
    const art=menu.querySelector('[data-bf-art]');if(art)art.insertAdjacentElement('afterend',b);
    else menu.append(b);
+   if(!menu.querySelector('[data-bf-walk-motion]')){
+    const motion=document.createElement('button');
+    motion.type='button';motion.className='vrow';motion.dataset.bfWalkMotion='';
+    motion.title='Follow the device reduced-motion setting, or explicitly allow the character walking cycle';
+    const update=()=>{
+     motion.textContent=forceWalking?'Walking animation: On':'Walking animation: Device setting';
+     motion.setAttribute('aria-pressed',String(forceWalking));
+    };
+    motion.addEventListener('click',()=>{
+     forceWalking=!forceWalking;
+     try{localStorage.setItem('beingfound.walk_motion',forceWalking?'on':'auto');}catch(_){}
+     update();
+    });
+    update();b.insertAdjacentElement('afterend',motion);
+   }
   };
   add();new MutationObserver(add).observe(menu,{childList:true});
  }
@@ -116,7 +147,10 @@
   get failed(){return !!ensure(S?.flat?.id)?.failed},
   get enabled(){return enabled},set enabled(v){enabled=!!v},
   get totalDraws(){return totalDraws},get lastState(){return lastState},
-  get facing(){return movementDir},get walkFrame(){return 1+(Math.floor(walkDistance/112*6)%6)},get walkDistance(){return walkDistance},
+  get facing(){return movementDir},get walkFrame(){return walkFrame()},get walkDistance(){return walkDistance},
+  get lastFrameIndex(){return lastFrameIndex},get lastDirection(){return lastDirection},
+  get reducedMotion(){return reduce()},get systemReducedMotion(){return systemReduced()},
+  get forceWalking(){return forceWalking},
   get character(){return PAIR[S?.flat?.id]||null},get assetStates(){return Object.fromEntries(Object.entries(assets).map(([k,v])=>[k,{loaded:v.loaded,failed:v.failed}]))}
  };
 })();
