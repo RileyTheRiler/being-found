@@ -10,7 +10,7 @@
  const META={w:112,h:144,pivotY:129,cols:15,dirs:8};
  const reduce=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
  const assets={};
- let enabled=true,lastFlat=null,lastX=null,lastY=null,movementDir=0,totalDraws=0,lastState='idle';
+ let enabled=true,lastFlat=null,lastPhase=null,lastX=null,lastY=null,movementDir=2,walkDistance=0,wasMoving=false,totalDraws=0,lastState='idle';
  try{enabled=localStorage.getItem('beingfound.model_rig')!=='off';}catch(_){}
  function ensure(flat){
   const id=PAIR[flat];if(!id)return null;
@@ -22,20 +22,38 @@
   a.atlas.src=window.__BFRigAssetOverrides?.[id]||`assets/${id}_atlas.webp`;
   assets[id]=a;return a;
  }
- function onStep(s){
+ // The side-scroller supplies screen-space foot coordinates. Track actual distance
+ // traveled instead of advancing the walk cycle at one fixed speed for every resident.
+ // This keeps a planted foot from sliding while navigation accelerates or slows.
+ function onStep(s,foot){
   if(!s||!S)return;
-  const flat=S.flat?.id;
+  const flat=S.flat?.id,phase=S.phaseKey;
   ensure(flat);
-  if(flat!==lastFlat){lastFlat=flat;lastX=null;lastY=null;movementDir=0;}
-  if(lastX!=null&&lastY!=null&&s.path?.length){
-   const dx=s.x-lastX,dy=s.y-lastY;
-   if(dx*dx+dy*dy>.000005){const sx=dx-dy,sy=dx+dy;movementDir=((Math.round(Math.atan2(sx,sy)*4/Math.PI)%8)+8)%8;}
+  if(flat!==lastFlat||phase!==lastPhase){
+   lastFlat=flat;lastPhase=phase;lastX=null;lastY=null;
+   movementDir=2;walkDistance=0;wasMoving=false;
   }
-  lastX=s.x;lastY=s.y;
+  const moving=!!s.path?.length&&s.pose==='stand'&&S.mode==='play'&&S.place!=='street';
+  const point=Array.isArray(foot)?foot:null;
+  const x=point?.[0],y=point?.[1];
+  if(moving&&!wasMoving){
+   walkDistance=0;
+   // At the beginning of the route no position delta exists yet.
+   movementDir=s.bfSideVX?(s.bfSideVX>0?2:6):(s.flip===-1?6:2);
+  }
+  if(Number.isFinite(x)&&Number.isFinite(y)&&lastX!=null&&lastY!=null&&moving&&!reduce()){
+   const dx=x-lastX,dy=y-lastY,delta=Math.hypot(dx,dy);
+   if(delta>.02&&delta<60){
+    walkDistance+=delta;
+    if(Math.abs(dx)>.07)movementDir=dx>0?2:6;
+   }
+  }
+  if(Number.isFinite(x)&&Number.isFinite(y)){lastX=x;lastY=y;}
+  wasMoving=moving;
  }
  function direction(o){
-  // Side-scrolling movement is genuinely horizontal in the room renderer.
-  // Source-rig direction 2 faces screen-right and direction 6 screen-left.
+  // Directions 2 and 6 face screen-right and screen-left, respectively.
+  // Never show a front-facing walk for an actor traveling horizontally.
   if(o.moving&&S.sim.bfWalking&&S.sim.bfSideVX)return S.sim.bfSideVX>0?2:6;
   if(o.moving&&S.sim.path?.length)return movementDir;
   if(o.face==='back')return o.flip===-1?5:3;
@@ -47,8 +65,9 @@
   const sim=S.sim;
   if(o.pose==='sit'||o.pose==='floor')return ['sit',11];
   if(o.moving&&sim.path?.length&&!reduce()){
-   const phase=Number.isFinite(o.ph)?o.ph:0;
-   return ['walk',1+Math.floor(((phase/(2*Math.PI))%1+1)%1*6)%6];
+   // Six authored walk frames form one complete step cycle per 112 canvas px.
+   // Walk cadence therefore follows the drawn feet, not a fixed time clock.
+   return ['walk',1+(Math.floor(walkDistance/112*6)%6)];
   }
   if(sim.act&&o.bfMainActor){
    if(sim.at==='phone'&&window.BFArt?.holdingPhone?.(S))return ['phone',12];
@@ -97,6 +116,7 @@
   get failed(){return !!ensure(S?.flat?.id)?.failed},
   get enabled(){return enabled},set enabled(v){enabled=!!v},
   get totalDraws(){return totalDraws},get lastState(){return lastState},
+  get facing(){return movementDir},get walkFrame(){return 1+(Math.floor(walkDistance/112*6)%6)},get walkDistance(){return walkDistance},
   get character(){return PAIR[S?.flat?.id]||null},get assetStates(){return Object.fromEntries(Object.entries(assets).map(([k,v])=>[k,{loaded:v.loaded,failed:v.failed}]))}
  };
 })();

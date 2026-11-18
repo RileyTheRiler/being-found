@@ -1,3 +1,12 @@
+## Character walk-cycle and sofa depth — November 18, 2026
+
+**Branch:** `fix/character-walk-and-sofa-depth`, based on main `af6ee8af28d2f0f25cf8ff2d258a856cec16dfc3`. Presentation-only changes; no narrative, skill checks, save schema or classroom routing altered.
+
+- `sprite_rig.js`: the authored atlases already contain six walk frames and left/right directional rows. `onStep` was never called by the 2.5D renderer, so native navigation could appear front-facing and cadence could fail to follow movement speed. The renderer now sends scene-space foot movement every drawn frame; sprite frame and direction follow actual step distance/direction, with reduced-motion still suppressing the walk cycle.
+- `room.js`: sofa front apron paints *behind* walking characters rather than slicing across their legs. For actual sit poses only, it paints over the seated lap as a small foreground occlusion. Other residents' isometric seating fallback is aligned to the 2.5D sofa center, and two seated people take separate cushion positions. Seated NPCs in authored visits can now render on the sofa.
+- `qa_character_motion.py` checks forward/back walk frames, direction, root sitting position and modeled Tomas/Dele sitting at 1440x900 and 390x844. Produces screenshots for review. Added to `qa_all.py` and GitHub Actions.
+- **Pending:** confirm CI green and visual screenshots. The three 3D-authored atlases are existing assets, not re-rigged. Manual screenshots and real-device testing remain needed. The separate draft 8.5.2B gameplay PR is unaffected.
+
 ## Desktop opening and classroom reading pass — review branch (November 18, 2026)
 
 **Branch:** `fix/desktop-guide-and-opening` (separate from draft 8.5.2B PR #3). Built on `main` commit `6902786f42b5862cd32a9b087ecbb7775ce433e1`. **Not merged or deployed.** Version and narrative mechanics remain 8.5.1.

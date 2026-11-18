@@ -133,6 +133,9 @@
    rr(c,359,434,69,37,13,'#b37566');rr(c,489,433,60,39,12,'#789b93');
    line(c,447,480,447,530,'rgba(93,80,62,.17)',2);
    window.BFStageSync?.paintSofa?.(c,S);
+   // Keep the furniture apron behind a passing walker, rather than over their shins.
+   // For seated residents the apron is re-painted in the foreground below.
+   drawSofaFront(c);
  }
  function drawSofaFront(c){rr(c,281,518,294,23,10,'#bca37c');line(c,308,539,546,539,'rgba(74,65,54,.22)',3);}
  function drawPhone(c,S,t){
@@ -199,7 +202,10 @@
    for(const x of [260,1030]){line(c,x,80,x,574,'#65746f',11);light(c,x,100,110,'#f2edd1',.18);}
  }
  function roomFront(c,S){
-  drawSofaFront(c);
+  // A seated resident's lap goes behind the front cushion; a walker does not.
+  const mainSeated=S.sim?.pose==='sit'&&S.sim?.at==='sofa';
+  const npcSeated=S.npc?.pose==='sit'&&S.npc?.at==='sofa';
+  if(mainSeated||npcSeated)drawSofaFront(c);
   // Bottom floor reflection ties character's contact shadow to the ground.
   const g=c.createLinearGradient(0,557,0,640);g.addColorStop(0,'rgba(247,232,197,.06)');g.addColorStop(1,'rgba(47,53,45,.08)');box(c,0,558,SW,72,g);
  }
@@ -224,10 +230,16 @@
   if(isHome(S)){
     roomBack(ctx,S,t);drawMirror(ctx);drawShelf(ctx);drawSofa(ctx,S);drawPhone(ctx,S,t);drawBed(ctx,S);drawEasel(ctx,S);drawKitchen(ctx,S,t);drawDoor(ctx);
   } else drawStreet(ctx,t);
-  if(S.npc?.pose==='stand'){
-   const [nx,ny]=projection(S.npc.pos[0],S.npc.pos[1],0);drawActor(ctx,nx,ny,npcOpts(),drawFigure);
+  // The isometric fallback used to put other residents inside the sofa arm.
+  // Two sitters take separate cushions, without changing the authored story.
+  const mainSeated=S.sim?.pose==='sit'&&S.sim?.at==='sofa';
+  const npcSeated=S.npc?.pose==='sit'&&S.npc?.at==='sofa';
+  if(S.npc?.pose==='stand'||npcSeated){
+   const npcAt=npcSeated?(mainSeated?[390,561]:[455,561]):projection(S.npc.pos[0],S.npc.pos[1],0);
+   drawActor(ctx,npcAt[0],npcAt[1],npcOpts(),drawFigure);
   }
-  const sim=window.BFNavigation?.position?.(S)||simFoot();
+  const sim=window.BFNavigation?.position?.(S)||(mainSeated?(npcSeated?[516,561]:[455,561]):simFoot());
+  window.BFRig?.onStep?.(S.sim,sim);
   drawActor(ctx,sim[0],sim[1],simOpts(),drawFigure);
   window.BFStageSync?.paintActorProp?.(ctx,sim,S);
   window.BFNavigation?.debugDraw?.(ctx);
