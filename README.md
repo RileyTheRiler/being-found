@@ -93,3 +93,7 @@ Use `CLASSROOM_PILOT.md` and `pilot/FACILITATOR_SHEET.md` for an independent fir
 - 8.5.0 implementation: `11023d8cd8bd844e2db9a040c7000586e161ee99`, [GitHub Actions 44266165147](https://github.com/RileyTheRiler/being-found/actions/runs/44266165147), 29/29 successful.
 - 8.5.1 verified code: `c97946c35495f58fbd26e1bbf0dabce485831118`, [GitHub Actions 44269157774](https://github.com/RileyTheRiler/being-found/actions/runs/44269157774), 30/30 successful. Build, editorial, guided-route, five-viewports, save/resume, encounters, story checks and the new keyboard/pointer regressions pass.
 - Gameplay remains fictional, not a clinical assessment or validated empathy simulation. Classroom pilot, compensated lived-experience editorial consultation and real TalkBack/VoiceOver/switch access tests have **not** occurred. A passing browser suite does not validate participant learning or live accessibility. Vercel deployment is unverified.
+
+## 8.5.2A development foundation (not a gameplay release)
+
+Read [DESIGN_GUARDRAILS.md](DESIGN_GUARDRAILS.md) before modifying the classroom route. A feature branch adds `flags.js`, a local-only override policy, fail-closed source loading, `qa_flags.js` and an explicit `qa_all.py` runner. The flags currently have **no gameplay call sites**. They do not yet disable dice or movement penalties. Use `npm run qa` for build plus all existing manifest tests, or `python3 qa_all.py --list` to inspect the test list. The existing GitHub Actions individual regression steps remain authoritative until the branch is verified and merged.
