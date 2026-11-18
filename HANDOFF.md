@@ -1,3 +1,15 @@
+## 8.5.2A foundation branch — implementation pending CI
+
+Branch: `feat/8.5.2a-foundation` from reviewed main `9030ecb2`. Version remains **8.5.1** until the gameplay release is verified. No guided mechanic, dialogue, or encounter behavior has changed in this branch.
+
+- `DESIGN_GUARDRAILS.md` defines five educational invariants and pilot release gates.
+- `flags.js` creates dynamic `BFFlags` getters; `build.js` loads it first. The flags have **no behavioral consumers yet**. `qa_flags.js` tests defaults, route entry/exit, allowed localhost overrides, and pilot isolation. Do not claim dice, heavy input, speed, world swap, or sealed controls are fixed yet.
+- `build.js` now refuses to build when `src/index.html` is missing; no fetching the latest hosted HTML.
+- `npm run qa` builds and runs an explicit `qa_all.py` manifest, starting/stopping a local server if needed. Existing `quality.yml` regression steps remain in place; it also checks `qa_flags.js` and the manifest.
+- CI status is **not established** until the PR workflow passes. No human pilot, accessibility device test, or lived-experience review has occurred.
+
+**Next bounded change (8.5.2B):** wire the flags into Guided Story, use explicit Dele encounter exit/permission outcomes (including `depart` before entering), remove the epilogue's privileged world-reveal and answer-key structure, and add an end-to-end branch matrix before proposing release 8.5.2.
+
 # Being Found 8.5.1: repeated-input accessibility and pilot readiness
 
 ## Run it
