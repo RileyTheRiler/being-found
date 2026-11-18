@@ -896,7 +896,7 @@ details.more .drows{margin-top:6px}
         <div id="pins"></div>
       </div>
       <div class="dband t"></div><div class="dband b"></div>
-      <div class="toast" id="toast"></div>
+      <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
       <div class="bubbles" id="bubbles"></div>
       <div id="noteFloat"></div>
       <div id="quietMoment" class="quiet-moment" hidden role="group" aria-label="Quiet moment">
@@ -2731,7 +2731,7 @@ function announce(pv,nv,pName,nName,bodyChanged,delay){ if(!pv||!nv) return; con
 function renderAll(){ renderTop(); renderWorld(); renderGoals(); renderResult(); if(S.mode==='sandbox') renderTune(); }
 
 /* ---------- bubbles ---------- */
-function closeMenu(){ holdCancel(); if(!S.menu) return; S.menu=null; $('#bubbles').classList.remove('on'); renderPins(); }
+function closeMenu(){ const current=S.menu,fromMenu=document.activeElement?.closest?.('#bubbles');const returnPin=fromMenu&&current?(current==='sim'?$('#simBtn'):current==='npc'?document.querySelector('.pin.npc'):document.querySelector('.pin[data-obj="'+current+'"]')):null;holdCancel();if(!S.menu)return;S.menu=null;$('#bubbles').classList.remove('on');renderPins();if(returnPin?.isConnected&&returnPin.getClientRects().length)returnPin.focus({preventScroll:true}); }
 function placeBubbles(anchor){ const b=$('#bubbles'), sc=$('#scene').getBoundingClientRect(), a=anchor.getBoundingClientRect(); b.classList.add('on');
   if(app.classList.contains('narrow')){ b.classList.add('sheet'); b.style.left='8px'; b.style.top='auto'; b.style.bottom='8px'; S.sheetH=b.offsetHeight+16; return; }
   b.classList.remove('sheet'); b.style.bottom='auto';
@@ -2743,7 +2743,7 @@ function openMenu(id){ dirStop(); closeSheets(); $('#noteFloat').classList.remov
   if(id==='phone'&&S.ringing) items.sort((p,q)=>(q.a.id==='call')-(p.a.id==='call'));
   let h='<div class="bub-toolbar"><div class="bub-head">'+icon(objIcon(id))+esc(objName(id))+'</div><button type="button" class="bub-dismiss" data-bubclose aria-label="Close '+esc(objName(id))+' actions">×</button></div>';
   items.forEach((m,i)=>{ const tag=m.a.fixed?'':STATES[m.st].tag, hot=S.ringing&&id==='phone'&&m.a.id==='call';
-    h+='<button class="bub k-'+m.a.kind+' s-'+m.st+(hot?' hot':'')+'" style="--i:'+i+'" data-i="'+i+'"><span class="ki">'+icon(m.st==='sealed'?'lock':KINDS[m.a.kind].icon)+'</span><span class="lab">'+esc(labelFor(m))+'</span>'+(tag?'<span class="tag" data-gloss-state="'+m.st+'" data-gloss-kind="'+m.a.kind+'" role="button" tabindex="0" title="Explain '+STATES[m.st].name+'">'+(m.st==='haunted'?'haunted':tag)+'</span>':'')+'</button>'; });
+    h+='<button class="bub k-'+m.a.kind+' s-'+m.st+(hot?' hot':'')+'" style="--i:'+i+'" data-i="'+i+'"'+(m.st==='heavy'?' aria-description="Activate three times, or hold the pointer. This is an authored action, not a motor test."':'')+'><span class="ki">'+icon(m.st==='sealed'?'lock':KINDS[m.a.kind].icon)+'</span><span class="lab">'+esc(labelFor(m))+'</span>'+(tag?'<span class="tag" data-gloss-state="'+m.st+'" data-gloss-kind="'+m.a.kind+'" role="button" tabindex="0" title="Explain '+STATES[m.st].name+'">'+(m.st==='haunted'?'haunted':tag)+'</span>':'')+'</button>'; });
   b.innerHTML=h; placeBubbles(document.querySelector('.pin[data-obj="'+id+'"]')); renderPins(); }
 function openBodyMenu(){ if(S.mode==='visit') return; dirStop(); closeSheets(); $('#noteFloat').classList.remove('on'); const b=$('#bubbles'); S.menu='sim'; S.menuItems=null;
   let h='<div class="bub-toolbar"><div class="bub-head">'+icon('body')+esc(S.flat.name)+'’s body</div><button type="button" class="bub-dismiss" data-bubclose aria-label="Close body actions">×</button></div>';
@@ -3092,7 +3092,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest('button,canvas,[
   if(t.id==='simBtn'||t.id==='btnBody'){ if(S.menu==='sim') closeMenu(); else openBodyMenu(); return; }
   if(t.matches('.bub')){ if(t.dataset.body){ chooseBody(t.dataset.body); return; } const m=S.menuItems[+t.dataset.i];
     if(S.menu==='npc'){ chooseGesture(m); return; }
-    if(m.st==='heavy'){ if(e.detail===0) holdStart(t); else if(!t.dataset.held){ t.dataset.taps=(+t.dataset.taps||0)+1; if(+t.dataset.taps>=3){ choose(m); return; } t.classList.remove('nudge'); void t.offsetWidth; t.classList.add('nudge'); toast('Press and hold, or tap three times. This is an authored cue, not a measure of ability.','tool'); } return; }
+    if(m.st==='heavy'){ if(!t.dataset.held){ t.dataset.taps=(+t.dataset.taps||0)+1; if(+t.dataset.taps>=3){ choose(m); return; } t.classList.remove('nudge'); void t.offsetWidth; t.classList.add('nudge'); toast('Press and hold, or activate three times. This is an authored cue, not a measure of ability.','tool'); } return; }
     choose(m); return; }
   if(t.dataset.walk){ if(t.dataset.walk==='out') goOutside(); else goInside(); return; }
   if(t.id==='btnNext'){ nextPhase(); return; }

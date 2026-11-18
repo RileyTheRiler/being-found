@@ -71,3 +71,14 @@ for label, text_body in [("source", source), ("production", built)]:
         assert cue in text_body, f"{label}: missing 8.5.0 classroom cue: {cue}"
     assert "Everything takes effort here." not in text_body, f"{label}: obsolete ability generalization"
 print("PASS 8.5.0 classroom inference, mechanics caveat and keyboard guard")
+
+for label, text_body in [("source",source),("production",built)]:
+    for cue in [
+        "Press and hold, or activate three times.",
+        "role=\"status\" aria-live=\"polite\" aria-atomic=\"true\"",
+        "This is an authored action, not a motor test.",
+        "if(!t.dataset.held){ t.dataset.taps=",
+    ]:
+        assert cue in text_body, f"{label}: missing heavy-action accessibility cue: {cue}"
+    assert "if(e.detail===0) holdStart(t)" not in text_body, f"{label}: inaccessible delayed keyboard activation retained"
+print("PASS 8.5.1 keyboard/pointer repeated-input accessibility constraints")

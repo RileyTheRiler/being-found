@@ -6,6 +6,7 @@ Check the Guided Story at least once on Android/TalkBack and Apple VoiceOver, or
 - [ ] Entering Noor’s room does not create a focus trap; room markers and Show me have clear names and usable targets.
 - [ ] Chapter announcements do not steal focus; reduced-motion preference does not prevent progress.
 - [ ] Dele’s silence, leave and review actions are reachable without relying on audio, colour alone or timed taps.
+- [ ] A heavy action can be activated with three deliberate keyboard/switch activations or a pointer hold, with a perceivable cue and focus return. Note any motor-access barrier or misleading clinical interpretation.
 - [ ] The final observed/inferred/unknown reflection fields have labels and are usable with voice input, keyboard or screen reader.
 - [ ] **Facilitator questions** exposes timing as text; closing the overlay returns to an expected place.
 - [ ] Text remains readable after zoom or larger system text, on portrait phone and tablet.

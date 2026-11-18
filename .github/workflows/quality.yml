@@ -84,6 +84,9 @@ jobs:
       - name: Guided keyboard and reduced-motion accessibility regression
         run: python3 qa_access85.py
 
+      - name: Heavy-action keyboard and pointer regression
+        run: python3 qa_heavy_access.py
+
       - name: Five viewport smoke tests
         run: python3 qa_smoke.py
 

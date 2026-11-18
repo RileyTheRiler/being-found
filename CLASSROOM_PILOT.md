@@ -57,3 +57,7 @@ Five learners are appropriate for finding early usability failures, but cannot e
 ## 8.5.0 pre-pilot regression scope (not field results)
 
 Browser QA tests now cover keyboard focus when the classroom Guide expands or collapses, leaving a modal, and reduced-motion scrolling to a focused reflection field. A real keyboard-only playthrough must still test every action, including repeated-input 'heavy' choices, and separate screen-reader and switch/alternative-input checks remain mandatory. During pilot observation, explicitly ask whether hold/three-tap suggested motor impairment or distracted from the distinction between ability and experienced possibility. No participants have been tested.
+
+## 8.5.1 manual input parity check
+
+Before a classroom session, attempt a heavy room action using (1) three keyboard Enter or Space activations, (2) three ordinary pointer taps and (3) a pointer hold, and confirm that the same authored action results. Try the preferred alternative input method separately. Do not infer accessibility from the automated desktop/phone Chrome regression alone. Observe whether the extra input confuses the philosophical distinction; record an issue rather than treating the player as failing a skill test.

@@ -1,4 +1,4 @@
-# Being Found 8.5.0: guided classroom accessibility and inference pass
+# Being Found 8.5.1: repeated-input accessibility and pilot readiness
 
 ## Run it
     npm run build        # node build.js && node postbuild.js, no dependencies to install
@@ -27,6 +27,7 @@ python3 qa_audio.py                 # opt-in WebAudio, volume and mute
 python3 qa_flats_stove.py           # every resident's stove menu; Dele mobile story hint
 python3 qa_guided84.py              # guided chapters, Dele silence, debrief, reduced motion
 python3 qa_access85.py              # keyboard Guide and reduced-motion field scroll
+python3 qa_heavy_access.py          # three activations with keyboard/pointer and accessible action status
 python3 qa_editorial.py             # authored source and compiled text guard
 python3 qa_js_syntax.py            # parse source and generated JavaScript
 python3 qa_wren_ilse.py            # runtime narrative and viewport assertions for both flats
@@ -40,10 +41,17 @@ python3 visit_check.py
 ```
 Python Playwright is required. Browser executable auto-detects `google-chrome` or `chromium`; override with `BF_CHROME`. Screenshots go to `qa-artifacts/` by default. Legacy test snapshots from `e2e_sync.py` and `test_prop_states.py` are written to the repository root and ignored by git.
 
-## Release 8.5.0 — classroom accessibility and inference (Actions pending)
+## Release 8.5.1 — heavy-action input parity (Actions pending)
+- Preserve **the same pointer hold and three-activation action rule** and all state, action outcomes and save behavior. For keyboard and assistive-tech generated clicks, use the existing three-activation path instead of starting a 1.3-second hidden timer. Return focus to the originating room marker after action-menu dismissal when focus was inside the menu.
+- Expose the transient instruction as a polite accessibility status and describe heavy actions as an authored input cue, not a motor test. Add `qa_heavy_access.py` for keyboard and pointer input; source/build text guards and a dedicated CI step check the behavior. Manual switch/TalkBack/VoiceOver testing remains necessary.
+- Fixed the nested `package-lock.json` version left at 8.4.4 by the prior release script; package and lock entries now both read 8.5.1. The production build still succeeded in 8.5.0, but version metadata should be consistent.
+- **Previous release verified:** 8.5.0 `11023d8cd8bd844e2db9a040c7000586e161ee99`, [Actions run 44266165147](https://github.com/RileyTheRiler/being-found/actions/runs/44266165147), all 29 steps passed.
+- **Not established:** human classroom completion, real motor/assistive-tech usability, living-experience validation, or Vercel deployment.
+
+## Release 8.5.0 — classroom accessibility and inference (verified)
 - The 2.5D scene, chapter routing, dice, outcomes and save rules are preserved. Source changes retain keyboard focus on the classroom Guide when collapsed/expanded, cancel stale modal-heading autofocus and honor reduced-motion preference in focused reflection fields.
 - Walt's bridge no longer treats word-finding difficulty as an explanation of participation; the final practice vignette no longer introduces another diagnosis cue. Heavy-action repeated-input text identifies the action as authored, **without changing** the hold/three-tap mechanic; that mechanic remains an accessibility and philosophical review item.
-- Added `qa_access85.py` (phone/desktop focus, modal transition and motion preference) and source/production editorial guards. Production build and full regression suite require verification on this implementation commit.
+- Added `qa_access85.py` (phone/desktop focus, modal transition and motion preference) and source/production editorial guards. Production build and full regression suite passed at `11023d8cd8bd844e2db9a040c7000586e161ee99` in Actions run 44266165147 (29/29 steps).
 - **8.4.4 verified baseline:** `9b884fb26fdeb7a25ab26474def79823509b97db`, [Actions run 44263829397](https://github.com/RileyTheRiler/being-found/actions/runs/44263829397), successful.
 - **Outstanding:** first-time student pilot, lived-experience editorial review, real screen-reader and alternate input checks, real-device testing, and Vercel deployment verification. Never interpret repeated-input difficulty as a measure of impairment.
 
