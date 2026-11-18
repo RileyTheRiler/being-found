@@ -3,6 +3,7 @@
   "version": "8.5.1",
   "private": true,
   "scripts": {
-    "build": "node build.js && node postbuild.js"
+    "build": "node build.js && node postbuild.js",
+    "qa": "npm run build && python3 qa_all.py"
   }
 }
