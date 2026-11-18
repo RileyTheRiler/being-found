@@ -90,3 +90,7 @@ Reviewed independent 8.5.1 audit and 8.5.2–8.6 plan against unchanged main at 
 ## Step 22a — verified 8.5.2A foundation merge
 
 The 8.5.2A PR [#1](https://github.com/RileyTheRiler/being-found/pull/1) passed GitHub Actions [44342886769](https://github.com/RileyTheRiler/being-found/actions/runs/44342886769) and merged as `4fa9fc5d4145f422d434fb4557700299ef406a0d`. Production build, flag-policy test, manifest check, existing guided, accessibility, save, audio, resident/visit and editorial regressions all passed in that PR. No Vercel deployment or human validation was confirmed. Gameplay code retains 8.5.1 mechanics; next tracked 8.5.2B work is [issue #2](https://github.com/RileyTheRiler/being-found/issues/2).
+
+## Step 23 — 8.5.2B draft (branch, CI pending)
+
+Branch `feat/8.5.2b-consent-route` starts from post-foundation main. Removed mandatory classroom entry into Dele's authored day; added explicit encounter end outcomes including early `depart`, visitor leaving, and a resident boundary. Changed guided action checks so saved or default dice do not intercept actions; heavy actions require one activation; guided motion uses normal speed; sealed choices remain visually available and narratively actionable. Updated the guided route test and added a Dele branch matrix plus guided input parity regression. Free-play mechanics are intended to remain unchanged. Do not merge or claim release until PR Actions tests pass and the outstanding QA errors, if any, are resolved.
