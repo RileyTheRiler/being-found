@@ -130,14 +130,14 @@ if __name__=="__main__":
         browser=pw.chromium.launch(headless=True,executable_path=CHROME,args=["--no-sandbox"])
         test(browser,"desktop",1440,900,False)
         test(browser,"phone",390,844,True)
+        reduced=browser.new_context(viewport={"width":1440,"height":900},
+          reduced_motion="reduce")
+        p=reduced.new_page()
+        p.goto(URL,wait_until="load")
+        p.wait_for_function("!!window.BFRig && !!document.querySelector('[data-bf-walk-motion]')")
+        assert p.evaluate("BFRig.reducedMotion===true"),"Reduced motion must be default"
+        p.locator('[data-bf-walk-motion]').evaluate("(button)=>button.click()")
+        assert p.evaluate("BFRig.reducedMotion===false && BFRig.forceWalking===true"),"Manual motion opt-in failed"
+        reduced.close()
         browser.close()
-    reduced=browser.new_context(viewport={"width":1440,"height":900},
-      reduced_motion="reduce")
-    p=reduced.new_page()
-    p.goto(URL,wait_until="load")
-    p.wait_for_function("!!window.BFRig && !!document.querySelector('[data-bf-walk-motion]')")
-    assert p.evaluate("BFRig.reducedMotion===true"),"Reduced motion must be default"
-    p.locator('[data-bf-walk-motion]').evaluate("(button)=>button.click()")
-    assert p.evaluate("BFRig.reducedMotion===false && BFRig.forceWalking===true"),"Manual motion opt-in failed"
-    reduced.close()
     print("CHARACTER ANIMATION AND SOFA REGRESSION PASSED",flush=True)
