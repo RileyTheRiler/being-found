@@ -64,11 +64,13 @@ print("PASS 8.4.3 remaining-resident desk edits in source and production")
 for label, text_body in [("source", source), ("production", built)]:
     for cue in [
         "This is an authored cue, not a measure of ability.",
-        "His word-finding difficulty does not explain the change by itself.",
+        "Tuesday, half past ten.",
         "During a group session, a client contributes less than usual.",
         "const focusAction=guide.contains(document.activeElement)",
     ]:
         assert cue in text_body, f"{label}: missing 8.5.0 classroom cue: {cue}"
+    assert "His word-finding difficulty does not explain the change by itself." not in text_body, f"{label}: preemptive explanation retained in classroom bridge"
+    assert "No encounter currently contains an explicit offer to share Dele's private" in text_body, f"{label}: consent-safe transition removed"
     assert "Everything takes effort here." not in text_body, f"{label}: obsolete ability generalization"
 print("PASS 8.5.0 classroom inference, mechanics caveat and keyboard guard")
 
