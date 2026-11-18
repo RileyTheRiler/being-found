@@ -51,7 +51,7 @@ const fs=require('node:fs'),path=require('node:path');
  // Keyboard-generated clicks also count as activations; no hidden keyboard timer.
  // Only authored checks can bypass the requirement after the player opts to roll or skip.
  inject("if(m.st==='heavy'){ if(!t.dataset.held){",
-   "if(m.st==='heavy'){ if(t.dataset.bfBypass==='1'){choose(m);return;} if(!t.dataset.held){");
+   "if(m.st==='heavy'){ if(t.dataset.bfBypass==='1'||((document.body.classList.contains('cl-route')||window.BFFlags?.guided)&&window.BFFlags?.heavyHold!==true)){choose(m);return;} if(!t.dataset.held){");
  // Compatibility fallback for other residents: their existing A* grid is untouched.
  inject('s.path=findPath([s.x,s.y],pt);',`s.path=findPath([s.x,s.y],pt);
   s.path=window.BFMotion?.smoothPath?.([s.x,s.y],s.path,losClear)||s.path;
