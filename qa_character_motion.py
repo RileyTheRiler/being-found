@@ -50,9 +50,11 @@ def test(browser,name,width,height,touch):
         page.wait_for_function("window.BFRig?.loaded===true",timeout=15000)
         assert start_route(page,"mirror","phone"),"Rightward path could not start"
         frames=[]
-        for _ in range(10):
+        for step in range(10):
             page.wait_for_timeout(130)
             frames.append(sample(page))
+            if name=="desktop" and step in (1,3,5,7):
+                page.screenshot(path=str(OUT/f"{name}-walking-step-{step}.png"))
         active=[x for x in frames if x["state"]=="walk" and x["moving"]]
         assert len(active)>=3,(name,"walk not active",frames)
         assert len({x["frame"] for x in active})>=3,(name,"missing walk frames",frames)
@@ -117,6 +119,8 @@ def test(browser,name,width,height,touch):
             start(page,idx)
             page.evaluate("""() => {
               const s=LW.S.sim;s.path=[];s.pose='sit';s.at='sofa';
+              s.x=OBJECTS.sofa.stand[0];s.y=OBJECTS.sofa.stand[1];
+              BFRoom.navigate('living');
             }""")
             page.wait_for_function("window.BFRig?.loaded===true",timeout=15000)
             page.wait_for_timeout(180)
