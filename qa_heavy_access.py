@@ -19,7 +19,13 @@ def check(browser, name, width, height, keyboard):
     try:
         page.goto(URL, wait_until="load")
         page.evaluate("document.querySelector('#plSkip')?.click()")
-        page.wait_for_function("!!window.LW && typeof window.LW.startFlat === 'function'", timeout=10000)
+        page.wait_for_function("!!window.LW && typeof window.LW.startFlat === 'function' && !!window.BFSkillChecks", timeout=10000)
+        assert page.evaluate("window.BFSkillChecks.state.enabled === true"), name + ": baseline skill checks should be enabled"
+        # Explicitly choose the player's supported Story attempts: Off setting.
+        # With checks on, this action opens the optional dice sheet instead
+        # of following the native hold/three-activation route.
+        page.evaluate("window.BFSkillChecks.setEnabled(false)")
+        assert page.evaluate("window.BFSkillChecks.state.enabled === false"), name + ": could not disable Story attempts"
         page.wait_for_timeout(300)
         page.evaluate("() => { LW.closeModals(); LW.startFlat(2); }")
         page.locator('#bf-room-nav [data-room="kitchen"]').click(timeout=8000)
