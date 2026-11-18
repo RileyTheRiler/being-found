@@ -19,6 +19,10 @@ def check(browser, name, width, height, mobile):
         page.get_by_role("button", name="Start the guided story").click(timeout=8000)
         assert page.locator("#clOverlay").is_visible()
         assert page.evaluate("document.querySelector('#app').inert"), name + ": modal background not inert"
+        # Wait for the authored modal heading-focus handoff before focusing a field.
+        # Otherwise that pending 0-ms callback may steal focus between the
+        # test's field.focus() and its delayed reduced-motion scroll.
+        page.wait_for_function("document.activeElement?.matches('#clOverlay h2') === true", timeout=8000)
         page.locator("#clOverlay details.cl-journal").evaluate("(el) => { el.open = true; }")
         page.evaluate("""() => {
             window.__bfFieldScroll = [];
