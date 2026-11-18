@@ -217,7 +217,7 @@
    const sitting=o?.pose==='sit';
    if(!sitting)el(c,x,y+1,28,7,'rgba(35,47,41,.15)');
    c.translate(x,y);
-   const figureScale=2.90*(sitting?.85:1);
+   const figureScale=2.90*(sitting ? 0.85 : 1);
    c.scale(figureScale,figureScale);
    drawFigure(0,0,o);
    c.restore();
