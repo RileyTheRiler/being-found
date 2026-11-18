@@ -1,7 +1,7 @@
 """Being Found 8.4 guided narrative regression across a narrow phone and desktop.
 
 Exercises the authored sequence, a voluntary silence at Dele's door, the
-transition into the fictional day, the Walt handoff and the final reflection.
+respect for Dele's encounter outcome, Walt's handoff and the final reflection.
 The full Walt conversation is covered separately by the encounter tests.
 """
 import os
@@ -87,24 +87,10 @@ def check(browser, label, width, height, mobile):
         assert "What Dele communicated" in (page.locator('#dlCard').text_content() or ""),review
         page.locator('#dlCard [data-dlu="note"]').click()
         page.locator('#dlCard [data-dlu="classRoom"]').click()
-        page.wait_for_function("window.LWClass?.stage==='room'")
-        assert "A room cannot confirm" in page.locator('#clOverlay h2').inner_text()
-        page.locator('#clOverlay [data-cl="roomgo"]').click()
-        assert state(page)["resident"] == "Dele", state(page)
-        editorial = page.evaluate("""() => ({
-          scope:LW.S.flat.scope,
-          intro:LW.S.flat.intro,
-          note:LW.S.flat.phases[0].goals[0].note.text,
-          point:LW.S.flat.debrief.point
-        })""")
-        assert "authored account" in editorial["scope"],editorial
-        assert "kettle and brushes" in editorial["intro"],editorial
-        assert "not Dele’s abilities" in editorial["note"],editorial
-        assert "Saturday differed" in editorial["point"],editorial
-        if mobile:
-            open_mobile_guide(page)
-        page.locator('#clGuide .cl-guide-skip[data-cl="waltbridge"]').click()
-        assert "different possibility" in page.locator('#clOverlay h2').inner_text().lower()
+        page.wait_for_function("window.LWClass?.stage==='waltbridge'")
+        assert "Tuesday, half past ten" in page.locator('#clOverlay h2').inner_text()
+        assert page.evaluate("window.LWClass.state.deleOutcome !== null"), "Dele outcome not recorded"
+        assert not page.evaluate("window.LWClass.state.paceMarks.some(m => m.stage === 'room')"), "Entered unconsented authored day"
         page.locator('#clOverlay [data-cl="walt"]').click()
         page.wait_for_function("window.LWClass?.stage==='walt'")
         assert page.locator('#enc').is_visible()
@@ -126,7 +112,7 @@ def check(browser, label, width, height, mobile):
         assert state(page)["overflow"] <= 2,state(page)
         page.screenshot(path=str(OUT / (label + "-guided84-final.png")))
         pacing = page.evaluate("() => LWClass.state.paceMarks.map(m => m.stage)")
-        assert pacing == ["intro","noor","between","dele","roombridge","room","waltbridge","walt","complete"],pacing
+        assert pacing == ["intro","noor","between","dele","waltbridge","walt","complete"],pacing
         page.locator('#clOverlay [data-cl="debrief"]').click()
         assert "no answer key" in page.locator('#clOverlay').inner_text().lower()
         pacing_display = page.locator('#clPacing').inner_text()
