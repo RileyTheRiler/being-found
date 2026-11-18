@@ -1,3 +1,13 @@
+## Vercel production hosting repair — November 18, 2026
+
+**Verified public URL:** https://being-found.vercel.app/ (independent page fetch returned title `Being Found 8.5.1`, not 404). The second assigned domain `https://being-found-rileys-projects-5252c03b.vercel.app/` also returned the game title.
+
+**Root cause of 404:** Previous Vercel deployments uploaded nested source trees (`src/src/...`) with build logs showing `Build Completed ... [69ms]` and **no `npm run build`**, leaving no deployed root `index.html`. Their `READY` status did not mean the website was correctly built.
+
+**Correction:** Updated the existing project `being-found` (`prj_DyoE8rtjWrJeGBJxDFrDflEmvGkT`) to use repository-root build, `npm run build`, `dist` output and framework `null`; then created a **production** deployment via Git source `RileyTheRiler/being-found`, ref `main`, commit `b7c8e15b44500faaafde3bdd923be66c4030a6ae`. Deployment `dpl_GcMZaVbDFbVrJ2BbCLTBuzC94dQf` reached `READY`; build logs printed `Being Found 8.5.1 built: 628647 bytes` followed by `postbuild.js` output. Vercel assigned `being-found.vercel.app`.
+
+**Release caution:** This publishes only the verified `main` branch's **8.5.1 gameplay with 8.5.2A foundation**. Draft 8.5.2B PR #3 is not in production. Later GitHub pushes should still be checked against both GitHub Actions and a new Vercel production deployment; a successful Actions run or Git push alone is not proof of live deployment. Do not re-upload source with nested `src/` as a Vercel static output.
+
 ## 8.5.2A foundation — merged and PR checks passed (November 18, 2026)
 
 Merged PR [#1](https://github.com/RileyTheRiler/being-found/pull/1) to main as `4fa9fc5d4145f422d434fb4557700299ef406a0d`. PR GitHub Actions [run 44342886769](https://github.com/RileyTheRiler/being-found/actions/runs/44342886769) completed successfully. Post-merge production deployment and separate main-branch workflow status are not asserted.
