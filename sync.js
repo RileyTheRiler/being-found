@@ -63,7 +63,9 @@
  function frame(s=S,o){
    if(!home(s)||!o?.bfMainActor)return null;
    const a=current(s);if(!a)return null;
-   if(a.obj==='sofa'&&s.sim.pose==='sit')return a.u<.24?['reach',7]:['sit',11];
+   // Pose and physical seat anchor change together. Never select the
+   // standing/reach sprite while the actor is already at the seated pivot.
+   if(a.obj==='sofa'&&s.sim.pose==='sit')return ['sit',11];
    if(a.obj==='phone'&&['call','msg'].includes(a.act))return a.u>=.28?['phone',12]:['reach',7+Math.floor(a.u*7)];
    if(a.obj==='stove'||a.obj==='easel'||a.obj==='window')return ['reach',7+Math.min(3,Math.floor(a.u*4))];
    return null;

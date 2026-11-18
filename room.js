@@ -8,7 +8,7 @@
  const app=document.getElementById('app'),scene=document.getElementById('scene'),stage=document.getElementById('stage');
  if(!app||!scene||!stage)return;
  const SW=1600,SH=720,FLOOR=574;
- const pins={mirror:[191,307],sofa:[464,420],window:[518,279],phone:[690,399],bed:[849,409],easel:[973,345],stove:[1140,392],door:[1442,419]};
+ const pins={mirror:[191,307],sofa:[354,425],window:[518,279],phone:[690,399],bed:[849,409],easel:[973,345],stove:[1140,392],door:[1442,419]};
  const sections={living:{x:410,name:'Living'},sleeping:{x:814,name:'Bedroom'},kitchen:{x:1255,name:'Kitchen'}};
  const roomByObject={mirror:'living',sofa:'living',window:'living',phone:'sleeping',bed:'sleeping',easel:'sleeping',stove:'kitchen',door:'kitchen'};
  const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
@@ -211,8 +211,15 @@
  }
  function drawActor(c,x,y,o,drawFigure){
    c.save();
-   el(c,x,y+1,28,7,'rgba(35,47,41,.15)');
-   c.translate(x,y);c.scale(2.90,2.90);drawFigure(0,0,o);
+   // A seated sprite is still rooted to a shoe pivot in its atlas. Shrink it
+   // together with the raised seat anchor so the torso rests ON the cushions.
+   // Otherwise the atlas model looks as though its hips pass through the sofa.
+   const sitting=o?.pose==='sit';
+   if(!sitting)el(c,x,y+1,28,7,'rgba(35,47,41,.15)');
+   c.translate(x,y);
+   const figureScale=2.90*(sitting ? 0.85 : 1);
+   c.scale(figureScale,figureScale);
+   drawFigure(0,0,o);
    c.restore();
  }
  function render({ctx,VIEW,S,drawFigure,simOpts,npcOpts,simFoot}){
@@ -235,10 +242,10 @@
   const mainSeated=S.sim?.pose==='sit'&&S.sim?.at==='sofa';
   const npcSeated=S.npc?.pose==='sit'&&S.npc?.at==='sofa';
   if(S.npc?.pose==='stand'||npcSeated){
-   const npcAt=npcSeated?(mainSeated?[390,561]:[455,561]):projection(S.npc.pos[0],S.npc.pos[1],0);
+   const npcAt=npcSeated?(mainSeated?[390,516]:[455,516]):projection(S.npc.pos[0],S.npc.pos[1],0);
    drawActor(ctx,npcAt[0],npcAt[1],npcOpts(),drawFigure);
   }
-  const sim=window.BFNavigation?.position?.(S)||(mainSeated?(npcSeated?[516,561]:[455,561]):simFoot());
+  const sim=window.BFNavigation?.position?.(S)||(mainSeated?(npcSeated?[516,516]:[455,516]):simFoot());
   window.BFRig?.onStep?.(S.sim,sim);
   drawActor(ctx,sim[0],sim[1],simOpts(),drawFigure);
   window.BFStageSync?.paintActorProp?.(ctx,sim,S);

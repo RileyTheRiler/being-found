@@ -1,3 +1,14 @@
+## Follow-up: perceptible walking and sofa seat geometry — November 18, 2026
+
+**Review branch:** `fix/visible-walk-and-sofa-seat` from main `2d0f08308547f4b9148e7a161350bb470dfa90ac`. This is a follow-up to PR #5 because user reports the *visible* walking and sofa seating still look wrong despite previous state-based tests passing.
+
+- **Sofa:** `navigation.js` places Noor's seated atlas pivot at y=516 (formerly 561) on the cushion, and `room.js` reduces all seated avatars to 85% of their standing scene scale. Matching y=516 anchors are used for other modeled residents and visit seating. This fixes the mismatched atlas shoe pivot versus sofa geometry; scenery and authored actions are untouched.
+- **Root cause confirmed by real action QA:** The sofa action changed `S.sim.pose` and the navigation position to the seat while `BFStageSync.frame()` still returned the standing/reach atlas cell during the early action phase. The character was literally rendered standing at a seated pivot. `sprite_rig.js` and `sync.js` now prioritize seated visuals whenever the seat anchor is active. The sofa marker moved left of the occupant to avoid covering the model.
+- **Walking:** `sprite_rig.js` advances the existing six authored walking atlas cells every 92 scene-space pixels (instead of 112), with small, grounded weight transfer and lean. The prior 32-step suite checked internal frame indices but did not prove that actual pixels changed. The augmented `qa_character_motion.py` now validates rendered RGBA differences plus actual draw-frame indices and seated anchor.
+- **Accessibility:** Motion still follows the OS `prefers-reduced-motion` setting by default. A player who intentionally wants walking motion can explicitly opt in via **View → Walking animation: Device setting / On**. Preserve this user choice in local storage.
+- **Verification pending:** CI pixel tests, browser screenshot review, confirmation by user that animation and seating look correct in their browser. Do not claim user-observed visual success solely from automated checks.
+- **Other work:** 8.5.2B remains separate, with no narrative or pilot behavior touched.
+
 ## Character walking and sofa depth — merged November 18, 2026
 
 **Main implementation:** `d290672bb85a14c8db5b6a31449ed929f342e796`, [PR #5](https://github.com/RileyTheRiler/being-found/pull/5) merged. Pre-merge [GitHub Actions run 44414001551](https://github.com/RileyTheRiler/being-found/actions/runs/44414001551) completed **32/32 successful steps**, including the desktop and phone `qa_character_motion.py` test. Vercel production deployment `dpl_DadtbP9LcVVDYBnw8pmTjcHKE7gs` is `READY` on the same code commit, with `being-found.vercel.app` assigned.
