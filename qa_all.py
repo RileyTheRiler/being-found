@@ -29,6 +29,7 @@ CASES = (
     ("Wren and Ilse", (PY, "qa_wren_ilse.py")),
     ("remaining residents", (PY, "qa_remaining_scenes.py")),
     ("guided classroom", (PY, "qa_guided84.py")),
+    ("Dele consent branches", (PY, "qa_consent_branches.py")),
     ("guided keyboard", (PY, "qa_access85.py")),
     ("heavy-input parity", (PY, "qa_heavy_access.py")),
     ("five viewport smoke", (PY, "qa_smoke.py")),
