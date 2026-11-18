@@ -262,6 +262,12 @@
      if(active)b.setAttribute('aria-current','location');else b.removeAttribute('aria-current');
    }
    nav?.setAttribute('data-visible-room',visible);
+   // Keep visual emphasis tied to the same room selection as the ARIA tabs.
+   // Inactive pins remain interactive and become fully visible on hover/focus.
+   for(const pin of stage.querySelectorAll('.pin[data-obj]')){
+     const other=roomByObject[pin.dataset.obj]!==visible?'true':'false';
+     if(pin.dataset.bfOtherRoom!==other)pin.dataset.bfOtherRoom=other;
+   }
  }
  function approach(m){if(roomByObject[m?.obj]){selected=roomByObject[m.obj];manualUntil=0;syncNav();}}
  function mountNav(){
