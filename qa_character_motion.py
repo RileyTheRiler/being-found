@@ -30,7 +30,8 @@ def start_route(page,source,dest):
 
 def sample(page):
     return page.evaluate("""() => ({
-      state:BFRig.lastState,frame:BFRig.walkFrame,face:BFRig.facing,
+      state:BFRig.lastState,frame:BFRig.walkFrame,actualFrame:BFRig.lastFrameIndex,
+      actualDirection:BFRig.lastDirection,face:BFRig.facing,
       traveled:BFRig.walkDistance,position:BFNavigation.position(LW.S),
       moving:LW.S.sim.path.length>0,errors:document.documentElement.scrollWidth-innerWidth
     })""")
@@ -55,13 +56,49 @@ def test(browser,name,width,height,touch):
         active=[x for x in frames if x["state"]=="walk" and x["moving"]]
         assert len(active)>=3,(name,"walk not active",frames)
         assert len({x["frame"] for x in active})>=3,(name,"missing walk frames",frames)
-        assert all(x["face"]==2 for x in active),(name,"wrong right-facing pose",frames)
+        assert len({x["actualFrame"] for x in active})>=3,(name,"rendered sprite stuck",frames)
+        assert all(x["face"]==2 and x["actualDirection"]==2 for x in active),(name,"wrong right-facing pose",frames)
         assert active[-1]["traveled"]>active[0]["traveled"],(name,"not advancing with distance",frames)
+        # Check actual painted RGBA pixels, not only the reported animation state.
+        # Render the same authored model to an offscreen transparent canvas.
+        # Two different walking frames must have visibly different silhouettes.
+        page.evaluate("""() => {
+          window.__bfWalkRaster=() => {
+            const c=document.createElement('canvas');c.width=370;c.height=360;
+            const g=c.getContext('2d',{willReadFrequently:true});
+            g.translate(185,318);g.scale(2.90,2.90);
+            const q=LW.S.sim;
+            const o={char:LW.S.flat.char,bfMainActor:true,scale:LW.S.flat.char.scale||0,
+              moving:!!q.path.length,pose:'stand',face:q.face,flip:q.flip,ph:q.ph};
+            if(!BFRig.drawActor(g,0,0,o))throw Error('Model sprite was not drawn');
+            return {pixels:g.getImageData(0,0,c.width,c.height).data,
+              frame:BFRig.lastFrameIndex,dir:BFRig.lastDirection};
+          };
+          window.__bfWalkRasterA=__bfWalkRaster();
+        }""")
+        page.wait_for_timeout(250)
+        painted=page.evaluate("""() => {
+          const a=window.__bfWalkRasterA,b=window.__bfWalkRaster();
+          let occupied=0,changed=0;
+          for(let i=0;i<a.pixels.length;i+=4){
+            if(a.pixels[i+3]>20||b.pixels[i+3]>20){
+              occupied++;
+              if(Math.abs(a.pixels[i]-b.pixels[i])+
+                 Math.abs(a.pixels[i+1]-b.pixels[i+1])+
+                 Math.abs(a.pixels[i+2]-b.pixels[i+2])+
+                 Math.abs(a.pixels[i+3]-b.pixels[i+3])>80)changed++;
+            }
+          }
+          return {occupied,changed,ratio:occupied?changed/occupied:0,
+                  first:a.frame,last:b.frame,dir:b.dir};
+        }""")
+        assert painted["occupied"]>4000,(name,"sprite invisible",painted)
+        assert painted["ratio"]>.025,(name,"walk frames not visually different",painted)
         page.screenshot(path=str(OUT/f"{name}-walk.png"))
         assert start_route(page,"phone","mirror"),"Leftward path could not start"
         page.wait_for_timeout(550)
         left=sample(page)
-        assert left["state"]=="walk" and left["face"]==6,(name,"wrong left-facing pose",left)
+        assert left["state"]=="walk" and left["face"]==6 and left["actualDirection"]==6,(name,"wrong left-facing pose",left)
         # A sitter remains in the authored seated pose and on the fixed cushion.
         page.evaluate("""() => {
           BFNavigation.cancel(LW.S);
@@ -71,7 +108,7 @@ def test(browser,name,width,height,touch):
         page.wait_for_timeout(220)
         seat=sample(page)
         assert seat["state"]=="sit",(name,"seated sprite not selected",seat)
-        assert seat["position"]==[455,561],(name,"seated feet not anchored",seat)
+        assert seat["position"]==[455,516],(name,"seated anchor did not move to cushion",seat)
         page.screenshot(path=str(OUT/f"{name}-sofa.png"))
         for idx in (1,2):
             start(page,idx)
@@ -94,4 +131,13 @@ if __name__=="__main__":
         test(browser,"desktop",1440,900,False)
         test(browser,"phone",390,844,True)
         browser.close()
+    reduced=browser.new_context(viewport={"width":1440,"height":900},
+      reduced_motion="reduce")
+    p=reduced.new_page()
+    p.goto(URL,wait_until="load")
+    p.wait_for_function("!!window.BFRig && !!document.querySelector('[data-bf-walk-motion]')")
+    assert p.evaluate("BFRig.reducedMotion===true"),"Reduced motion must be default"
+    p.locator('[data-bf-walk-motion]').evaluate("(button)=>button.click()")
+    assert p.evaluate("BFRig.reducedMotion===false && BFRig.forceWalking===true"),"Manual motion opt-in failed"
+    reduced.close()
     print("CHARACTER ANIMATION AND SOFA REGRESSION PASSED",flush=True)
