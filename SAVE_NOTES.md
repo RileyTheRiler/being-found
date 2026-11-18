@@ -86,3 +86,7 @@ Base: the 8.3.7 preview as uploaded on 16 November 2026.
 ## Step 22 — 8.5.2A development foundation (feature branch, pending CI)
 
 Reviewed independent 8.5.1 audit and 8.5.2–8.6 plan against unchanged main at `9030ecb2`. Added `DESIGN_GUARDRAILS.md`, `flags.js` and its Node regression, `qa_all.py` local test runner, and fail-closed source loading in `build.js`. Extended `package.json` with `npm run qa`; extended the existing CI workflow with policy/manifest checks. The module only provides policy getters; no gameplay mechanic is gated by it yet. No player behavior, save format, authored narrative, or version changed. The feature branch requires GitHub Actions verification before merge. Follow-up: 8.5.2B consent and mechanics changes, including early `depart`, before any pilot.
+
+## Step 22a — verified 8.5.2A foundation merge
+
+The 8.5.2A PR [#1](https://github.com/RileyTheRiler/being-found/pull/1) passed GitHub Actions [44342886769](https://github.com/RileyTheRiler/being-found/actions/runs/44342886769) and merged as `4fa9fc5d4145f422d434fb4557700299ef406a0d`. Production build, flag-policy test, manifest check, existing guided, accessibility, save, audio, resident/visit and editorial regressions all passed in that PR. No Vercel deployment or human validation was confirmed. Gameplay code retains 8.5.1 mechanics; next tracked 8.5.2B work is [issue #2](https://github.com/RileyTheRiler/being-found/issues/2).
