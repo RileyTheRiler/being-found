@@ -1250,12 +1250,12 @@ const FLATS = [
         idle:'Tomas has had a long day. Start with the sofa.',
         goals:[
           {id:'g1', text:'Long day. I need to sit down.', pin:'sofa', test:e=>e.type==='act'&&e.obj==='sofa',
-           note:{text:'Tomas knows Ines is dead. His habits are still waiting for her. Ratcliffe locates grief in this gap: the flat keeps showing up as a place where she is about to be.', terms:'Frictional_Tension · habitual expectations that have yet to be revised'}},
+           note:{text:'Tomas knows Ines is dead. His habits are still waiting for her. For Tomas, familiar routines still seem to anticipate Ines even though he knows she died. That tension is one possibility in bereavement, not a universal experience.', terms:'Frictional_Tension · habitual expectations that have yet to be revised'}},
           {id:'g2', text:'Ten past six. That’s her on the stairs.', pin:'door', needsPrev:true, toast:'18:10. Footsteps on the stairs.', setClock:18*60+10, ghost:'door', test:e=>e.type==='act'&&e.obj==='door',
            emo:{feel:'Longing, about Ines', world:'Shaken. Every object in the flat is involved.'},
-           note:{text:'The death arrived as one fact. The flat holds hundreds of small expectations of Ines, and each has to fail in its own time. Compare a small annoyance, like a broken egg yolk: that feeling is about one thing and leaves the world steady. This one is about Ines and it shakes everything.', terms:'two-sided structure of emotion · grief as a process'}},
+           note:{text:'Tomas knows about the death, while some everyday expectations have yet to change. They might shift, persist, or take new forms in different ways. Compare a small annoyance, like a broken egg yolk: that feeling is about one thing and leaves the world steady. This one is about Ines and it shakes everything.', terms:'two-sided structure of emotion · grief as a process'}},
           {id:'g3', text:'Bea is ringing. I should pick up.', pin:'phone', needsPrev:true, ring:true, toast:'Bea is calling', test:e=>e.type==='act'&&e.obj==='phone'&&e.act==='call',
-           note:{text:'Bea got through. In grief, other people can still reach you and hold part of the world up. Keep that in mind for Flat 3.', terms:'Interpersonal_Scaffolding'}}
+           note:{text:'Bea got through. Bea reaches Tomas today. Grief may change the availability of company differently for each person; her call cannot establish a general rule.', terms:'Interpersonal_Scaffolding'}}
         ],
         next:{label:'Skip ahead four months', fade:['Four months later','A Sunday morning.']}
       },
@@ -1267,7 +1267,7 @@ const FLATS = [
           {id:'g4', text:'I want to keep her with me somehow.', hint:'Try a pink bubble.', test:e=>e.type==='act'&&e.kind==='shared'&&e.state==='kept'&&e.act!=='call',
            note:{text:'The bond with Ines continues in a new form. Ratcliffe treats these continuing bonds as part of how a world gets rebuilt after a loss.', terms:'continuing bonds', src:'Grief Worlds · Hewson et al. (2023)'}},
           {id:'g5', text:'What happens to our plans now?', hint:'Indigo bubbles are about change.', test:e=>e.type==='act'&&e.kind==='change',
-           note:{text:'The future still snaps back toward the one they had planned. Each time it does, a little more of it gets redrawn. Grief moves.', terms:'Temporal_Flow: Fractured Tension'}}
+           note:{text:'Some plans still bring Tomas back to the future he expected with Ines. He is beginning to consider alternatives, but grief need not follow stages or reach a fixed endpoint.', terms:'Temporal_Flow: Fractured Tension'}}
         ],
         next:{label:'Skip ahead to month thirteen', fade:['Thirteen months later','A Thursday afternoon.']}
       },
@@ -1279,7 +1279,7 @@ const FLATS = [
           {id:'g6', text:'I feel like doing something. That’s new.', hint:'Orange is back.', test:e=>e.type==='act'&&e.kind==='entice',
            note:{text:'Orange is back. Tomas lost a whole system of possibilities that ran through Ines. The kinds themselves survived, so his world could rebuild around them.', terms:'losing a system of possibilities vs losing types of possibility (Grief Worlds, ch. 8)'}},
           {id:'g7', text:'I could go out. I think I want to.', pin:'door', test:e=>e.type==='act'&&e.obj==='door'&&e.act==='out',
-           note:{text:'A year of misfires and repairs, and the door opens onto a future again. Ratcliffe describes grief as a process with a direction. In Flat 3, Dele’s week has no direction at all.', terms:'Temporal_Flow: Dynamic Future'}}
+           note:{text:'A year of misfires and repairs, and the door opens onto a future again. The door feels possible for Tomas on this Thursday. That is not a required stage of grief, nor is Dele’s authored week its clinical opposite.', terms:'Temporal_Flow: Dynamic Future'}}
         ],
         next:{label:'Skip ahead three weeks', fade:['Three weeks later','Ines’s birthday.']}
       },
@@ -1299,7 +1299,7 @@ const FLATS = [
     over:{},
     debrief:{
       rows:{attune:'Upheaval, slowly settling. The flat was built for two, and for a long time it kept behaving that way.', horizon:'Shared went from haunted to kept. Enticing faded and came back.', time:'Fractured, then flowing, then fractured again for a day on her birthday.', people:'Thin at first, steadier by month thirteen. Bea could reach him the whole time.', friction:'Very high, then low, then high again on her birthday. Knowing she was gone ran far ahead of no longer expecting her.'},
-      point:'Tomas lost one person, and with her a whole system of possibilities that ran through her. No kind of possibility disappeared for good. That is why his world could move: expectations failed one by one and were rebuilt, and some became a continuing bond. Ratcliffe describes grief as this long process of reorganising a world. Tomas’s path was uneven, and it was his: fourteen months in, a birthday brought the old expectations back for a day.'
+      point:'In this authored account, losing Ines unsettles Tomas’s routines, relationships and future plans. Some possibilities change while others stay difficult, and his bond with Ines takes another form. The coloured shifts illustrate one path, not a predictable recovery pattern. Ratcliffe examines how loss can change what feels possible. Tomas’s path was uneven, and it was his: fourteen months in, a birthday brought the old expectations back for a day.'
     }
   },
   { id:'depression', no:3, name:'Dele', P:'Kofi', F:'Mara', feel:'depleted',
@@ -1501,8 +1501,8 @@ const CLINIC = [
     look:{wall:'#dfe8f6', floor:'#d6aa74', sofa:'#f2a65a', duvet:'#7fb7e6', rug:'#f6ecd6', rugRing:'#6fb38a', door:'#4f7cac', pot:'#d97b5a'},
     char:{skin:'#e8b990', hair:'#5b3a29', shirt:'#3fa56b', pants:'#3b4660', scale:.76},
     blurb:'A goalkeeper, aged ten, and a rule that changed in April.',
-    intro:'Mika is ten. She is a girl, she is transgender, and she plays in goal for the Comets. Her family had a plan with her doctor for when puberty starts. Play one Saturday before a new state law and one after it. Then play two versions of the August that follows.',
-    caveat:'People disagree strongly about laws like this one, and this flat takes no side on them. It follows what the change was like for one invented child, because that is what a clinician meets in the room.',
+    intro:'Mika is ten. She is a girl, she is transgender, and she plays in goal for the Comets. Her family had a plan with her doctor for when puberty starts. The story imagines restrictions affecting her team and family’s future care options. Play one Saturday before that fictional change and one after it, then two versions of August.',
+    caveat:'This is a fictional composite policy scenario, not a description of a particular current law or state. Sports restrictions and health care rules differ by place and date. This invented child’s account cannot establish a diagnosis or predict another child’s response.',
     hide:['stove.cook','stove.two','sofa.show','phone.msg','phone.call','door.listen','door.out','window.plan','window.watch','easel.new','mirror.dress','bed.sleep','door.lock'],
     extra:{
       door:[
@@ -1564,7 +1564,7 @@ const CLINIC = [
           {id:'g2', text:'I want to see my goalkeeper face.', pin:'mirror', test:e=>e.type==='act'&&e.act==='look',
            note:{text:'Her sense of who she is includes a future, and the future has a body in it. She expects to grow into the girl in the mirror the way she expects Saturday to come.', terms:'Temporal_Flow: Dynamic Future'}}
         ],
-        next:{label:'Skip ahead six weeks', fade:['Six weeks later','A new state law took effect in April.']}
+        next:{label:'Skip ahead six weeks', fade:['Six weeks later','A fictional restriction took effect in April.']}
       },
       { day:'Sat', sub:'6 weeks after', clock:8*60+40, dusk:.05, attName:'Shut out', resetLook:true,
         vars:{attune:'upheaval', amt:.85, kinds:{entice:'dim',practical:'open',shared:'open',change:'looming',threat:'hum'}, time:'looming', people:50, friction:82},
@@ -1576,9 +1576,9 @@ const CLINIC = [
            emo:{feel:'Left out, about the team', world:'Shaken. Saturdays, school and the future are all involved.'},
            note:{text:'Nothing in Mika changed in April. A rule changed, and a whole system of possibilities that ran through the team closed with it. Ratcliffe describes how events can make a path through life inaccessible, so that a person feels unable to go on as who they are.', terms:'life structure undermined · Ratcliffe (2024)'}},
           {id:'g4', text:'What is going to happen to me?', pin:'mirror', test:e=>e.type==='act'&&e.act==='look',
-           note:{text:'The second closure is a different kind of thing. The team was a loss in the present: a place, people, a role. This one is about the future. At ten, no medical step was due yet. What changed is what she can expect when puberty starts, so her own body now shows up as something that is going to happen to her. A child can be far more upset about one of these than the other. Ask which is on her mind.', terms:'Temporal_Flow: Looming · two separate losses'}},
+           note:{text:'The second closure is a different kind of thing. The team was a loss in the present: a place, people, a role. This one is about the future. In this story, Mika and her family planned to review care options later, if and when puberty-related decisions arose. The uncertain future concerns her, but another child might describe it differently. A child can be far more upset about one of these than the other. Ask which is on her mind.', terms:'Temporal_Flow: Looming · two separate losses'}},
           {id:'g5', text:'Zoe is calling. I want to talk to her.', pin:'phone', needsPrev:true, ring:true, toast:'Zoe is calling', test:e=>e.type==='act'&&e.act==='call',
-           note:{text:'Pink is still open. Zoe and Mum can reach her. So far Mika has lost particular possibilities, and the kinds are intact. That is closer to grief than to depression, and it is where support has the most to hold on to.', terms:'losing a system of possibilities vs losing a kind'}}
+           note:{text:'Pink is still open. Zoe and Mum can reach her. So far Mika has lost particular possibilities, and the kinds are intact. These choices cannot distinguish grief from depression. Connection matters to Mika here without determining what happens next.', terms:'losing a system of possibilities vs losing a kind'}}
         ],
         next:{label:'Skip ahead to August', fade:['August','One way the summer can go.']}
       },
@@ -1590,7 +1590,7 @@ const CLINIC = [
         idleNote:{who:'One way it can go', text:'In this version of the summer the adults around Mika went quiet. School said nothing, the coach stopped ringing, and Mum was too frightened to bring it up. What follows is one possible outcome of a loss like hers, among several. Play it, then play the other August.', terms:'one trajectory among several'},
         goals:[
           {id:'h1', text:'There must be something I want to do.', hint:'Tap anything orange.', test:e=>e.type==='act'&&e.kind==='entice'&&e.state==='sealed',
-           note:{text:'Now the kinds themselves have gone. Nothing shows up as inviting, shared, or able to change. Ratcliffe calls the boundary between grief and depression a fine line: when a loss also wears away trust in the world, a person can lose kinds of hope along with particular hopes.', terms:'loss of trust · Experiences of Depression, ch. 4'}},
+           note:{text:'In this invented August, the model marks several kinds of possibility as unavailable to Mika. This is a fictional way to illustrate changes in hope, not a measure of depression or an inevitable consequence of exclusion.', terms:'loss of trust · Experiences of Depression, ch. 4'}},
           {id:'h2', text:'Zoe again. I can’t.', pin:'phone', needsPrev:true, ring:true, toast:'Zoe is calling', test:e=>e.type==='act'&&e.obj==='phone',
            note:{who:'Clinical note', text:'A child in this state can look sullen, tired or uncooperative in a session. For this character, taking part no longer appears possible. A mental health diagnosis requires an appropriate assessment. As a clinician, notice changes, explore with the child and family while respecting confidentiality and local policy, and consult or refer when indicated.', terms:'notice · tell the family · refer'}}
         ],
@@ -1601,10 +1601,10 @@ const CLINIC = [
         peopleDesc:'Mum, Zoe, Coach Abby, and a teacher who uses her name',
         body:{object:'The stomach aches come less often. You still check your shoulders in the mirror.', lens:'Through this body the park looks like somewhere to be. The school gate still looks like a stage.', ground:'Still shut out of the team, and still someone people make room for.'},
         idle:'The same August, with different people around her. The rule is unchanged.',
-        idleNote:{who:'Same law, different support', text:'In this version Coach Abby started a Saturday kickabout in the park that anyone can join. Mum found other families to talk to. Mika’s teacher kept using her name and made no speech about it. The team is still closed to her, and the law still bans the care. Look at which bubbles are back, and which one still looms.', terms:'Interpersonal_Scaffolding'},
+        idleNote:{who:'Same law, different support', text:'In this version Coach Abby started a Saturday kickabout in the park that anyone can join. Mum found other families to talk to. Mika’s teacher kept using her name and made no speech about it. The team remains inaccessible in this fictional scenario, and her family still faces the imagined care restriction. Look at which bubbles are back, and which one still looms.', terms:'Interpersonal_Scaffolding'},
         goals:[
           {id:'k1', text:'Abby’s kickabout is today. I want to go.', pin:'door', test:e=>e.type==='act'&&e.act==='kick',
-           note:{text:'Orange and pink are open again. The possibilities that ran through the Comets are still gone, and she misses them. New ones grew where people made room. This is closer to Tomas in month thirteen than to Dele: a loss carried inside a world that still has places for her.', terms:'life structure revised · Interpersonal_Scaffolding'}},
+           note:{text:'Orange and pink are open again. The possibilities that ran through the Comets are still gone, and she misses them. New ones grew where people made room. She finds another place to play while the exclusion remains. Support does not undo the restriction or predict how she will feel later.', terms:'life structure revised · Interpersonal_Scaffolding'}},
           {id:'k2', text:'I still keep checking the mirror.', pin:'mirror', test:e=>e.type==='act'&&e.act==='look',
            note:{text:'Indigo still looms. Friends and a kickabout left the worry about puberty where it was, because that worry is about her body and her future, and nothing about those has changed. Support for one loss leaves the other standing. A clinician who sees her laughing in the park should still ask about the rest.', terms:'Temporal_Flow: Looming · two separate losses'}}
         ],
@@ -1614,7 +1614,7 @@ const CLINIC = [
     over:{},
     debrief:{ phase:2,
       rows:{attune:'At home, then shut out. After that, one August shut down and the other held.', horizon:'First one system closed: the team. In one August the kinds went too. In the other they stayed open, and Change still loomed.', time:'Flowing, then looming. Frozen in one August, still looming in the other.', people:'Well held, then shaken. Out of reach in one August and well held in the other. In this story, the adults around her acted differently.', friction:'High after April in both versions: she knew who she was, and the world had stopped agreeing.'},
-      point:'Mika first lost a system of possibilities: a team, a Saturday, a future she had counted on. That is a loss, and it looks like grief. In one August it also wore away her trust that the world has a place for her. The kinds themselves closed. That pattern looks like depression, and only an assessment by a mental health professional could say whether it is. In the other August she carried the same loss inside a world where people made room, and the kinds stayed open. Both Augusts are invented. They show that support matters, and they cannot show what causes which outcome for a real child. Ratcliffe draws this line between losing particular hopes and losing the ability to hope, and he ties it to trust in other people. He did not write about Mika’s situation. The flat applies his distinction to it. Neither August predicts what will happen to any real child.',
+      point:'Mika first lost a system of possibilities: a team, a Saturday, a future she had counted on. That is a loss, and it looks like grief. In one August it also wore away her trust that the world has a place for her. The authored model shows several possibilities as closed, but that is not a clinical sign or diagnosis. Any mental health concern calls for direct assessment by a qualified professional. In the other August she carried the same loss inside a world where people made room, and the kinds stayed open. Both Augusts are invented. They show that support matters, and they cannot show what causes which outcome for a real child. Ratcliffe draws this line between losing particular hopes and losing the ability to hope, and he ties it to trust in other people. He did not write about Mika’s situation. The flat applies his distinction to it. Neither August predicts what will happen to any real child.',
       slp:['Mika came to you for speech sounds, and you may be one of the few adults she sees every week. Notice change: fewer words, less play, less interest in the things she loved.','You cannot fix the cause. You can use her name, offer her the choice to talk or to play, and stay. That is supportive listening, and it is within your competence.','Assessing or treating depression is outside SLP scope. Tell the family what you have noticed, refer through your setting’s pathway, and work alongside mental health colleagues.','Ask how she feels before you assume it. Children in her position can be angry, fine for now, or grieving one loss and unbothered by another.']
     }
   },
@@ -1623,8 +1623,8 @@ const CLINIC = [
     refs:'Fama, Lemonds & Levinson (2022) · Kagan (1998)',
     look:{wall:'#e6dcc4', floor:'#b98a5a', sofa:'#7d9a6f', duvet:'#b5654a', rug:'#eadfc6', rugRing:'#7d9a6f', door:'#5b4636', pot:'#b9805f'},
     char:{skin:'#e3b796', hair:'#cfcac2', shirt:'#b5533c', pants:'#4f5560'},
-    blurb:'Eleven weeks after a stroke. He knows every word he cannot find.',
-    intro:'Walt taught woodwork for thirty-five years and gives the toast at every family wedding. Eleven weeks ago he had a stroke. He has anomic aphasia: his speech flows and he understands you, and the words he wants, names most of all, will not come.',
+    blurb:'Eleven weeks after a stroke. He often knows what he wants to say before he can retrieve a word.',
+    intro:'Walt taught woodwork for thirty-five years and gives the toast at every family wedding. Eleven weeks ago he had a stroke. He has anomic aphasia: his speech is generally fluent and he follows this conversation, but retrieving words, especially names, takes effort.',
     hide:['stove.fry','stove.two','sofa.show','phone.call','phone.msg','door.listen','door.out','door.lock','easel.new','window.plan','window.who','bed.sleep'],
     extra:{
       stove:[
@@ -1659,15 +1659,15 @@ const CLINIC = [
       { day:'Tue', sub:'11 weeks after', clock:10*60, dusk:.05, attName:'Cut off from talk',
         vars:{attune:'access', amt:.6, kinds:{entice:'dim',practical:'open',shared:'open',change:'fractured',threat:'hum'}, time:'fractured', people:42, friction:80},
         peopleDesc:'All still here. The way to them runs through words.',
-        body:{object:'Your right hand is a little slow. Your mouth works perfectly. Nothing hurts.', lens:'Through this body the stove and the lathe look as easy as ever. A conversation looks like a rope bridge.', ground:'You are still yourself, in a world that still makes sense. What has changed is the way in to other people, and most of your life ran through it.'},
+        body:{object:'Your right hand moves a little slowly. In this case no motor speech difficulty has been identified, though word retrieval is hard.', lens:'Through this body the stove and the lathe look as easy as ever. A conversation looks like a rope bridge.', ground:'You are still yourself, in a world that still makes sense. What has changed is the way in to other people, and most of your life ran through it.'},
         idle:'Start with something Walt can do without a single word.',
         goals:[
           {id:'g1', text:'A cup of tea. I can do that.', pin:'stove', test:e=>e.type==='act'&&e.act==='tea',
-           note:{who:'Clinical note', text:'Walt’s practical world is whole. The kettle shows up as usable without anyone naming it. Aphasia is a language impairment. In Walt’s case, memory for people and workshop skill held up. That is his profile. A stroke can affect other abilities too, so each person needs their own assessment. Anomic aphasia is among the most common patterns in several samples, and other aphasias often settle into it over time.', terms:'anomic aphasia · word-finding difficulty with fluent speech and good comprehension'}},
+           note:{who:'Clinical note', text:'Walt makes tea using a familiar routine without needing to name each object. Aphasia is a language impairment. In Walt’s case, memory for people and workshop skill held up. That is his profile. A stroke can affect other abilities too, so each person needs their own assessment. Anomic aphasia names a language pattern; it does not settle comprehension, literacy, cognition or participation without individual assessment.', terms:'anomic aphasia · word-finding difficulty with fluent speech and good comprehension'}},
           {id:'g2', text:'That’s Hal. I want to talk to him.', pin:'phone', needsPrev:true, ring:true, toast:'Hal is calling', test:e=>e.type==='act'&&e.act==='call',
-           note:{text:'The pink bubble needed a long press. Walt still wants company and company still wants him. The cost has moved into the saying, and other people keep paying it for him by guessing. Each wrong guess he lets stand takes a little more of him out of the conversation.', terms:'Interpersonal_Scaffolding', src:'Fama, Lemonds & Levinson (2022)'}},
+           note:{text:'The pink bubble needed a long press. Walt still wants company and company still wants him. The cost has moved into the saying, and other people keep paying it for him by guessing. Hal’s guesses leave Walt less room to complete his message in this call.', terms:'Interpersonal_Scaffolding', src:'Fama, Lemonds & Levinson (2022)'}},
           {id:'g3', text:'Sunday. The crossword.', pin:'sofa', test:e=>e.type==='act'&&e.act==='cross',
-           note:{text:'One orange bubble is sealed while the others only dimmed. Walt lost the possibilities that ran through words, and he kept the kind. Ratcliffe separates losing a system of possibilities from losing a type of possibility. That difference is what leaves room to rebuild.', terms:'system vs type of possibility (Grief Worlds, ch. 8)'}},
+           note:{text:'One orange bubble is sealed while the others only dimmed. For Walt, some familiar activities are harder when naming is needed, while other ways of joining in remain. The coloured kinds are fictional teaching categories, not ability scores.', terms:'system vs type of possibility (Grief Worlds, ch. 8)'}},
           {id:'g4', text:'The wedding. I have to give that toast.', pin:'mirror', test:e=>e.type==='act'&&e.act==='toast',
            emo:{feel:'Dread, about one toast', world:'Shaken. Being a grandfather, a teacher and a talker are all involved.'},
            note:{text:'The future keeps snapping back to the one where he stands up and speaks easily. Ratcliffe describes feeling unable to continue as oneself when the structure of a life is undermined, while other ways of going on still feel possible. The friction meter is the gap between the word he knows and the word he can say.', terms:'Temporal_Flow: Fractured Tension · Frictional_Tension · Ratcliffe (2024)'}}
@@ -1693,7 +1693,7 @@ const CLINIC = [
     over:{},
     debrief:{ phase:0,
       rows:{attune:'Familiar and meaningful, though conversation and participation now require different ways in.', horizon:'Practical open throughout. Shared needed a long press, then carried on in a new form.', time:'Fractured, then flowing. The toast went from impossible to different.', people:'Strained, then steadier. June and Hal changed more than Walt did.', friction:'Very high, then lower. The gap between knowing a word and saying it stayed. He stopped being alone with it.'},
-      point:'Walt lost access to one system of possibilities, the ones that run through fluent talk, and for him that system held most of who he was: teacher, storyteller, the man who gives the toast. Ratcliffe describes this as feeling unable to continue as oneself. He also says a life can be reorganised around what remains. Walt’s seven months are his own, and other people’s recovery is slower, faster or different in kind. Ratcliffe did not write about aphasia. The flat applies his account to it.',
+      point:'Walt lost access to one system of possibilities, the ones that run through fluent talk, and fluent talk mattered in several valued roles: teacher, storyteller, the man who gives the toast. Ratcliffe describes this as feeling unable to continue as oneself. He also says a life can be reorganised around what remains. Walt’s seven months are his own, and other people’s recovery is slower, faster or different in kind. Ratcliffe did not write about aphasia. The flat applies his account to it.',
       slp:['Treat the silence as his turn. Ask how he wants help when a word sticks: time, a first sound, a guess, or a pen. Then do that, and ask again another day.','Offer other ways in: pen and paper, pointing, photos, written key words. Then ask about something he is the expert on.','Counsel the partners too. Much of the change between the two visits to this flat happened in June and Hal.']
     }
   },
@@ -1710,7 +1710,7 @@ const CLINIC = [
         {id:'call', kind:'shared', lab:'Call {F}', ringLab:'Answer {F}', st:['heavy','kept'], res:{
           heavy:'“Sorry, love, say again?” Three times. Then Dot starts guessing, kindly. On the phone there is no face to help. You say you will text.',
           kept:'Dot video-calls now so she can see you. When your voice tires, the tablet says the rest in the voice you banked. Dot says it is eerie and she loves it. You think it sounds like you reading the news. Some days that is a comfort, and some days you switch to the plain voice.',
-          'kept@1:nobank':'Dot video-calls now so she can see you. When your voice tires, the tablet says the rest in its stock voice. Dot has named her Claire. You roll your eyes with your own face, which still works fine.'}},
+          'kept@1:nobank':'Dot video-calls now so she can see you. When your voice tires, the tablet says the rest in its stock voice. Dot has named her Claire. You roll your eyes and make Dot laugh, using another way to be heard.'}},
         {id:'msg', kind:'shared', lab:'Text {P}', st:['open','open'], res:{open:'“Bring oat milk. And you still owe me a pun.” In text you are exactly as quick as you ever were.'}}],
       door:[
         {id:'cafe', kind:'shared', pp:-3, lab:'Order at the café', st:['guarded','kept'], res:{
@@ -1765,7 +1765,7 @@ const CLINIC = [
       { day:'Sat', sub:'20 months after diagnosis', clock:10*60+30, dusk:.05, attName:'Speaking another way',
         vars:{attune:'access', amt:.4, kinds:{entice:'open',practical:'heavy',shared:'kept',change:'looming',threat:'quiet'}, time:'looming', people:66, friction:45},
         peopleDesc:'Held by the ones who stayed',
-        body:{object:'Your hands tire quickly. Speech is a few careful words at a time.', lens:'The tablet has changed how rooms look. People are reachable again, at a different speed.', ground:'Less certain ground, shared with people who have stayed. You are still the one making the jokes.'},
+        body:{object:'Your hands tire quickly. Speech is a few careful words at a time.', lens:'With the tablet and willing partners, some conversations feel more reachable, although access may still be slow or tiring.', ground:'Less certain ground, shared with people who have stayed. You are still the one making the jokes.'},
         idle:'A year on. The grey bubbles need a long press.',
         goals:[
           {id:'g4', text:'Coffee. I have the tablet now.', pin:'door', test:e=>e.type==='act'&&e.act==='cafe',
@@ -1781,9 +1781,9 @@ const CLINIC = [
     ],
     over:{},
     debrief:{ phase:0,
-      rows:{attune:'The same recognizable person and room, with changing communication access and a future Ruth did not choose.', horizon:'Shared turned costly, then kept. One enticing thing, singing, closed for good.', time:'Looming in both visits. The future keeps arriving, and she plans inside it.', people:'Strained, then steadier. Rebuilt around the people who learned to listen differently.', friction:'High, then lower. The gap between who she is and how she sounds stopped deciding every encounter.'},
-      point:'Ruth’s body changed how other people respond to her, and that changed the world she walks into. Ratcliffe argues that our sense of what is possible is held up by other people. A voice that strangers mishear puts that support in question every time she orders a coffee. Her flat also shows reorganisation: the same relationships, kept in a new form. The choices about her voice were Ruth’s, and other people with ALS choose differently. Ratcliffe did not write about dysarthria or ALS. The flat applies his account to them.',
-      slp:['Never pretend to understand. Say what you caught and what you lost, and share the work of repair.','Speak to her, at your normal volume, about adult things. Slurred speech says nothing about thinking.','Offer voice banking and AAC early, as her choice. Some people decline, and views change. Say plainly that a banked voice is an approximation and that AAC runs slower than speech. Make room for the loss in it.']
+      rows:{attune:'The same recognizable person and room, with changing communication access and a future Ruth did not choose.', horizon:'Shared turned costly, then kept. In this phase singing in her former way feels unavailable, though Ruth may find other ways to engage with music.', time:'Looming in both visits. The future keeps arriving, and she plans inside it.', people:'Strained, then steadier. Rebuilt around the people who learned to listen differently.', friction:'High, then lower. The gap between who she is and how she sounds stopped deciding every encounter.'},
+      point:'Ruth’s body changed how other people respond to her, and that changed the world she walks into. Ratcliffe argues that our sense of what is possible is held up by other people. In this café encounter, being addressed through Ben unsettles Ruth’s participation. Another interaction could go differently. Her flat also shows reorganisation: the same relationships, kept in a new form. The choices about her voice were Ruth’s, and other people with ALS choose differently. Ratcliffe did not write about dysarthria or ALS. The flat applies his account to them.',
+      slp:['Never pretend to understand. Say what you caught and what you lost, and share the work of repair.','Speak to her, at your normal volume, about adult things. Speech clarity alone cannot establish cognitive ability; ask Ruth and assess when appropriate.','Offer voice banking and AAC early, as her choice. Some people decline, and views change. Say plainly that a banked voice is an approximation and that AAC runs slower than speech. Make room for the loss in it.']
     }
   },
   { id:'kai', no:9, clinic:true, name:'Kai', P:'Dad', F:'Theo', feel:'rooted', dx:'Age 15 · autistic', title:'Kai: at home, his way',
@@ -1839,7 +1839,7 @@ const CLINIC = [
           open:'Two slices, cheese to the edges, cut corner to corner. You eat it standing up, reading the back of the cereal box.',
           heavy:'You are hungry and the kitchen is too bright. You take the bread to your room and eat it plain.'}},
         {id:'hum', kind:'threat', lab:'Deal with the fridge noise', st:['hum','hum','hum'], res:{
-          hum:'The fridge hums at a pitch nobody else in the flat can hear. You hear it the way other people hear a smoke alarm. You shut the kitchen door.',
+          hum:'Others at home scarcely notice the fridge hum. For Kai it is difficult to ignore, like an alarm demanding attention. You shut the kitchen door.',
           'hum@1':'The fridge. The neighbour’s drill. The light. After today each one arrives at full volume, with nothing sorted into background.'}}]
     },
     phases:[
@@ -1850,11 +1850,11 @@ const CLINIC = [
         idle:'Saturday. Start with whatever is glinting.',
         goals:[
           {id:'g1', text:'Line 14 is wrong. I can fix it.', pin:'easel', test:e=>e.type==='act'&&e.act==='map',
-           note:{text:'Look at the bubbles: every kind is open. Nothing has dropped out of Kai’s world. What draws him is spread differently from what draws most of his classmates, and it draws him hard.', terms:'Possibility_Horizon: all kinds present'}},
+           note:{text:'In this Saturday scene every kind is marked open. The model does not measure Kai’s capacities or imply that autistic people have no losses or barriers. What draws him is spread differently from what draws most of his classmates, and it draws him hard.', terms:'Possibility_Horizon: all kinds present'}},
           {id:'g2', text:'I want to tell someone about the map.', hint:'Try a pink bubble.', test:e=>e.type==='act'&&e.kind==='shared',
            note:{text:'Shared possibilities are open in the forms that suit him: side by side, by text, about something real. A phone call is the same kind of thing in a form that costs him. Ratcliffe did not write about autism. The idea used here is his: do not assume that another person’s space of possibilities is arranged like yours.', terms:'Interpersonal_Scaffolding'}},
           {id:'g3', text:'What is my body telling me?', hint:'Tap Kai.', pin:'sim', test:e=>e.type==='body',
-           note:{text:'The body-as-lens layer carries the difference. Kai’s hearing and sight sort less into background, so a fridge can be as present as a voice, and he seeks out pressure and movement. That is his profile. Autistic sensory experience varies: some senses run high, some run low, some are sought out, and all of it shifts with context.', terms:'noetic bodily feeling · individual sensory profile'}}
+           note:{text:'In Kai’s fictional sensory profile, some sounds and lights remain prominent and he seeks pressure and movement. The game does not measure sensory processing or predict another autistic person’s experience. Autistic sensory experience varies: some senses run high, some run low, some are sought out, and all of it shifts with context.', terms:'noetic bodily feeling · individual sensory profile'}}
         ],
         next:{label:'Skip to Tuesday after school', fade:['Tuesday','Assembly, a fire drill, a group project, and seven hours of acting normal.']}
       },
@@ -1865,21 +1865,21 @@ const CLINIC = [
         idle:'Kai is just home. Dad is in the hall.',
         goals:[
           {id:'g4', text:'Dad wants an answer. Talking is too much.', hint:'Tap the door. All four answers count.', pin:'door', toast:'Dad: “How was school?”', test:e=>e.type==='act'&&['say','type','thumb','pass'].includes(e.act),
-           note:{who:'Clinical note', text:'This is shutdown after overload. For Kai tonight, speech is the channel that costs most. Typing, a gesture, and saying nothing for now are all his to choose, and each one is communication. Which channels stay open differs between autistic people and between days. From outside it can look like rudeness or refusal, and pressing for a spoken answer adds to the load.', terms:'autistic shutdown · communication choice · the cost of masking', src:'Phung et al. (2021)'}},
+           note:{who:'Clinical note', text:'Kai describes difficulty speaking after a demanding school day. Some autistic people call such experiences shutdown, but presentation and access differ. For Kai tonight, speech is the channel that costs most. Typing, a gesture, and saying nothing for now are all his to choose, and each one is communication. Which channels stay open differs between autistic people and between days. Someone might mistake silence for refusal. Ask about accessible communication choices rather than requiring speech.', terms:'autistic shutdown · communication choice · the cost of masking', src:'Phung et al. (2021)'}},
           {id:'g5', text:'Everything is too loud. I need it to stop.', hint:'Try the sofa.', pin:'sofa', test:e=>e.type==='act'&&e.act==='rock',
-           note:{who:'Clinical note', text:'Rocking and humming put a foreground and a background back into the room. For Kai, stimming is regulation. Many autistic adults describe it the same way, and they object to treatment that aims to remove it.', terms:'self-regulation · Kapp et al. (2019) · neurodiversity-affirming practice', src:'Kapp et al. (2019)'}}
+           note:{who:'Clinical note', text:'Kai finds rocking and humming regulating today. Autistic people report different reasons for stimming; ask about preferences rather than suppressing harmless self-directed movement.', terms:'self-regulation · Kapp et al. (2019) · neurodiversity-affirming practice', src:'Kapp et al. (2019)'}}
         ],
         next:{label:'Skip to later that evening', fade:['Later that evening','Nobody pushed him to talk. Tonight it took about two hours.']}
       },
       { day:'Tue', sub:'Evening', clock:18*60+30, dusk:.7, attName:'Coming back',
         vars:{attune:'overloaded', amt:.2, kinds:{entice:'open',practical:'open',shared:'open',change:'open',threat:'hum'}, time:'flowing', people:56, friction:24},
         peopleDesc:'Dad waited',
-        body:{object:'Shoulders down. Hungry, which is a good sign.', lens:'The room has a foreground and a background again.', ground:'Back. Nothing in you was fixed, because nothing was broken. The load came off.'},
+        body:{object:'Shoulders down. Hungry, which is a good sign.', lens:'The room has a foreground and a background again.', ground:'The room feels less demanding this evening. You want to show Dad the map again.'},
         idle:'Later that evening. The pink bubbles are back.',
-        idleNote:{who:'Clinical note', text:'Tonight it took about two hours. That figure belongs to this evening. On some days Kai is back in twenty minutes. After a run of days like Tuesday it has taken him until the weekend. Recovery time differs between people, and it tends to grow when overload repeats.', terms:'recovery varies · cumulative load'},
+        idleNote:{who:'Clinical note', text:'In this story Kai wants to share the map after about two hours. Another day or another person might differ; the game cannot predict a recovery interval.', terms:'recovery varies · cumulative load'},
         goals:[
           {id:'g6', text:'I want to show Dad the map.', pin:'door', test:e=>e.type==='act'&&e.act==='dad',
-           note:{text:'The possibilities came back when the load came off and nobody demanded speech. Dad’s part was to stay near and wait. Compare Dele in Flat 3, where skipping ahead changed nothing. Kai’s world was never emptied. It was overfilled.', terms:'Possibility_Horizon restored'}}
+           note:{text:'Later Kai chooses to share his map. Dad respected his earlier answer and stayed available. This fictional evening does not show that waiting always ends shutdown or that autism and depression are opposites.', terms:'Possibility_Horizon restored'}}
         ],
         next:{label:'Leave Kai’s flat', end:true}
       }
@@ -1887,8 +1887,8 @@ const CLINIC = [
     over:{},
     debrief:{ phase:1,
       rows:{attune:'At home in his own way, then overloaded, then back within an evening.', horizon:'All kinds present. After school, Shared and Practical turned to effort. Speech went first. Typing and gestures stayed.', time:'Flowing throughout. Tonight two hours of quiet were enough. Other weeks it takes days.', people:'Enough, then thin, then back. He wanted people the whole time, in forms he could use.', friction:'Low at home. High after seven hours of acting like someone else.'},
-      point:'Kai’s flat is the only one in the building where nothing is missing. His world holds every kind of possibility, weighted and delivered differently. The hard evening came from the fit between that world and a school day built on other assumptions. Ratcliffe did not write about autism, and this flat makes no claim that he did. It borrows one move from him: stop assuming the other person’s world is arranged like yours, and find out how it is arranged.',
-      slp:['Check what your goals are for. Eye contact, small talk and still hands are your world’s forms. Connection is the aim.','Join the interest. Shared attention on something he cares about is real social communication.','Read silence after a hard day as a spent battery. Lay out the channels, such as talking, typing, pointing or passing, and let him pick. Then give it time.']
+      point:'For Kai’s Saturday, the illustrative model labels every kind as available, with different demands. The chart does not describe all his actual opportunities or barriers. The story portrays school demands contributing to the evening; it cannot establish one cause. Ratcliffe did not write about autism, and this flat makes no claim that he did. It borrows one move from him: stop assuming the other person’s world is arranged like yours, and find out how it is arranged.',
+      slp:['Check what your goals are for. Eye contact, small talk and still hands are your world’s forms. Connection is the aim.','Join the interest. Shared attention on something he cares about is real social communication.','Do not assume silence means refusal or disinterest; offer communication choices and allow a pass. Lay out the channels, such as talking, typing, pointing or passing, and let him pick. Then give it time.']
     }
   }
 ];
@@ -1934,7 +1934,7 @@ VISITS.push(
     moveNote:{who:'Clinical note', text:'Waiting, cueing, writing a key word and checking with a yes-or-no question are all supported conversation techniques. No single one is right in general. Which one helps depends on what this person asked for, today. Communication partner training teaches the moves and the habit of asking.', terms:'supported conversation · communication partner training', src:'Kagan (1998)'},
     prefNote:{who:'Counseling', text:'Supplying a word can help. It went badly earlier because nobody had asked him. Some people with aphasia want a guess after a few seconds, some want time, and many want different help on different days or with different listeners. Make asking the habit, and then do what he asked.', terms:'person-centred support · supported conversation'},
     fit:{lab:'Hand him a pen, wait, and ask about the workshop', pose:'sit', t:'He draws a lathe in six quick lines. “Lathe,” you read. “Lathe,” he says, and then, slowly, he tells you what he is making on it. You ask real questions. He has real answers.', people:10, friction:-8,
-      note:{who:'Counseling', text:'Waiting, offering another way in, and asking about something he knows better than you do all carry one message: I know you are still in there. Supported conversation rests on acknowledging and revealing the competence of the person with aphasia.', terms:'supported conversation (Kagan 1998) · radical empathy'}} },
+      note:{who:'Counseling', text:'Waiting, offering another way in, and discussing his expertise respect Walt’s contribution without treating word retrieval as proof of competence. Supported conversation helps partners acknowledge and reveal it.', terms:'supported conversation (Kagan 1998) · radical empathy'}} },
   { flat:7, solo:true, phase:0, clock:11*60+30, dusk:.1, npc:{pose:'stand', pos:[1.9,4.1], face:'back', at:'window', pin:[1.9,4.1,2.5]}, spot:[2.75,3.45],
     intro:'You are Ruth’s speech therapist. She has just told you something, and you caught about a third of it.',
     lab:{out:'Tell her to slow down and speak up', fine:'Nod as if you understood'},

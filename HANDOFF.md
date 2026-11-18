@@ -1,4 +1,4 @@
-# Being Found 8.4.2: Wren / Ilse editorial review and classroom timing
+# Being Found 8.4.3: additional narrative desk reviews
 
 ## Run it
     npm run build        # node build.js && node postbuild.js, no dependencies to install
@@ -29,6 +29,7 @@ python3 qa_guided84.py              # guided chapters, Dele silence, debrief, re
 python3 qa_editorial.py             # authored source and compiled text guard
 python3 qa_js_syntax.py            # parse source and generated JavaScript
 python3 qa_wren_ilse.py            # runtime narrative and viewport assertions for both flats
+python3 qa_remaining_scenes.py     # runtime text/viewport guard for remaining five residents
 python3 menu_check.py
 python3 test_prop_states.py
 python3 e2e_sync.py 390x844
@@ -69,6 +70,13 @@ Python Playwright is required. Browser executable auto-detects `google-chrome` o
 - Added `CLASSROOM_PILOT.md` with instructions to collect independent completion times and comprehension feedback. Updated `EDITORIAL_REVIEW.md` with literature, scene inventory and limits.
 - Added `qa_wren_ilse.py`, expanded `qa_editorial.py` and `qa_guided84.py` to cover scene phrasing, runtime content and local pacing. The 8.4.2 code review found missing commas after edited Wren/Ilse scope/intro fields, preventing base-script initialization. Fixed the commas, verified inline script parsing, and added `qa_js_syntax.py` before browser tests. The runtime QA test also waits for startup. **Verified:** commit `046322d5c46ce7b0a9d8d0a133fdbc2f31afaa30`, [GitHub Actions run 44187648896](https://github.com/RileyTheRiler/being-found/actions/runs/44187648896), completed successfully with all **26/26 steps passing**.
 - **Baseline at start of this release:** 8.4.1 commit `265cd0db2cebdf360c1844f45384e1194ff0d5c1`, successful Actions run [44181478986](https://github.com/RileyTheRiler/being-found/actions/runs/44181478986) (24/24 steps).
+
+## Release 8.4.3 — narrative accuracy desk review (Actions pending)
+- Text-only changes to Tomas, Mika, Walt, Ruth and Kai; detailed inventory in `EDITORIAL_REVIEW.md`.
+- Each fictional story now avoids fixed grief recovery, condition-derived competence, inevitable policy outcomes, and deterministic shutdown; no game mechanic, phase variable, branch, save, or guided pacing code changed.
+- Added `qa_remaining_scenes.py`, extended `qa_editorial.py`, and added the new browser step to quality.yml.
+- This commit must be checked against its own GitHub Actions run before calling 8.4.3 verified.
+- Next: classroom pilot instruments, facilitator checklist and dry-run protocol, then separate CI.
 
 ## Verified 8.4.2 baseline for next chat
 - **Branch:** `main`; verified implementation SHA `046322d5c46ce7b0a9d8d0a133fdbc2f31afaa30`.

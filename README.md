@@ -1,4 +1,4 @@
-# Being Found 8.4.2 (narrative review and classroom pilot readiness)
+# Being Found 8.4.3 (narrative review and classroom pilot readiness)
 
 Editable source for Being Found. This line continues from the 8.3.7 preview.
 
@@ -42,6 +42,7 @@ python3 qa_guided84.py              # guided narrative, Dele encounter, ending a
 python3 qa_editorial.py             # source + production narrative wording guard
 python3 qa_js_syntax.py            # parse source and generated JavaScript, catch early syntax errors
 python3 qa_wren_ilse.py            # Wren/Ilse runtime editorial assertions on phone and desktop
+python3 qa_remaining_scenes.py     # five other resident narratives, mobile and desktop
 python3 menu_check.py               # title, rooms, routes, continue
 python3 e2e_sync.py 390x844 1024x1366
 python3 test_later.py 390x844
@@ -78,3 +79,5 @@ chapter timing, with no data sent or stored. See `CLASSROOM_PILOT.md` for a
 human usability and pacing protocol; no pilot results exist yet.
 
 See `SAVE_NOTES.md` for the step log.
+
+8.4.3 revises Tomas, Mika, Walt, Ruth and Kai for subjectivity, clinical uncertainty and non-deterministic language. These are desk reviews, not lived-experience validation.

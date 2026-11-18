@@ -1,6 +1,6 @@
 # Being Found — Development Roadmap
 
-**Status:** Active roadmap. M0 regression baseline completed; 8.4.0 implements the guided narrative; 8.4.1–8.4.2 complete initial textual desk reviews of Dele, Wren and Ilse. A local-only facilitator pacing readout is implemented. Human pacing, lived-experience validation and accessibility testing remain outstanding. Lived-experience consultation and classroom pilot remain outstanding. Browser validation is documented in `HANDOFF.md`.  
+**Status:** Active roadmap. M0 regression baseline completed; 8.4.0 implements the guided narrative; 8.4.1–8.4.3 include initial textual desk reviews of all eight fictional residents. A local-only facilitator pacing readout is implemented. Human pacing, lived-experience validation and accessibility testing remain outstanding. Lived-experience consultation and classroom pilot remain outstanding. Browser validation is documented in `HANDOFF.md`.  
 **Canonical repository:** `RileyTheRiler/being-found`  
 **Baseline:** 8.3.11 on `main` before the 8.4 implementation. Read `HANDOFF.md` before any implementation.
 
@@ -80,7 +80,7 @@ Acceptance:
 
 ### M2 — Phenomenological and narrative review
 
-**8.4.1–8.4.2 progress:** Completed source-grounded desk passes on Dele, Wren and Ilse, including first-person accounts, visitor consent and non-deterministic interpretation. See `EDITORIAL_REVIEW.md`; these are **not** lived-experience reviews or M2 acceptance.
+**8.4.1–8.4.3 progress:** Completed source-grounded desk passes on Dele, Wren, Ilse, Tomas, Mika, Walt, Ruth and Kai, including first-person accounts, visitor consent and non-deterministic interpretation. See `EDITORIAL_REVIEW.md`; these are **not** lived-experience reviews or M2 acceptance.
 
 **Goal:** Prevent mechanics from making misleading claims about people.
 

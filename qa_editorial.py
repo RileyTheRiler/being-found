@@ -45,3 +45,18 @@ for file_label,text in [("source",source),("production",built)]:
     assert text.count("Saturday differed: a faint invitation") == 1, f"{file_label}: Saturday point unexpectedly duplicated"
     assert "window.LWClass={open:begin" in text, f"{file_label}: classroom route missing"
 print("PASS 8.4.2: Dele, Wren, Ilse narrative constraints and local pacing scaffolding in source and dist")
+
+# 8.4.3 remaining-resident source and production review markers.
+markers = {
+    "Tomas": "not a predictable recovery pattern",
+    "Mika": "fictional composite policy scenario",
+    "Walt": "does not settle comprehension, literacy, cognition",
+    "Ruth": "Speech clarity alone cannot establish cognitive ability",
+    "Kai": "does not measure sensory processing",
+}
+for label, text_body in [("source", source), ("production", built)]:
+    for resident, marker in markers.items():
+        assert marker in text_body, f"{label}: missing {resident} revision"
+    for retired in ["grief as a process with a direction", "this flat takes no side on them", "That pattern looks like depression", "Your mouth works perfectly", "singing, closed for good", "Kai’s world was never emptied. It was overfilled."]:
+        assert retired not in text_body, f"{label}: categorical text retained: {retired}"
+print("PASS 8.4.3 remaining-resident desk edits in source and production")

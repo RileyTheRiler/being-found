@@ -1,4 +1,4 @@
-# Being Found 8.4.2: save notes
+# Being Found 8.4.3: save notes
 
 The hosted save page holds the playable build at its root and this full source under `source/`.
 
@@ -58,3 +58,5 @@ Base: the 8.3.7 preview as uploaded on 16 November 2026.
 - Step 17b (startup syntax fix): The first runtime test found that `window.LW` was unavailable. Parsing all inline source scripts isolated missing commas after three revised Wren/Ilse object fields; these caused a JavaScript syntax error even though `npm run build` succeeded. Fixed all three commas and verified every source inline `<script>` parses in V8. Added `qa_js_syntax.py` to parse source/dist inline scripts and built JavaScript before the browser QA runs, preventing future silent startup failures. Full CI remains pending for this patch.
 
 - Step 17c (8.4.2 fully verified): After correcting Wren/Ilse object punctuation and adding the JS parse guard, implementation commit `046322d5c46ce7b0a9d8d0a133fdbc2f31afaa30` passed [GitHub Actions run 44187648896](https://github.com/RileyTheRiler/being-found/actions/runs/44187648896) with **26/26 steps successful**: production build, new JavaScript syntax checker, source/dist editorial guard, Wren/Ilse phone/desktop browser regression, guided chapter and local pacing test, five-viewport smoke, menus, save/resume, focus, audio, stove, existing story/state and encounter/visit checks. No human pacing or lived-experience evidence is claimed. Next chat should start with `HANDOFF.md` and continue the remaining M2 editorial and pilot work.
+
+- Step 18 (8.4.3, awaiting Actions): Revised five remaining fictional flats in `src/index.html`: Tomas, Mika, Walt, Ruth, Kai. Removed a fixed grief trajectory, implied diagnostic labels from fictional colour states, universal assumptions about communication/cognition, and causal claims from one autistic evening. Clarified Mika’s rule as a fictional composite rather than a jurisdiction-specific legal claim. Added `qa_remaining_scenes.py`, static source/dist guards and CI workflow step. Mechanics, story goal checks, phase state variables, menus, visits, save, and pacing remain untouched. Next step: separate pilot-preparation release; no human or lived-experience feedback yet.

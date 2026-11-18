@@ -1,4 +1,4 @@
-# Being Found 8.4.2 — phenomenological editorial review (desk passes)
+# Being Found 8.4.3 — phenomenological editorial review (desk passes)
 
 **Status:** Textual source audit only. No compensated lived-experience review, clinical validation, or classroom study has taken place. The fictional Dele material remains open to correction. The 8.4.1 revision does **not** alter action rules, dice, saving, room navigation, or encounter choices.
 
@@ -63,3 +63,29 @@ The learner should recognize a distinction between an action that is physically 
 4. **Classroom pilot** — observe first-time users, record completion time and blocked steps without treating time as a grading criterion; ask participants to separate what they saw, inferred, and still do not know. Evaluate both phone and tablet.
 
 M2 remains **in progress**. Dele, Wren and Ilse received desk passes; other sensitive scenes and all lived-experience consultations remain unreviewed.
+
+## 8.4.3 remaining-resident textual desk review
+
+**Scope:** Tomas, Mika, Walt, Ruth and Kai. The edits change narration and interpretive notes, not conditions for actions, world-state variable values, visits, dice or numeric outcomes. This is not first-person or clinical validation.
+
+| Resident | Earlier risk | Revision | Essential follow-up |
+| --- | --- | --- | --- |
+| Tomas | A directional, apparently required recovery course and universal social access | Situated grief expectations, continuing bonds and fluctuating possibility; no promised endpoint | Bereaved readers on anniversary, unexpected expectation and absence of a fixed course |
+| Mika | Law presented as if real; two fictional Augusts used to classify depression from model states; support looked causally sufficient | Explicit fictional composite policy, uncertainty around planned care and diagnosis, no causal prediction | Trans youth-informed editorial review with safeguarding, and law review if a jurisdiction is named |
+| Walt | Globally intact comprehension and motor speech, anomic subtype overreach, "still in there" metaphor | His individual fluent speech/word finding, need for comprehension assessment, autonomy and supported conversation | People with aphasia using communication-accessible feedback and aphasia clinicians |
+| Ruth | Slurred speech as a basis for cognitive inference, singing "closed for good", AAC as full repair | Individual cognitive status, music in alternate forms, ongoing access barriers and partner participation | ALS/AAC users and partners with flexible communication modalities |
+| Kai | Sensory universals, all opportunities "open", assured effects of stimming/quiet and fixed recovery duration | Fictional sensory profile, personally selected communication and regulating movement, uncertainty about course | Autistic reviewers including intermittent/non-speaking perspectives |
+
+Sources examined:
+- Ratcliffe, *Grief, self and narrative* (2022): https://doi.org/10.1080/13869795.2022.2070241
+- *Troubling grief* (2024), interviews on non-linear bereavement: https://doi.org/10.1177/00380261241228412
+- Lee et al. (2024), policy and youth mental health: https://doi.org/10.1038/s41562-024-01979-5 — population evidence for ages 13+, not a prediction for Mika aged 10
+- ASHA Aphasia Practice Portal: https://www.asha.org/practice-portal/clinical-topics/aphasia/
+- Kagan (1998), Supported Conversation: https://doi.org/10.1080/02687039808249575
+- Kagan et al. (2001), partner training: https://doi.org/10.1044/1092-4388(2001/051)
+- Cave & Bloch (2021), voice banking and MND: https://doi.org/10.1111/1460-6984.12588
+- ALS–frontotemporal spectrum review (2023): https://doi.org/10.1038/s41582-023-00878-z
+- Autistic communication during distress scoping review (2026): https://doi.org/10.1177/13623613261417933
+- Kapp et al. (2019), autistic adults and stimming: https://doi.org/10.1177/1362361319829628
+
+**Caution:** Each resident is invented; revised words still need compensated lived-experience appraisal. The coloured possibilities and choices are narrative devices, not symptom, intelligence, communication access, or impairment measures. The story is not a legislative fact checker; Mika’s restrictions are an unspecified composite scenario. The five source comparisons do not demonstrate representativeness, treatment success or the quality of any actual clinical response. 
