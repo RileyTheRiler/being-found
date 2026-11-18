@@ -34,6 +34,11 @@ jobs:
       - name: Build production game
         run: npm run build
 
+      - name: 8.5.2A policy and QA manifest
+        run: |
+          node qa_flags.js
+          python3 qa_all.py --list
+
       - name: Pilot analysis self-test and empty template
         run: |
           python3 pilot_summary.py --self-test
