@@ -69,6 +69,9 @@
   }
   function setClosed(){
     if(!open)return;
+    // The parent game is inert while the sheet is open. Restore focus only
+    // after restoring game interactivity; an immediate focus() is ignored.
+    const returnFocus=bubbles.contains(document.activeElement) || document.activeElement===document.body;
     open=false;
     document.body.classList.remove('bf-action-dialog-open');
     shade.hidden=true;
@@ -78,6 +81,7 @@
     bubbles.removeAttribute('role');bubbles.removeAttribute('aria-modal');bubbles.removeAttribute('aria-label');
     bubbles.style.left='';bubbles.style.right='';bubbles.style.top='';bubbles.style.bottom='';bubbles.style.width='';bubbles.style.maxHeight='';
     scene.appendChild(bubbles);
+    if(returnFocus)focusReturnToTrigger();
   }
   const observer=new MutationObserver(()=>{
     if(bubbles.classList.contains('on'))setOpen();

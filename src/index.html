@@ -2731,7 +2731,7 @@ function announce(pv,nv,pName,nName,bodyChanged,delay){ if(!pv||!nv) return; con
 function renderAll(){ renderTop(); renderWorld(); renderGoals(); renderResult(); if(S.mode==='sandbox') renderTune(); }
 
 /* ---------- bubbles ---------- */
-function closeMenu(){ const current=S.menu,fromMenu=document.activeElement?.closest?.('#bubbles');const returnPin=fromMenu&&current?(current==='sim'?$('#simBtn'):current==='npc'?document.querySelector('.pin.npc'):document.querySelector('.pin[data-obj="'+current+'"]')):null;holdCancel();if(!S.menu)return;S.menu=null;$('#bubbles').classList.remove('on');renderPins();if(returnPin?.isConnected&&returnPin.getClientRects().length)returnPin.focus({preventScroll:true}); }
+function closeMenu(){ holdCancel(); if(!S.menu)return;S.menu=null;$('#bubbles').classList.remove('on');renderPins(); }
 function placeBubbles(anchor){ const b=$('#bubbles'), sc=$('#scene').getBoundingClientRect(), a=anchor.getBoundingClientRect(); b.classList.add('on');
   if(app.classList.contains('narrow')){ b.classList.add('sheet'); b.style.left='8px'; b.style.top='auto'; b.style.bottom='8px'; S.sheetH=b.offsetHeight+16; return; }
   b.classList.remove('sheet'); b.style.bottom='auto';
