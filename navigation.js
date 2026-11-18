@@ -10,7 +10,7 @@
   const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
   const anchors=Object.freeze({
     mirror: {x:255, y:FLOOR,face:'back', label:'Mirror'},
-    sofa:   {x:464, y:FLOOR,seatX:455,seatY:561,face:'front',label:'Sofa'},
+    sofa:   {x:464, y:FLOOR,seatX:455,seatY:516,face:'front',label:'Sofa'},
     window: {x:548, y:FLOOR,face:'back',label:'Window'},
     phone:  {x:690, y:FLOOR,face:'front',label:'Phone'},
     bed:    {x:854, y:FLOOR,lieX:836,lieY:485,face:'back',label:'Bed'},
