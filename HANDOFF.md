@@ -1,3 +1,12 @@
+## 8.5.2B draft — consent-safe route and guided input gates (branch only)
+
+**Work in progress** on `feat/8.5.2b-consent-route`; do not describe it as released or tested until its PR Actions run passes. Current main remains the verified 8.5.2A foundation with 8.5.1 gameplay.
+
+- Dele encounter records explicit outcomes (`left_note`, `visitor_left`, `resident_ended`, `ended_without_account`). Every ended encounter in Guided Story now goes to Walt, not automatically into Dele's authored interior. Standalone Rooms keeps the authored day separately. Chapter cues become Noor 1/3, Dele 2/3, Walt 3/3.
+- Guided dice disabled via `BFFlags`; one activation for heavy actions; state-dependent movement penalties removed for the guided policy in both movement paths; sealed actions remain tappable and are rendered without strike/lock imagery. Legacy free play is intended to retain its existing mechanics.
+- `qa_consent_branches.py` and `qa_route_no_capability.py` added to CI and the local manifest; `qa_guided84.py` updated for deliberate route change.
+- **Not complete:** pilot readiness, accessibility fixes, epilogue world-swap/hidden-fit redesign, narrative length review, lived-experience/assistive-technology review, full CI verification, and Vercel deployment.
+
 ## 8.5.2A foundation — merged and PR checks passed (November 18, 2026)
 
 Merged PR [#1](https://github.com/RileyTheRiler/being-found/pull/1) to main as `4fa9fc5d4145f422d434fb4557700299ef406a0d`. PR GitHub Actions [run 44342886769](https://github.com/RileyTheRiler/being-found/actions/runs/44342886769) completed successfully. Post-merge production deployment and separate main-branch workflow status are not asserted.
