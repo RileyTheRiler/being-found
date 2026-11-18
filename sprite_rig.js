@@ -68,9 +68,12 @@
   return movementDir;
  }
  function frame(o){
+  // An arrival can set pose='sit' while its action clock is still in its
+  // early 'reach' phase. The seated foot anchor must NEVER draw a standing
+  // sprite or the character appears embedded in the sofa.
+  if(o.pose==='sit'||o.pose==='floor')return ['sit',11];
   const synced=window.BFStageSync?.frame?.(S,o);if(synced)return synced;
   const sim=S.sim;
-  if(o.pose==='sit'||o.pose==='floor')return ['sit',11];
   if(o.moving&&sim.path?.length&&!reduce()){
    // A full authored 6-frame cycle advances per 92 scene px. The previous
    // 112 px cycle was difficult to perceive at ordinary room scales.
