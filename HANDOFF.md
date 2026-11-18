@@ -1,3 +1,11 @@
+## 8.5.2A foundation — merged and PR checks passed (November 18, 2026)
+
+Merged PR [#1](https://github.com/RileyTheRiler/being-found/pull/1) to main as `4fa9fc5d4145f422d434fb4557700299ef406a0d`. PR GitHub Actions [run 44342886769](https://github.com/RileyTheRiler/being-found/actions/runs/44342886769) completed successfully. Post-merge production deployment and separate main-branch workflow status are not asserted.
+
+This adds `DESIGN_GUARDRAILS.md`, flags infrastructure, local-only/non-pilot overrides, fail-closed pinned source loading, `qa_flags.js`, `qa_all.py` and `npm run qa`. **Game mechanics remain 8.5.1. The flags are not yet wired into guided dice, holds, speed, sealed options or visit logic.** No human pilot has occurred.
+
+**Next:** implement [issue #2](https://github.com/RileyTheRiler/being-found/issues/2) (8.5.2B) on a new branch, starting with explicit Dele exit/permission outcomes and full branch regression. Then connect flags to guided controls and remove apparent privileged world-reveal/answer-key logic. Read `AGENTS.md`, `DESIGN_GUARDRAILS.md`, `ROADMAP.md`, `SAVE_NOTES.md`, `EDITORIAL_REVIEW.md`, and `CLASSROOM_PILOT.md` before changing behavior.
+
 ## 8.5.2A foundation branch — implementation pending CI
 
 Branch: `feat/8.5.2a-foundation` from reviewed main `9030ecb2`. Version remains **8.5.1** until the gameplay release is verified. No guided mechanic, dialogue, or encounter behavior has changed in this branch.
