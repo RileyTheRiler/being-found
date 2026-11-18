@@ -53,6 +53,13 @@ def run_case(browser, name, width, height, touch):
         page.goto(URL, wait_until="load",timeout=30000)
         page.wait_for_timeout(450)
         page.evaluate("document.querySelector('#plSkip')?.click()")
+        if name=="desktop":
+            opening=page.get_by_role("button", name="Watch the animated opening (30 seconds)")
+            assert opening.is_visible(), "Cinematic replay must be on the title screen"
+            opening.click(timeout=8000)
+            assert page.locator("#prologue").is_visible(), "Opening did not appear"
+            page.locator("#prologue .pl-skiplink").click(timeout=8000)
+            assert page.evaluate("window.LWPrologue?.seen"), "Opening not marked seen"
         page.get_by_role("button", name="Start the guided story").click(timeout=8000)
         page.get_by_role("button", name="Enter Noor’s room").click(timeout=8000)
         page.wait_for_timeout(700)
@@ -64,6 +71,23 @@ def run_case(browser, name, width, height, touch):
         assert len(before["rooms"])==3,before
         assert before["overflow"]<=2,before
         assert len(before["active"])<=1,before
+        if name=="desktop":
+            layout=page.evaluate("""() => {
+              const guide=document.querySelector('#clGuide');
+              const dock=document.querySelector('#dock');
+              const scene=document.querySelector('#scene');
+              const a=guide?.getBoundingClientRect(),b=scene?.getBoundingClientRect();
+              return {
+                insideDock:guide?.parentElement===dock,
+                visible:!!a&&a.width>0&&a.height>0,
+                clearOfScene:!!a&&!!b&&!(a.left<b.right&&a.right>b.left&&a.top<b.bottom&&a.bottom>b.top),
+                stoveOther:document.querySelector('.pin[data-obj="stove"]')?.dataset.bfOtherRoom,
+                sofaOther:document.querySelector('.pin[data-obj="sofa"]')?.dataset.bfOtherRoom
+              };
+            }""")
+            result["desktopLayout"]=layout
+            assert layout["insideDock"] and layout["visible"] and layout["clearOfScene"], layout
+            assert layout["sofaOther"]=="false" and layout["stoveOther"]=="true", layout
         assert not errors,errors
 
         kitchen=page.locator('#bf-room-nav [data-room="kitchen"]')

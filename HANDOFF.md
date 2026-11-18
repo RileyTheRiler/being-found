@@ -1,3 +1,14 @@
+## Desktop opening and classroom reading pass — review branch (November 18, 2026)
+
+**Branch:** `fix/desktop-guide-and-opening` (separate from draft 8.5.2B PR #3). Built on `main` commit `6902786f42b5862cd32a9b087ecbb7775ce433e1`. **Not merged or deployed.** Version and narrative mechanics remain 8.5.1.
+
+- The ~31-second prologue already existed. It auto-launched only when `beingfound.opening.v1` had not been set, reduced motion was off and `noopening` was absent. On revisits, replay was buried under the title's other-options disclosure. The title now exposes a direct **Watch the animated opening (30 seconds)** control, and finishing/skipping updates `LWPrologue.seen` in the current tab.
+- On wide landscape desktop (>=1300px), `syncGuide()` now puts the classroom Guide **below** `#result` inside `#dock`, preventing the floating overlay from obscuring room art. The previously existing tablet-landscape and narrow-screen behavior remains.
+- `room.js` derives `data-bf-other-room` markers from the same `currentSection()` used by tab ARIA state. Desktop inactive-room markers fade without losing pointer or keyboard access; active/target/ringing markers retain emphasis.
+- `qa_smoke.py` now exercises prologue replay and skip, Guide containment and synchronized marker room flags at 1440×900.
+- The black circular icon at the right edge of the supplied screenshot is **not yet identified in the running DOM**; no speculative removal was made. Check in an extension-free browser and identify its owner before editing.
+- Pending: GitHub Actions green on the review branch, direct browser visual review, real-device/assistive-tech tests, eventual rebase after 8.5.2B. Do not claim these changes are live at `being-found.vercel.app` until merged and deployment verified.
+
 ## Vercel production hosting repair — November 18, 2026
 
 **Verified public URL:** https://being-found.vercel.app/ (independent page fetch returned title `Being Found 8.5.1`, not 404). The second assigned domain `https://being-found-rileys-projects-5252c03b.vercel.app/` also returned the game title.

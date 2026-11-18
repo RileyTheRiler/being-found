@@ -7,7 +7,7 @@
  const guide = $('#clGuide');
  const menu = $('#viewMenu');
  const bubbles = $('#bubbles');
- const isSmall = () => innerWidth < 900 || (innerWidth <= 1100 && innerHeight > innerWidth) || (innerWidth <= 1500 && innerWidth > innerHeight && innerHeight >= 520);
+ const isSmall = () => innerWidth < 900 || (innerWidth <= 1100 && innerHeight > innerWidth) || (innerWidth < 1300 && innerWidth > innerHeight && innerHeight >= 520);
  const savedFocus = (() => {try{return sessionStorage.getItem('being-found.focus-view')==='1';}catch{return false;}})();
  let focus = savedFocus;
  let guideOpen = false;

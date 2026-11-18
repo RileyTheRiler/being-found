@@ -2920,7 +2920,7 @@ function closeModals(){ document.querySelectorAll('.modal').forEach(m=>m.classLi
 function showTitle(){ const sv=S.saved&&FLATS[S.saved.flatIx]; modal('mTitle',
   '<div class="title-head"><div class="titlelogo"><i class="ring"></i><div><div class="eyebrow">A story about ordinary life, possibility, and listening</div><h1>Being Found</h1></div></div><button class="title-help" type="button" data-how-open aria-label="How to play">? <span>How to play</span></button></div>'+ 
   '<p class="lede">One familiar room. Different lives. Notice what seems possible, then question what you thought you understood.</p>'+ 
-  '<div class="point enc-entry"><b class="who">Guided classroom story</b><p>Start with Noor, meet Dele before exploring his day, then listen to Walt in a clinical session.</p><button class="cta title-primary" type="button" data-class="open">'+icon('play')+'Start the guided story</button></div>'+ 
+  '<div class="point enc-entry"><b class="who">Guided classroom story</b><p>Start with Noor, meet Dele before exploring his day, then listen to Walt in a clinical session.</p><button class="cta title-primary" type="button" data-class="open">'+icon('play')+'Start the guided story</button><button class="cta ghost title-opening" type="button" data-prologue="1">Watch the animated opening (30 seconds)</button></div>'+ 
   (sv?'<button class="cta ghost title-resume" data-go="resume">Continue '+esc(sv.name)+'’s room</button>':'')+
   '<details class="more title-more"><summary>Other characters and options</summary><div class="btnrow"><button class="cta ghost" data-go="start">Begin Noor’s room separately</button><button class="cta ghost" data-go="flats">Choose a character</button><button class="cta ghost" type="button" data-dele="1">Meet Dele at his door</button><button class="cta ghost" type="button" data-enc="walt">Walt’s SLP session</button><button class="cta ghost" data-go="sources">Sources and limits</button><button class="cta ghost" type="button" data-prologue="1">Watch the opening</button><button class="cta ghost" data-music="1" id="titleMusic">Sound is off. Turn it on</button></div></details>'+ 
   '<p class="small title-disclaimer">Fictional accounts inspired by Matthew Ratcliffe. They cannot reveal someone’s private experience. Lived-experience review is still needed.</p>'); }
@@ -5070,7 +5070,20 @@ const panel=document.createElement('div'), guide=document.createElement('aside')
 panel.id='clOverlay'; panel.hidden=true; panel.setAttribute('aria-label','Being Found classroom pathway');panel.setAttribute('role','dialog');panel.setAttribute('aria-modal','true');
 guide.id='clGuide'; guide.hidden=true;guide.setAttribute('aria-label','Classroom pathway guidance');
 document.body.append(panel,guide);
-function syncGuide(){ const dock=document.getElementById('dock'), app=document.getElementById('app'); const tabletDock=innerWidth>=900&&innerWidth<1300&&app?.classList.contains('tablet-land')&&dock?.getClientRects().length>0; const within=run.active&&['noor','room'].includes(run.stage)&&tabletDock; if(within&&guide.parentElement!==dock)dock.prepend(guide);else if(!within&&guide.parentElement!==document.body)document.body.appendChild(guide); }
+function syncGuide(){
+ const dock=document.getElementById('dock'),app=document.getElementById('app');
+ const available=!!dock?.getClientRects().length;
+ const tabletDock=available&&innerWidth>=900&&innerWidth<1300&&app?.classList.contains('tablet-land');
+ const desktopDock=available&&innerWidth>=1300&&innerWidth>innerHeight&&app?.classList.contains('wide');
+ const inRoom=run.active&&['noor','room'].includes(run.stage);
+ if(inRoom&&(tabletDock||desktopDock)){
+   // Tablets retain the compact Guide above the story. Large desktop screens
+   // give the story priority and put the Guide underneath the narrative.
+   if(guide.parentElement!==dock||desktopDock&&guide!==dock.lastElementChild){
+     if(desktopDock)dock.appendChild(guide);else dock.prepend(guide);
+   }
+ }else if(guide.parentElement!==document.body)document.body.appendChild(guide);
+}
 const run={active:false,stage:'idle',noor:new Set(),dele:new Set(),pre:{},post:{},dVisit:null,wVisit:null,seen:0,previousSave:null,guideCollapsed:false,paceStarted:null,paceMarks:[]};
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 /* Local-only playtest timing. No server calls, storage, countdown, or scoring. */
@@ -5346,7 +5359,7 @@ function start(sound){ if(!active||running) return;
   if(sound){ try{ if(window.LWAudio&&!window.LWAudio.playing){ const p=window.LWAudio.toggle(); if(p&&p.catch) p.catch(()=>{}); } }catch(e){} }
   elGate.hidden=true; elSkip.hidden=false; running=true; T=0; last=performance.now(); cancelAnimationFrame(raf); raf=requestAnimationFrame(frame); elSkip.focus({preventScroll:true}); }
 function finish(){ if(!active) return; active=false; running=false; cancelAnimationFrame(raf);
-  try{ localStorage.setItem(KEY,'1'); }catch(e){}
+  seen=true; try{ localStorage.setItem(KEY,'1'); }catch(e){}
   if(app) app.inert=false; window.LW_PAUSE=false; syncTitle();
   const gone=()=>{ root.hidden=true; root.classList.remove('pl-out'); };
   if(calm()) gone(); else { root.classList.add('pl-out'); setTimeout(gone,950); }

@@ -57,6 +57,17 @@ def check(browser, label, width, height, mobile):
         assert s["overflow"] <= 2,s
         if mobile:
             open_mobile_guide(page)
+        if not page.locator('#clGuide .cl-guide-skip[data-cl="dele"]').is_visible():
+            print("GUIDE VISIBILITY DIAGNOSTIC",page.evaluate("""() => {
+              const e=document.querySelector('#clGuide'),dock=document.querySelector('#dock'),
+                skip=e?.querySelector('.cl-guide-skip'),app=document.querySelector('#app');
+              const info=n=>n?{hidden:n.hidden,display:getComputedStyle(n).display,
+                visibility:getComputedStyle(n).visibility,rect:n.getBoundingClientRect().toJSON(),
+                class:n.className,tag:n.tagName}:null;
+              return {guide:info(e),skip:info(skip),dock:info(dock),app:info(app),
+                guideParent:e?.parentElement?.id,bodyClass:document.body.className,
+                guideHtml:e?.innerHTML?.slice(0,500)};
+            }"""),flush=True)
         assert page.locator('#clGuide .cl-guide-skip[data-cl="dele"]').is_visible(), "Noor chapter Guide must remain visible"
         page.locator('#clGuide .cl-guide-skip[data-cl="dele"]').click()
         assert "next door" in page.locator("#clOverlay h2").inner_text().lower()
