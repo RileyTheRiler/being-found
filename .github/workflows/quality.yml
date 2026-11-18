@@ -95,6 +95,9 @@ jobs:
       - name: Five viewport smoke tests
         run: python3 qa_smoke.py
 
+      - name: Character walking and sofa depth
+        run: python3 qa_character_motion.py
+
       - name: Route and menu tests
         run: python3 menu_check.py
 
