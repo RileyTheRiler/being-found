@@ -1,11 +1,12 @@
-## Character walk-cycle and sofa depth — November 18, 2026
+## Character walking and sofa depth — merged November 18, 2026
 
-**Branch:** `fix/character-walk-and-sofa-depth`, based on main `af6ee8af28d2f0f25cf8ff2d258a856cec16dfc3`. Presentation-only changes; no narrative, skill checks, save schema or classroom routing altered.
+**Main implementation:** `d290672bb85a14c8db5b6a31449ed929f342e796`, [PR #5](https://github.com/RileyTheRiler/being-found/pull/5) merged. Pre-merge [GitHub Actions run 44414001551](https://github.com/RileyTheRiler/being-found/actions/runs/44414001551) completed **32/32 successful steps**, including the desktop and phone `qa_character_motion.py` test. Vercel production deployment `dpl_DadtbP9LcVVDYBnw8pmTjcHKE7gs` is `READY` on the same code commit, with `being-found.vercel.app` assigned.
 
-- `sprite_rig.js`: the authored atlases already contain six walk frames and left/right directional rows. `onStep` was never called by the 2.5D renderer, so native navigation could appear front-facing and cadence could fail to follow movement speed. The renderer now sends scene-space foot movement every drawn frame; sprite frame and direction follow actual step distance/direction, with reduced-motion still suppressing the walk cycle.
-- `room.js`: sofa front apron paints *behind* walking characters rather than slicing across their legs. For actual sit poses only, it paints over the seated lap as a small foreground occlusion. Other residents' isometric seating fallback is aligned to the 2.5D sofa center, and two seated people take separate cushion positions. Seated NPCs in authored visits can now render on the sofa.
-- `qa_character_motion.py` checks forward/back walk frames, direction, root sitting position and modeled Tomas/Dele sitting at 1440x900 and 390x844. Produces screenshots for review. Added to `qa_all.py` and GitHub Actions.
-- **Pending:** confirm CI green and visual screenshots. The three 3D-authored atlases are existing assets, not re-rigged. Manual screenshots and real-device testing remain needed. The separate draft 8.5.2B gameplay PR is unaffected.
+- Three modeled residents' six-frame walking cycles follow actual scene-space travel distance and left/right direction, rather than relying on a disconnected pose clock. Reduced-motion disables stepping animation.
+- The 2.5D sofa's front apron now renders behind a passing walker and in front of a truly seated lap. The main seated actor and seated visitor/NPC share the illustrated sofa at aligned cushion positions; seated NPCs appear in visits.
+- `qa_character_motion.py` is part of local `npm run qa` and CI. It checks walking direction and frame progress plus Noor, Tomas and Dele seated states at 1440×900 and 390×844, with screenshots in CI artifacts.
+- **Not yet independently validated:** detailed real-device/assistive-tech animation review, manual image-based validation of all seating frames, and human usability testing. The authored character sprite atlases were not regenerated.
+- The unfinished consent-safe gameplay work remains separate in draft PR #3.
 
 ## Desktop opening and classroom reading pass — review branch (November 18, 2026)
 
