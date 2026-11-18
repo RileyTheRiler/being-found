@@ -41,10 +41,11 @@ python3 visit_check.py
 ```
 Python Playwright is required. Browser executable auto-detects `google-chrome` or `chromium`; override with `BF_CHROME`. Screenshots go to `qa-artifacts/` by default. Legacy test snapshots from `e2e_sync.py` and `test_prop_states.py` are written to the repository root and ignored by git.
 
-## Release 8.5.1 — heavy-action input parity (Actions pending)
+## Release 8.5.1 — heavy-action input parity (build anchor repair pending CI)
 - Preserve **the same pointer hold and three-activation action rule** and all state, action outcomes and save behavior. For keyboard and assistive-tech generated clicks, use the existing three-activation path instead of starting a 1.3-second hidden timer. Return focus to the originating room marker after action-menu dismissal when focus was inside the menu.
 - Expose the transient instruction as a polite accessibility status and describe heavy actions as an authored input cue, not a motor test. Add `qa_heavy_access.py` for keyboard and pointer input; source/build text guards and a dedicated CI step check the behavior. Manual switch/TalkBack/VoiceOver testing remains necessary.
 - Fixed the nested `package-lock.json` version left at 8.4.4 by the prior release script; package and lock entries now both read 8.5.1. The production build still succeeded in 8.5.0, but version metadata should be consistent.
+- **CI diagnostic:** the first 8.5.1 implementation `4a6625a62e06956da68dd66cebfc9b6efdbc9c49` failed at `npm run build`: `build.js` still searched for the old keyboard-handler text `if(e.detail===0)`. Its exact-string injection anchor is now updated to the three-activation handler while retaining the `bfBypass` branch. This follow-up code commit is **unverified until its own Actions run**.
 - **Previous release verified:** 8.5.0 `11023d8cd8bd844e2db9a040c7000586e161ee99`, [Actions run 44266165147](https://github.com/RileyTheRiler/being-found/actions/runs/44266165147), all 29 steps passed.
 - **Not established:** human classroom completion, real motor/assistive-tech usability, living-experience validation, or Vercel deployment.
 

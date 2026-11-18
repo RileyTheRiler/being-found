@@ -52,10 +52,11 @@ const fs=require('node:fs'),path=require('node:path');
  inject('const key=dirKey(m);',`const key=dirKey(m);
     if(!key && m.st!=='sealed' && !m.a.walk && window.BFCinema?.cameraAllowed)
       dirRun([{shot:'near',focus:['sim',m.obj],spot:m.obj,hold:2.4},DIR_END]);`);
- // The original heavy-action long press remains for ordinary exploration.
- // Only authored checks can bypass it after the player opts to roll or skip.
- inject("if(m.st==='heavy'){ if(e.detail===0)",
-   "if(m.st==='heavy'){ if(t.dataset.bfBypass==='1'){choose(m);return;} if(e.detail===0)");
+ // The original pointer hold and three-activation threshold remain in place.
+ // Keyboard-generated clicks also count as activations; no hidden keyboard timer.
+ // Only authored checks can bypass the requirement after the player opts to roll or skip.
+ inject("if(m.st==='heavy'){ if(!t.dataset.held){",
+   "if(m.st==='heavy'){ if(t.dataset.bfBypass==='1'){choose(m);return;} if(!t.dataset.held){");
  // Compatibility fallback for other residents: their existing A* grid is untouched.
  inject('s.path=findPath([s.x,s.y],pt);',`s.path=findPath([s.x,s.y],pt);
   s.path=window.BFMotion?.smoothPath?.([s.x,s.y],s.path,losClear)||s.path;
