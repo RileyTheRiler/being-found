@@ -89,6 +89,9 @@ jobs:
       - name: Dele consent and exit branch regression
         run: python3 qa_consent_branches.py
 
+      - name: Guided input parity and capability regression
+        run: python3 qa_route_no_capability.py
+
       - name: Guided keyboard and reduced-motion accessibility regression
         run: python3 qa_access85.py
 
