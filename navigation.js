@@ -103,7 +103,8 @@
     if(state.flat!==S.flat.id||state.phase!==(S.phaseKey||'')){cancel(S);return false;}
     const direction=state.orientation;
     const remaining=Math.abs(state.goal.x-state.x);
-    const speed={rooted:182,access:174,upheaval:155,depleted:84,detached:135,uncanny:164,overloaded:120}[S.vars?.attune]||154;
+    const a=((window.BFFlags?.guided || document.body?.classList.contains('cl-route')) && window.BFFlags?.moodSpeed !== true)?'rooted':S.vars?.attune;
+    const speed={rooted:182,access:174,upheaval:155,depleted:84,detached:135,uncanny:164,overloaded:120}[a]||154;
     const elapsed=(performance.now()-state.startedAt)/1000;
     const slow=matchMedia('(prefers-reduced-motion:reduce)').matches;
     const accelerate=slow?1:clamp(.38+elapsed/.32*.62,.38,1);
