@@ -8,7 +8,7 @@
  const app=document.getElementById('app'),scene=document.getElementById('scene'),stage=document.getElementById('stage');
  if(!app||!scene||!stage)return;
  const SW=1600,SH=720,FLOOR=574;
- const pins={mirror:[191,307],sofa:[464,420],window:[518,279],phone:[690,399],bed:[849,409],easel:[973,345],stove:[1140,392],door:[1442,419]};
+ const pins={mirror:[191,307],sofa:[354,425],window:[518,279],phone:[690,399],bed:[849,409],easel:[973,345],stove:[1140,392],door:[1442,419]};
  const sections={living:{x:410,name:'Living'},sleeping:{x:814,name:'Bedroom'},kitchen:{x:1255,name:'Kitchen'}};
  const roomByObject={mirror:'living',sofa:'living',window:'living',phone:'sleeping',bed:'sleeping',easel:'sleeping',stove:'kitchen',door:'kitchen'};
  const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
