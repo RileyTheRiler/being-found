@@ -1,4 +1,4 @@
-# Being Found 8.4.4 (narrative review and classroom pilot readiness)
+# Being Found 8.5.1 (guided classroom accuracy and accessibility)
 
 Editable source for Being Found. This line continues from the 8.3.7 preview.
 
@@ -39,6 +39,8 @@ python3 qa_focus.py                 # Reflect background isolation, keyboard foc
 python3 qa_audio.py                 # soundtrack off by default, enable, volume and mute
 python3 qa_flats_stove.py           # kitchen actions in every flat; Dele's phone hint
 python3 qa_guided84.py              # guided narrative, Dele encounter, ending and reduced motion
+python3 qa_access85.py              # keyboard guide, focus and reduced-motion scroll
+python3 qa_heavy_access.py          # keyboard/pointer heavy-action parity with story checks off
 python3 qa_editorial.py             # source + production narrative wording guard
 python3 qa_js_syntax.py            # parse source and generated JavaScript, catch early syntax errors
 python3 qa_wren_ilse.py            # Wren/Ilse runtime editorial assertions on phone and desktop
@@ -85,3 +87,9 @@ See `SAVE_NOTES.md` for the step log.
 ## Classroom pilot (8.4.4)
 
 Use `CLASSROOM_PILOT.md` and `pilot/FACILITATOR_SHEET.md` for an independent first-time learner pilot. Blank anonymous recording template: `pilot/observations.csv`. Run `python3 pilot_summary.py --self-test` and then `python3 pilot_summary.py pilot/observations.csv` after entering real, consented observations. No pilot participants or results are included. `pilot/ACCESSIBILITY_CHECKLIST.md` lists manual device testing still needed.
+
+## 8.5.1 verified implementation
+
+- 8.5.0 implementation: `11023d8cd8bd844e2db9a040c7000586e161ee99`, [GitHub Actions 44266165147](https://github.com/RileyTheRiler/being-found/actions/runs/44266165147), 29/29 successful.
+- 8.5.1 verified code: `c97946c35495f58fbd26e1bbf0dabce485831118`, [GitHub Actions 44269157774](https://github.com/RileyTheRiler/being-found/actions/runs/44269157774), 30/30 successful. Build, editorial, guided-route, five-viewports, save/resume, encounters, story checks and the new keyboard/pointer regressions pass.
+- Gameplay remains fictional, not a clinical assessment or validated empathy simulation. Classroom pilot, compensated lived-experience editorial consultation and real TalkBack/VoiceOver/switch access tests have **not** occurred. A passing browser suite does not validate participant learning or live accessibility. Vercel deployment is unverified.

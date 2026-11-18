@@ -61,3 +61,7 @@ Browser QA tests now cover keyboard focus when the classroom Guide expands or co
 ## 8.5.1 manual input parity check
 
 Before a classroom session, attempt a heavy room action using (1) three keyboard Enter or Space activations, (2) three ordinary pointer taps and (3) a pointer hold, and confirm that the same authored action results. Try the preferred alternative input method separately. Do not infer accessibility from the automated desktop/phone Chrome regression alone. Observe whether the extra input confuses the philosophical distinction; record an issue rather than treating the player as failing a skill test.
+
+## 8.5.1 automated preflight outcome
+
+The 8.5.1 implementation passed 30/30 automated GitHub Actions steps in [run 44269157774](https://github.com/RileyTheRiler/being-found/actions/runs/44269157774) at `c97946c35495f58fbd26e1bbf0dabce485831118`. This includes keyboard and pointer triple-activation behavior with optional Story attempts disabled and guided reduced-motion/focus regressions. **This does not replace the real-device checklist, independent first-time classroom pilot, or compensated lived-experience consultation.** The observation template remains blank; do not report pilot outcomes until sessions occur.
