@@ -89,3 +89,7 @@ Sources examined:
 - Kapp et al. (2019), autistic adults and stimming: https://doi.org/10.1177/1362361319829628
 
 **Caution:** Each resident is invented; revised words still need compensated lived-experience appraisal. The coloured possibilities and choices are narrative devices, not symptom, intelligence, communication access, or impairment measures. The story is not a legislative fact checker; Mika’s restrictions are an unspecified composite scenario. The five source comparisons do not demonstrate representativeness, treatment success or the quality of any actual clinical response. 
+
+## 8.4.4 classroom readiness (not field evidence)
+
+The first-time user packet, observational rubric, blank CSV and nonnetworked summary script are in `pilot/` and `pilot_summary.py`; see `CLASSROOM_PILOT.md`. The editorial desk reviews cover eight fictional residents, but this does not amount to first-person validation. No participants, completion times or comprehension responses have yet been recorded. Avoid treating rubric frequencies or 10–15-minute target counts as evidence of causal learning.

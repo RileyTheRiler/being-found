@@ -129,7 +129,7 @@ Acceptance:
 
 ### M5 — Classroom pilot and revision
 
-**8.4.2 preparation:** Added a local-only chapter timing readout to the facilitator discussion and a concise `CLASSROOM_PILOT.md` observation protocol. No participants tested or 10–15 minute completion time established.
+**8.4.4 preparation:** Retains local-only chapter timing and adds an anonymized pilot data sheet, a non-graded concept rubric, facilitator script, manual accessibility checklist and local summary tool. No participants tested or 10–15 minute completion time established.
 
 **Goal:** Verify learning and usability, not merely aesthetic appeal.
 

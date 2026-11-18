@@ -1,0 +1,6 @@
+participant_id,device,input_mode,completed,elapsed_seconds,first_action_seconds,assist_count,blocker_count,blocker_stage,possibility_vs_ability,observation_vs_inference,uncertainty_and_consent,fiction_not_diagnosis,assumed_fiction_fact
+P01,,,,,,,,,,,,,
+P02,,,,,,,,,,,,,
+P03,,,,,,,,,,,,,
+P04,,,,,,,,,,,,,
+P05,,,,,,,,,,,,,

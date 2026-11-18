@@ -1,4 +1,4 @@
-# Being Found 8.4.3: additional narrative desk reviews
+# Being Found 8.4.4: classroom pilot packet
 
 ## Run it
     npm run build        # node build.js && node postbuild.js, no dependencies to install
@@ -77,6 +77,12 @@ Python Playwright is required. Browser executable auto-detects `google-chrome` o
 - Added `qa_remaining_scenes.py`, extended `qa_editorial.py`, and added the new browser step to quality.yml.
 - This commit must be checked against its own GitHub Actions run before calling 8.4.3 verified.
 - Next: classroom pilot instruments, facilitator checklist and dry-run protocol, then separate CI.
+
+## Release 8.4.4 — pilot readiness packet (Actions pending)
+- Added `pilot/FACILITATOR_SHEET.md`, `pilot/SCORING_GUIDE.md`, `pilot/ACCESSIBILITY_CHECKLIST.md`, five unfilled pseudonymous rows in `pilot/observations.csv`, and `pilot_summary.py` for local aggregate statistics.
+- Local script was self-tested for medians, ranges, denominators, first-action and blocker counts. Added the script self-test and empty-template validation to GitHub Actions. No in-game mechanics or save/timing scripts were changed.
+- **Verified preceding implementation:** 8.4.3 `6213ae0ba8f3639b886cfb261bfacc9be43d01a6`, [Actions run 44262661463](https://github.com/RileyTheRiler/being-found/actions/runs/44262661463) **success, all 27 steps**. Do not claim 8.4.4 verified before its own run passes.
+- Next: recruit consenting first-time SLP learners for the actual pilot, independently time completion, record blockers and reflections, and separately arrange compensated lived-experience and real-screen-reader tests. No human pilot conducted.
 
 ## Verified 8.4.2 baseline for next chat
 - **Branch:** `main`; verified implementation SHA `046322d5c46ce7b0a9d8d0a133fdbc2f31afaa30`.

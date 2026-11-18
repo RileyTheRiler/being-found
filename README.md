@@ -1,4 +1,4 @@
-# Being Found 8.4.3 (narrative review and classroom pilot readiness)
+# Being Found 8.4.4 (narrative review and classroom pilot readiness)
 
 Editable source for Being Found. This line continues from the 8.3.7 preview.
 
@@ -81,3 +81,7 @@ human usability and pacing protocol; no pilot results exist yet.
 See `SAVE_NOTES.md` for the step log.
 
 8.4.3 revises Tomas, Mika, Walt, Ruth and Kai for subjectivity, clinical uncertainty and non-deterministic language. These are desk reviews, not lived-experience validation.
+
+## Classroom pilot (8.4.4)
+
+Use `CLASSROOM_PILOT.md` and `pilot/FACILITATOR_SHEET.md` for an independent first-time learner pilot. Blank anonymous recording template: `pilot/observations.csv`. Run `python3 pilot_summary.py --self-test` and then `python3 pilot_summary.py pilot/observations.csv` after entering real, consented observations. No pilot participants or results are included. `pilot/ACCESSIBILITY_CHECKLIST.md` lists manual device testing still needed.

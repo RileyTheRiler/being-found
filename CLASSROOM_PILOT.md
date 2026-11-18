@@ -1,4 +1,4 @@
-# Being Found — classroom pacing and comprehension pilot (8.4.2)
+# Being Found — classroom pacing and comprehension pilot (8.4.4)
 
 **Protocol, not results.** The 10–15 minute classroom target has **not** been measured with first-time players. Automated Playwright runs test transitions at machine speed and do not supply a human completion-time estimate.
 
@@ -41,3 +41,15 @@ Tell participants: “Play the Guided Story as you would on your own. We are ass
 - **Revision rule:** Fix common blockers or harmful misinterpretations before adding content. If the route consistently exceeds 15 minutes, remove repetitive explanation or optional detours before shortening encounters or removing consent-based choices.
 
 **Important:** The in-app timing shows elapsed wall time from the in-tab session clock and includes idle periods. Do not interpret it as focused reading time, reading speed, or demonstrated learning.
+
+## Ready-to-run 8.4.4 packet
+
+- [Facilitator sheet](pilot/FACILITATOR_SHEET.md): recruiting, voluntary participation, neutral script, observation and independent debrief.
+- [Scoring guide](pilot/SCORING_GUIDE.md): non-graded 0–2 descriptions for four concepts, plus explicit fictional-fact confusion.
+- [Blank anonymous CSV](pilot/observations.csv): five empty slots, no identifying personal data.
+- [Local summary script](pilot_summary.py): `python3 pilot_summary.py --self-test` and `python3 pilot_summary.py pilot/observations.csv`.
+- [Real-device assistive-tech checklist](pilot/ACCESSIBILITY_CHECKLIST.md): manual TalkBack/VoiceOver and keyboard checks; not yet carried out.
+
+The CSV template records **zero** sessions. Its summary must never be represented as pilot outcomes. Time to first meaningful action is now operationalized as the first room-object/choice after Noor’s room loads; keep this definition consistent across sessions. If the sample is used for research dissemination, confirm appropriate institutional review and consent before data collection.
+
+Five learners are appropriate for finding early usability failures, but cannot establish a typical completion time, an intervention effect or a psychometric measure. See https://www.nngroup.com/articles/5-test-users-qual-quant/ for the distinction between formative and quantitative evidence.

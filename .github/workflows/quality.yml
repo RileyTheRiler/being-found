@@ -34,6 +34,11 @@ jobs:
       - name: Build production game
         run: npm run build
 
+      - name: Pilot analysis self-test and empty template
+        run: |
+          python3 pilot_summary.py --self-test
+          python3 pilot_summary.py pilot/observations.csv
+
       - name: Parse source and built JavaScript
         run: python3 qa_js_syntax.py
 
