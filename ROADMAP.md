@@ -1,3 +1,16 @@
+## Immediate release work — reviewed November 18, 2026
+
+The independent 8.5.1 code review and follow-up implementation plan identify blocking concerns for a student pilot. The current 8.5.1 gameplay is **not pilot-ready**. The revised, source-checked sequence is in [DESIGN_GUARDRAILS.md](DESIGN_GUARDRAILS.md).
+
+- **8.5.2A (foundation):** centralized dynamic flags, fail-closed local build, explicit QA manifest and existing CI extension. A feature branch is under verification; **no gameplay behavior changed**.
+- **8.5.2B (required before merge of 8.5.2 gameplay):** disable capability-coded input on guided path; explicit resident consent and early-depart branches; remove any suggestion that a single question reveals private subjective reality or unlocks a universal fitting response; add branch-complete tests.
+- **8.5.3:** accessibility, modal focus, layout overlaps, and seated/lying actor placement.
+- **8.5.4:** branch-aware pacing and focused narrative/clinical edits without sacrificing Walt's meaningful silences.
+- **8.5.5:** participant-facing fixed contexts and measured formative pilot instruments, followed by independent lived-experience and assistive-technology checks.
+- **8.6:** decide optional free-play mechanics after evidence; gradually extract narrative data and event-driven state handling.
+
+Do not infer educational benefit or a 10–15 minute completion from automated tests. See `CLASSROOM_PILOT.md` for current unvalidated protocol.
+
 # Being Found — Development Roadmap
 
 **Status:** Active roadmap. Release 8.5.0 passed 29/29 Actions steps; 8.5.1 adds keyboard parity for repeated-input heavy actions and passed 30/30 GitHub Actions steps at commit `c97946c35495f58fbd26e1bbf0dabce485831118` (run 44269157774); no human pilot or assistive-technology validation has occurred. M0 regression baseline completed; 8.4.0 implements the guided narrative; 8.4.1–8.4.3 include initial textual desk reviews of all eight fictional residents. A local-only facilitator pacing readout is implemented. Human pacing, lived-experience validation and accessibility testing remain outstanding. Lived-experience consultation and classroom pilot remain outstanding. Browser validation is documented in `HANDOFF.md`.  

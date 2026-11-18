@@ -2,14 +2,9 @@
    cinematic details and a collision-aware motion refinement. */
 const fs=require('node:fs'),path=require('node:path');
 (async()=>{
- let html;
  const local=path.join(__dirname,'src','index.html');
- if(fs.existsSync(local))html=fs.readFileSync(local,'utf8');
- else {
-   const response=await fetch('https://being-found-qbwildbak-rileys-projects-5252c03b.vercel.app/');
-   if(!response.ok)throw Error(`Pinned original unavailable: ${response.status}`);
-   html=await response.text();
- }
+ if(!fs.existsSync(local))throw Error('Required pinned game source missing: src/index.html. Build stopped; no remote fallback.');
+ let html=fs.readFileSync(local,'utf8');
  if(!html.includes('Being Found 6.7')||html.length<200000||!html.includes('window.LW=')||!html.includes('</body>'))
   throw Error('Not the complete original game; refusing to deploy.');
  function inject(original,replacement){
@@ -103,7 +98,7 @@ const fs=require('node:fs'),path=require('node:path');
     ctx.translate(ox,oy);ctx.rotate(-o.bfGesture*.9);ctx.translate(-ox,-oy);}
   ${arm}
   ctx.restore();`);
- const version=require('./package.json').version, css=['dice','ui','story','cinema','movement','art','sprite_rig','patterns','interaction','room'], js=['patterns','difficulty','story','dice','ui','cinema','movement','art','sprite_rig','interaction','room','navigation','sync'];
+ const version=require('./package.json').version, css=['dice','ui','story','cinema','movement','art','sprite_rig','patterns','interaction','room'], js=['flags','patterns','difficulty','story','dice','ui','cinema','movement','art','sprite_rig','interaction','room','navigation','sync'];
  html=html.replace(/<\/head\s*>/i,'<link rel="preload" as="image" type="image/webp" href="assets/noor_atlas.webp">\n'+css.map(n=>`<link rel="stylesheet" href="${n}.css?v=${version}">`).join('\n')+'\n</head>');
  html=html.replace(/<\/body\s*>/i,js.map(n=>`<script defer src="${n}.js?v=${version}"></script>`).join('\n')+'\n</body>');
  html=html.replace('Being Found 6.7 ·',`Being Found ${version} ·`);
