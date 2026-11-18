@@ -60,3 +60,14 @@ for label, text_body in [("source", source), ("production", built)]:
     for retired in ["grief as a process with a direction", "this flat takes no side on them", "That pattern looks like depression", "Your mouth works perfectly", "singing, closed for good", "Kai’s world was never emptied. It was overfilled."]:
         assert retired not in text_body, f"{label}: categorical text retained: {retired}"
 print("PASS 8.4.3 remaining-resident desk edits in source and production")
+
+for label, text_body in [("source", source), ("production", built)]:
+    for cue in [
+        "This is an authored cue, not a measure of ability.",
+        "His word-finding difficulty does not explain the change by itself.",
+        "During a group session, a client contributes less than usual.",
+        "const focusAction=guide.contains(document.activeElement)",
+    ]:
+        assert cue in text_body, f"{label}: missing 8.5.0 classroom cue: {cue}"
+    assert "Everything takes effort here." not in text_body, f"{label}: obsolete ability generalization"
+print("PASS 8.5.0 classroom inference, mechanics caveat and keyboard guard")

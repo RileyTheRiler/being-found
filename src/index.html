@@ -3092,7 +3092,7 @@ document.addEventListener('click',e=>{ const t=e.target.closest('button,canvas,[
   if(t.id==='simBtn'||t.id==='btnBody'){ if(S.menu==='sim') closeMenu(); else openBodyMenu(); return; }
   if(t.matches('.bub')){ if(t.dataset.body){ chooseBody(t.dataset.body); return; } const m=S.menuItems[+t.dataset.i];
     if(S.menu==='npc'){ chooseGesture(m); return; }
-    if(m.st==='heavy'){ if(e.detail===0) holdStart(t); else if(!t.dataset.held){ t.dataset.taps=(+t.dataset.taps||0)+1; if(+t.dataset.taps>=3){ choose(m); return; } t.classList.remove('nudge'); void t.offsetWidth; t.classList.add('nudge'); toast('Press and hold, or tap three times. Everything takes effort here.','tool'); } return; }
+    if(m.st==='heavy'){ if(e.detail===0) holdStart(t); else if(!t.dataset.held){ t.dataset.taps=(+t.dataset.taps||0)+1; if(+t.dataset.taps>=3){ choose(m); return; } t.classList.remove('nudge'); void t.offsetWidth; t.classList.add('nudge'); toast('Press and hold, or tap three times. This is an authored cue, not a measure of ability.','tool'); } return; }
     choose(m); return; }
   if(t.dataset.walk){ if(t.dataset.walk==='out') goOutside(); else goInside(); return; }
   if(t.id==='btnNext'){ nextPhase(); return; }
@@ -5106,8 +5106,9 @@ function chapterBeat(line){
  chapterTimer=setTimeout(()=>{chapter.hidden=true;chapter.classList.remove('enter');},1200);
 }
 function isStage(k){return run.active&&run.stage===k;}
-function modal(html){guide.hidden=true;syncGuide();document.getElementById('app').inert=true;panel.innerHTML='<div class="cl-card">'+html+'</div>';panel.hidden=false;panel.querySelectorAll('textarea[data-clanswer]').forEach(x=>{x.style.height=Math.min(112,Math.max(42,x.scrollHeight+2))+'px';});setTimeout(()=>{const h=panel.querySelector('h2');if(h){h.tabIndex=-1;h.focus({preventScroll:true});}else panel.querySelector('button')?.focus({preventScroll:true});},0);}
-function hideModal(){panel.hidden=true;panel.innerHTML='';document.getElementById('app').inert=false;}
+let modalFocusTimer=0;
+function modal(html){clearTimeout(modalFocusTimer);guide.hidden=true;syncGuide();document.getElementById('app').inert=true;panel.innerHTML='<div class="cl-card">'+html+'</div>';panel.hidden=false;panel.querySelectorAll('textarea[data-clanswer]').forEach(x=>{x.style.height=Math.min(112,Math.max(42,x.scrollHeight+2))+'px';});modalFocusTimer=setTimeout(()=>{if(panel.hidden)return;const h=panel.querySelector('h2');if(h){h.tabIndex=-1;h.focus({preventScroll:true});}else panel.querySelector('button')?.focus({preventScroll:true});},0);}
+function hideModal(){clearTimeout(modalFocusTimer);panel.hidden=true;panel.innerHTML='';document.getElementById('app').inert=false;}
 function snapshot(){const d=window.LWDele?.state;if(d&&d.stage!=='closed')run.dVisit={known:[...(d.known||[])],said:(d.said||[]).filter(x=>x.key).map(x=>x.text).slice(-5),actions:[...(d.actions||[])],selected:{...d.selected}};}
 function snapWalt(){const e=window.LWEncounter?.state;if(e){run.wVisit={told:[...(e.told||[])],actions:[...(e.you||[])],note:{...(e.note||{})}};}}
 function questionInputs(phase){const prompt=phase==='pre'?[
@@ -5117,12 +5118,13 @@ function preserveInput(){panel.querySelectorAll('textarea[data-clanswer]').forEa
 function begin(){if(run.active){resume();return;}run.active=true;run.stage='intro';run.noor.clear();run.dele.clear();run.pre={};run.post={};run.dVisit=null;run.wVisit=null;run.guideCollapsed=false;run.paceStarted=performance.now();run.paceMarks=[{stage:'intro',at:0}];try{run.previousSave=localStorage.getItem('lifeworld.v1');}catch(e){run.previousSave=null;}document.body.classList.add('cl-route');
  try{window.LW.closeModals();}catch(e){};
  modal('<div class="cl-kicker">Noor’s flat · A story in three encounters</div><h2>One window is still lit.</h2><p class="cl-opening-line">Behind it, Noor is beginning an ordinary morning. Start with what the room offers her, not with a label or an explanation.</p><div class="cl-steps" aria-label="Three story chapters"><div class="cl-step active"><strong>1</strong>Noor’s room</div><div class="cl-step"><strong>2</strong>Dele’s door</div><div class="cl-step"><strong>3</strong>Walt’s session</div></div><details class="cl-journal"><summary><span>Open field notes</span><small>Optional reflection</small></summary><div class="cl-journal-paper"><p>A client has missed three therapy groups. Their partner says they seem “unmotivated.” You have not heard from the client. What can you actually know?</p>'+questionInputs('pre')+'</div></details><div class="cl-actions cl-intro-actions"><button data-cl="noor">Enter Noor’s room</button><button class="secondary" data-cl="end">Exit</button></div><p class="cl-muted cl-footnote">Fictional perspectives, not assessments. You can return to the notes later.</p>');}
-function renderGuide(){if(!run.active||!['noor','room'].includes(run.stage)){guide.hidden=true;return;}
+function renderGuide(){const focusAction=guide.contains(document.activeElement)?document.activeElement?.dataset?.cl:null;if(!run.active||!['noor','room'].includes(run.stage)){guide.hidden=true;return;}
  const noor=isStage('noor'), n=noor?run.noor:run.dele,done=noor?[n.has('practical'),n.has('entice')]:[n.has('heavy'),n.has('sealed')],count=done.filter(Boolean).length,ready=count===2;
  const label=noor?'1 / 4 · Noor':'3 / 4 · Dele’s day',next=noor?'Meet Dele':'Continue to Walt',action=noor?'dele':'waltbridge';
  if(run.guideCollapsed){guide.classList.add('collapsed');guide.innerHTML='<div class="cl-guide-head"><strong>'+label+'</strong><span class="cl-progress">'+count+'/2 explored</span><button class="cl-guide-fold" data-cl="guideshow" aria-expanded="false" aria-label="Expand classroom guide">Guide ▾</button></div>'+(ready?'<button class="cl-guide-primary cl-guide-next" data-cl="'+action+'">'+next+'</button>':'');}
  else {guide.classList.remove('collapsed');guide.innerHTML='<div class="cl-guide-head"><strong>'+label+'</strong><span class="cl-progress">'+count+'/2 explored</span><button class="cl-guide-fold" data-cl="guidehide" aria-expanded="true" aria-label="Collapse classroom guide">Collapse ▴</button></div><p>'+(noor?'Try a practical action and one that draws Noor in. Notice what seems possible before she decides. If you have a minute, try her front door.':'This is one authored day, not Dele’s confirmed experience. Try an effortful action and a closed possibility. His front door is one.')+'</p><div class="cl-pips" role="progressbar" aria-label="Room exploration" aria-valuemin="0" aria-valuemax="2" aria-valuenow="'+count+'"><i class="'+(done[0]?'done':'')+'"></i><i class="'+(done[1]?'done':'')+'"></i></div><div class="cl-guide-actions"><button class="cl-guide-primary" data-cl="'+action+'" '+(!ready?'disabled aria-disabled="true"':'')+'>'+next+'</button>'+(ready?'':'<button class="cl-guide-skip" data-cl="'+action+'">Skip this exploration →</button>')+'<button class="secondary cl-guide-exit" data-cl="end">Exit</button></div>';}
  guide.hidden=false; syncGuide();
+ if(focusAction){const nextAction=focusAction==='guidehide'?'guideshow':focusAction==='guideshow'?'guidehide':focusAction;const next=guide.querySelector('[data-cl="'+nextAction+'"]');if(next&&!next.disabled)next.focus({preventScroll:true});}
 }
 function stageNoor(){
  run.stage='noor';paceMark('noor');run.guideCollapsed=window.matchMedia('(max-width:650px)').matches;
@@ -5166,7 +5168,7 @@ function beforeWalt(){
  run.stage='waltbridge';paceMark('waltbridge');hideModal();
  modal('<div class="cl-kicker">After Dele’s authored day · Chapter 4</div><h2>The same action. A different possibility.</h2>'+
  '<p>A stove or a front door can remain physically usable even when an action does not feel inviting or worth starting. That is one way to illustrate a changed <em>sense of possibility</em>, not a claim about everyone with depression.</p>'+
- '<p>Now meet Walt. June reports less participation. Walt’s speech difficulty cannot, on its own, tell you what he wants, what matters to him, or what he feels is possible.</p>'+
+ '<p>June has noticed Walt taking part less often. His word-finding difficulty does not explain the change by itself. Meet him before deciding what support he wants.</p>'+
  '<div class="cl-actions"><button data-cl="walt">Begin Walt’s session</button><button class="secondary" data-cl="roomgo">Return to Dele’s day</button></div>');
 }
 function stageWalt(){
@@ -5181,7 +5183,7 @@ function finale(){
  modal('<div class="cl-kicker">Afterward · Final reflection</div><h2>What can you know from the outside?</h2>'+
  '<p class="cl-muted">Return to the distinction between visible behavior, your interpretation, and the person’s own account. There is no preferred response.</p>'+
  beforeAnswers()+
- '<div class="cl-ref"><p><b>New encounter:</b> A person with dysarthria speaks less during a group session. A colleague says they have “withdrawn.” The person has not explained the change.</p></div>'+
+ '<div class="cl-ref"><p><b>New encounter:</b> During a group session, a client contributes less than usual. A colleague calls them “withdrawn.” The client has not explained what changed.</p></div>'+
  questionInputs('post')+
  '<details class="cl-phenomenology"><summary>After writing: a note on existential feelings</summary>'+
  '<p><b>Ratcliffe’s distinction:</b> An existential feeling is a background sense of how the surroundings, other people, and future actions are available or possible, not simply a named emotion. The same object can be present without presenting the same possibilities.</p>'+
@@ -5201,7 +5203,7 @@ function debrief(){
  '<p class="cl-muted" id="clPacing">Playtest timing (local to this tab): '+esc(paceReport())+'</p>'+
  '<div class="cl-actions"><button data-cl="final">Return to reflection</button><button class="secondary" data-cl="copy">Copy responses</button></div><p id="clStatus" role="status"></p>');
 }
-function copy(){preserveInput();let fmt=(group,qs)=>qs.map((q,i)=>q+'\n'+(run[group][i]||'[not answered]')).join('\n\n');let t='BEING FOUND 8.4: CLASSROOM REFLECTION (fictional vignettes; no score)\n\nBEFORE: missed group visits\n\n'+fmt('pre',['Assumption','Unknown','First step'])+'\n\nAFTER: reduced speaking in group\n\n'+fmt('post',['Observed without inference','Possible inference and unknown','Consent-based first step'])+'\n\nPLAYTEST TIMING (local only, includes idle time)\n'+paceReport()+'\n\nNot a validated assessment. The two vignettes differ and these responses cannot establish a gain in empathy.';
+function copy(){preserveInput();let fmt=(group,qs)=>qs.map((q,i)=>q+'\n'+(run[group][i]||'[not answered]')).join('\n\n');let t='BEING FOUND 8.5: CLASSROOM REFLECTION (fictional vignettes; no score)\n\nBEFORE: missed group visits\n\n'+fmt('pre',['Assumption','Unknown','First step'])+'\n\nAFTER: reduced speaking in group\n\n'+fmt('post',['Observed without inference','Possible inference and unknown','Consent-based first step'])+'\n\nPLAYTEST TIMING (local only, includes idle time)\n'+paceReport()+'\n\nNot a validated assessment. The two vignettes differ and these responses cannot establish a gain in empathy.';
  const status=panel.querySelector('#clStatus');const result=x=>{if(status)status.textContent=x;};try{if(navigator.clipboard?.writeText)navigator.clipboard.writeText(t).then(()=>result('Copied to clipboard.')).catch(()=>fallback(t,result));else fallback(t,result);}catch(e){fallback(t,result);}}
 function fallback(t,cb){const el=document.createElement('textarea');el.value=t;el.style.position='fixed';el.style.top='0';el.style.left='0';document.body.appendChild(el);el.focus();el.select();let ok=false;try{ok=document.execCommand('copy');}catch(e){}el.remove();cb(ok?'Copied to clipboard.':'Copy unavailable. Select and copy the text from your reflection fields.');}
 function end(){run.active=false;run.stage='idle';hideModal();guide.hidden=true;syncGuide();document.body.classList.remove('cl-route');try{if(window.LWDele&&!document.getElementById('dele').hidden)window.LWDele.close(true);}catch(e){}try{if(window.LWEncounter&&!document.getElementById('enc').hidden)window.LWEncounter.close();}catch(e){};try{if(run.previousSave===null)localStorage.removeItem('lifeworld.v1');else localStorage.setItem('lifeworld.v1',run.previousSave);if(typeof load==='function')load();}catch(e){}try{window.LW.closeModals();window.LW.showFlats?.();}catch(e){}}
@@ -5211,7 +5213,7 @@ const actions={open:begin,noor:stageNoor,dele:beforeDele,deledo:stageDele,roomgo
 // Capture is needed because both encounter scenes stop click bubbling at their roots.
 document.addEventListener('click',e=>{const b=e.target.closest?.('button');if(!b)return;const action=b.dataset.cl||b.dataset.class;if(action){e.preventDefault();e.stopPropagation();if(action==='guidehide'){run.guideCollapsed=true;renderGuide();return;}if(action==='guideshow'){run.guideCollapsed=false;renderGuide();return;}if(action==='noor'&&run.stage==='intro')preserveInput();actions[action]?.();}},true);
 panel.addEventListener('input',e=>{if(e.target.matches('textarea[data-clanswer]')){const el=e.target;run[el.dataset.clanswer][el.dataset.i]=el.value;el.style.height='auto';el.style.height=Math.min(112,Math.max(42,el.scrollHeight+2))+'px';}});
-panel.addEventListener('focusin',e=>{if(e.target.matches('textarea[data-clanswer]')){setTimeout(()=>{try{e.target.scrollIntoView({block:'nearest',behavior:'smooth'});}catch(err){}},120);}});
+panel.addEventListener('focusin',e=>{if(e.target.matches('textarea[data-clanswer]')){const field=e.target;setTimeout(()=>{if(!panel.hidden&&document.activeElement===field){try{field.scrollIntoView({block:'nearest',behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});}catch(err){}}},120);}});
 window.LWClass={open:begin,start:begin,toDeleRoom,toFinal,onRoomAction,isStage,syncGuide,get active(){return run.active},get stage(){return run.stage},get state(){return run},dev:{stageNoor,stageDele,stageRoom,stageWalt,finale}};
 })();
 </script>

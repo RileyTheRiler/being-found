@@ -53,3 +53,7 @@ Tell participants: “Play the Guided Story as you would on your own. We are ass
 The CSV template records **zero** sessions. Its summary must never be represented as pilot outcomes. Time to first meaningful action is now operationalized as the first room-object/choice after Noor’s room loads; keep this definition consistent across sessions. If the sample is used for research dissemination, confirm appropriate institutional review and consent before data collection.
 
 Five learners are appropriate for finding early usability failures, but cannot establish a typical completion time, an intervention effect or a psychometric measure. See https://www.nngroup.com/articles/5-test-users-qual-quant/ for the distinction between formative and quantitative evidence.
+
+## 8.5.0 pre-pilot regression scope (not field results)
+
+Browser QA tests now cover keyboard focus when the classroom Guide expands or collapses, leaving a modal, and reduced-motion scrolling to a focused reflection field. A real keyboard-only playthrough must still test every action, including repeated-input 'heavy' choices, and separate screen-reader and switch/alternative-input checks remain mandatory. During pilot observation, explicitly ask whether hold/three-tap suggested motor impairment or distracted from the distinction between ability and experienced possibility. No participants have been tested.

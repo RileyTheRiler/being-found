@@ -1,4 +1,4 @@
-# Being Found 8.4.4: classroom pilot packet
+# Being Found 8.5.0: guided classroom accessibility and inference pass
 
 ## Run it
     npm run build        # node build.js && node postbuild.js, no dependencies to install
@@ -26,6 +26,7 @@ python3 qa_focus.py                 # Reflect modal isolation, focus and return 
 python3 qa_audio.py                 # opt-in WebAudio, volume and mute
 python3 qa_flats_stove.py           # every resident's stove menu; Dele mobile story hint
 python3 qa_guided84.py              # guided chapters, Dele silence, debrief, reduced motion
+python3 qa_access85.py              # keyboard Guide and reduced-motion field scroll
 python3 qa_editorial.py             # authored source and compiled text guard
 python3 qa_js_syntax.py            # parse source and generated JavaScript
 python3 qa_wren_ilse.py            # runtime narrative and viewport assertions for both flats
@@ -38,6 +39,13 @@ python3 dele_check.py
 python3 visit_check.py
 ```
 Python Playwright is required. Browser executable auto-detects `google-chrome` or `chromium`; override with `BF_CHROME`. Screenshots go to `qa-artifacts/` by default. Legacy test snapshots from `e2e_sync.py` and `test_prop_states.py` are written to the repository root and ignored by git.
+
+## Release 8.5.0 — classroom accessibility and inference (Actions pending)
+- The 2.5D scene, chapter routing, dice, outcomes and save rules are preserved. Source changes retain keyboard focus on the classroom Guide when collapsed/expanded, cancel stale modal-heading autofocus and honor reduced-motion preference in focused reflection fields.
+- Walt's bridge no longer treats word-finding difficulty as an explanation of participation; the final practice vignette no longer introduces another diagnosis cue. Heavy-action repeated-input text identifies the action as authored, **without changing** the hold/three-tap mechanic; that mechanic remains an accessibility and philosophical review item.
+- Added `qa_access85.py` (phone/desktop focus, modal transition and motion preference) and source/production editorial guards. Production build and full regression suite require verification on this implementation commit.
+- **8.4.4 verified baseline:** `9b884fb26fdeb7a25ab26474def79823509b97db`, [Actions run 44263829397](https://github.com/RileyTheRiler/being-found/actions/runs/44263829397), successful.
+- **Outstanding:** first-time student pilot, lived-experience editorial review, real screen-reader and alternate input checks, real-device testing, and Vercel deployment verification. Never interpret repeated-input difficulty as a measure of impairment.
 
 ## Release 8.3.10 changes
 - Reflect hides the game from focus and screen-reader traversal only while its dialog is open, then restores the prior state and trigger focus on dismissal.

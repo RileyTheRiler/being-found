@@ -81,6 +81,9 @@ jobs:
       - name: Guided classroom 8.4 chapter and reflection regression
         run: python3 qa_guided84.py
 
+      - name: Guided keyboard and reduced-motion accessibility regression
+        run: python3 qa_access85.py
+
       - name: Five viewport smoke tests
         run: python3 qa_smoke.py
 

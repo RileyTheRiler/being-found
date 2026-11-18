@@ -1,4 +1,4 @@
-# Being Found 8.4.4: save notes
+# Being Found 8.5.0: save notes
 
 The hosted save page holds the playable build at its root and this full source under `source/`.
 
@@ -64,3 +64,5 @@ Base: the 8.3.7 preview as uploaded on 16 November 2026.
 - Step 18a (8.4.3 verified): Implementation `6213ae0ba8f3639b886cfb261bfacc9be43d01a6` passed [GitHub Actions run 44262661463](https://github.com/RileyTheRiler/being-found/actions/runs/44262661463), **27/27 steps success** including new five-resident runtime and editorial checks, guided flow, five viewports, menu, save, focus, soundtrack, stove, state, story, encounter and visits. No field validation or lived-experience testing.
 
 - Step 19 (8.4.4 pilot packet, awaiting Actions): Added facilitator instructions, an anonymized five-row CSV template, explicit four-concept observational rubric and manual assistive technology checklist. `pilot_summary.py` uses standard-library-only local CSV analysis; the in-app local timing, scene, controls and story remain unchanged. The test cases check median, target denominator, first-action count and blocker count. CI now runs the self-test and verifies empty pilot data are not presented as participant outcomes. Human pilot and screen-reader tests remain outstanding. Next: field pilot, source-informed revisions, and participant-led editorial consultation.
+
+- Step 20 (8.5.0 classroom route, CI pending): Starting from verified 8.4.4 `9b884fb26fdeb7a25ab26474def79823509b97db` (Actions 44263829397 success), preserved the 2.5D renderer, dice, state modifiers, choices, saves and guided route. Repaired keyboard focus retention when replacing classroom Guide fold controls, guarded stale modal focus and made reflection-field scrolling respect reduced motion. Shortened Walt's interpretive bridge and removed a repeated diagnostic cue from the final vignette. The heavy-action toast now clarifies that extra input is authored, without changing its hold/three-tap behavior. Added phone/desktop browser QA and source/dist editorial guards. GitHub Actions must verify this implementation; no human pilot, lived-experience validation or real screen-reader test was conducted.

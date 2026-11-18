@@ -93,3 +93,11 @@ Sources examined:
 ## 8.4.4 classroom readiness (not field evidence)
 
 The first-time user packet, observational rubric, blank CSV and nonnetworked summary script are in `pilot/` and `pilot_summary.py`; see `CLASSROOM_PILOT.md`. The editorial desk reviews cover eight fictional residents, but this does not amount to first-person validation. No participants, completion times or comprehension responses have yet been recorded. Avoid treating rubric frequencies or 10–15-minute target counts as evidence of causal learning.
+
+## 8.5.0 guided-route assessment (desk review only)
+
+The guided route begins with Noor's ordinary affordances, meets Dele before presenting a **separately authored** inner perspective, and then asks about Walt's communication without assigning a motivation to reduced participation. This sequence can prompt separation of observation, report and inference. It is not a lived-experience simulation or evidence that the game teaches empathy. Ratcliffe's existential feelings concern a background sense of bodily belonging, reality and possibility; fixed 'sealed', 'heavy' and variable states can misleadingly imply a measured clinical profile (Ratcliffe, *Feelings of Being*, 2008, https://academic.oup.com/book/25057).
+
+This pass removed a diagnostic label from the final practice vignette, shortened Walt's bridge and framed the repeated-input instruction as an **authored interaction cue**, not evidence of reduced ability. The underlying hold/three-tap action remains unchanged. Participants and accessibility reviewers should assess whether it distracts, stereotypes or excludes motor-input users. Disability-simulation research warns that contrived difficulty can worsen capability judgments (Nario-Redmond et al., 2017, https://pubmed.ncbi.nlm.nih.gov/28287757/). Those findings do not directly evaluate Being Found.
+
+**Still unverified:** independent first-time completion and comprehension, relevant lived-experience review, real screen-reader and alternate input access, and whether the hold/three-tap requirement helps the teaching goal. This is source-informed editorial analysis, not participant validation.
