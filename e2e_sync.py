@@ -16,8 +16,11 @@ with sync_playwright() as p:
   page.route('**/*',lambda route:route.abort())
   page.set_content(html,wait_until='domcontentloaded',timeout=30000)
   page.evaluate("document.querySelector('#plSkip')?.click()")
-  page.locator('.title-more summary').click()
-  page.get_by_role('button',name='Begin Noor’s room separately').click(timeout=7000)
+  # The title can re-render while the opening closes; keep the Rooms
+  # disclosure open before clicking its real button.
+  page.wait_for_function("!!document.querySelector('#mTitle .title-more')")
+  page.evaluate("document.querySelector('#mTitle .title-more').open = true")
+  page.locator('#mTitle .title-more [data-go="start"]').click(timeout=7000)
   page.wait_for_timeout(600)
   def snap():return page.evaluate('''() => {const S=LW.S;return {...BFStageSync.snapshot(S),navX:BFNavigation.x,navActive:BFNavigation.active,at:S.sim.at,pose:S.sim.pose,simAct:!!S.sim.act,clock:S.clock,panels:document.querySelectorAll('[data-bf-followup]').length,rigDraws:BFRig.totalDraws};}''')
   start=snap();assert start['version']=='8.1' and start['rigDraws']>0 and start['breakfast']=='untouched',start
