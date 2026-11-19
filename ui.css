@@ -136,3 +136,13 @@
   #app .bub-dismiss {min-width:44px;min-height:44px}
   #app.narrow .thought {display:none!important}
 }
+
+/* 8.5.2B: readable, equally actionable classroom controls. Free play unchanged. */
+body.cl-route .bub.s-sealed {background:#f2f5f9!important;border:2px solid #667387!important;color:#334155!important;box-shadow:0 2px 8px rgba(23,32,48,.12)!important}
+body.cl-route .bub.s-sealed .lab {text-decoration:none!important}
+body.cl-route .bub.s-sealed .ki {background:#667387!important}
+body.cl-route .bub.s-sealed .tag {color:#334155!important;background:#e0e6ee!important}
+body.cl-route .bub.s-heavy {touch-action:manipulation!important;user-select:auto!important;-webkit-user-select:auto!important;border-bottom-width:2.5px!important}
+body.cl-route .bub.s-heavy.holding::before {width:0!important}
+body.cl-route .bub.s-heavy.nudge {animation:none!important}
+body.cl-route #atPillTop,body.cl-route #clockSub {display:none!important}

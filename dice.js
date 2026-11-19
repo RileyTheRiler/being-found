@@ -71,6 +71,7 @@
     return {...data,plan,target:plan.target};
   }
   function canCheck(button) {
+    if (window.BFFlags?.blocked?.('dice') ?? (document.body?.classList.contains('cl-route') || new URLSearchParams(location.search).get('pilot')==='1')) return false;
     if (!state.enabled || pending || rolling || !button?.matches?.('button.bub')) return false;
     if (button.classList.contains('s-sealed') || button.classList.contains('s-closed')) return false;
     if (!button.querySelector('.lab') && !button.dataset.i) return false;

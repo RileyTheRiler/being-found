@@ -162,6 +162,10 @@ Reviewed independent 8.5.1 audit and 8.5.2–8.6 plan against unchanged main at 
 
 The 8.5.2A PR [#1](https://github.com/RileyTheRiler/being-found/pull/1) passed GitHub Actions [44342886769](https://github.com/RileyTheRiler/being-found/actions/runs/44342886769) and merged as `4fa9fc5d4145f422d434fb4557700299ef406a0d`. Production build, flag-policy test, manifest check, existing guided, accessibility, save, audio, resident/visit and editorial regressions all passed in that PR. No Vercel deployment or human validation was confirmed. Gameplay code retains 8.5.1 mechanics; next tracked 8.5.2B work is [issue #2](https://github.com/RileyTheRiler/being-found/issues/2).
 
+## Step 23 — 8.5.2B draft (branch, CI pending)
+
+Branch `feat/8.5.2b-consent-route` starts from post-foundation main. Removed mandatory classroom entry into Dele's authored day; added explicit encounter end outcomes including early `depart`, visitor leaving, and a resident boundary. Changed guided action checks so saved or default dice do not intercept actions; heavy actions require one activation; guided motion uses normal speed; sealed choices remain visually available and narratively actionable. Updated the guided route test and added a Dele branch matrix plus guided input parity regression. Free-play mechanics are intended to remain unchanged. Do not merge or claim release until PR Actions tests pass and the outstanding QA errors, if any, are resolved.
+
 ## Vercel production hosting repair — November 18, 2026
 
 **Verified public URL:** https://being-found.vercel.app/ (independent page fetch returned title `Being Found 8.5.1`, not 404). The second assigned domain `https://being-found-rileys-projects-5252c03b.vercel.app/` also returned the game title.
@@ -172,3 +176,13 @@ The 8.5.2A PR [#1](https://github.com/RileyTheRiler/being-found/pull/1) passed G
 
 **Release caution:** This publishes only the verified `main` branch's **8.5.1 gameplay with 8.5.2A foundation**. Draft 8.5.2B PR #3 is not in production. Later GitHub pushes should still be checked against both GitHub Actions and a new Vercel production deployment; a successful Actions run or Git push alone is not proof of live deployment. Do not re-upload source with nested `src/` as a Vercel static output.
 
+
+
+## Step 24 — 8.5.2 draft integration and consent regression (2026-11-19)
+
+A two-parent commit preserved original PR #3 consent work and newer main/PR #9 animation changes. Subsequent edits prevent immediate boundary revisits, preserve ordered Dele outcome history with backward-compatible storage, move old dice assertions to standalone Rooms while retaining guided negative checks, add guided/pilot speed parity, centralize `BFFlags.blocked()` with explicit classroom fallbacks, and add version/build stamp plus classroom preview notice. No production merge, manual device, human review or classroom pilot established yet. Check this branch's Actions results before promotion.
+
+
+## Step 25 — deployment-policy audit
+
+Vercel's current production target follows `main`. Preview branches do not target production. The project update connector does not expose an operation to change Git production branch, so no potentially disruptive account-level deployment setting was changed. Added `RELEASE_PROCEDURE.md` documenting the current release gate, exact commit verification and a proposed release-branch workflow pending account-level approval.

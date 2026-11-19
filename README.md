@@ -1,4 +1,7 @@
-# Being Found 8.5.1 (guided classroom accuracy and accessibility)
+# Being Found 8.5.2 — safety release candidate
+
+**Classroom status:** Preview build. Not yet reviewed for classroom use. Scripted QA is not lived-experience or independent assistive-technology validation.
+
 
 Editable source for Being Found. This line continues from the 8.3.7 preview.
 
@@ -66,8 +69,7 @@ These are automated browser checks, **not** a substitute for real-device and ass
 - `phase2.css` (built as `bf835.css`): the attempt dialog in words.
 - `phase3.css`, `phase3.js` (built as `bf837.*`): shared encounter styling and label cleanup.
 
-The 8.4 guided route keeps Noor → Dele encounter → authored Dele day → Walt →
-reflection. It now meets Dele at his door first, marks chapter transitions without
+The 8.5.2 guided route keeps Noor → Dele encounter → Walt → reflection. The separate authored Dele day remains available from Rooms without being presented as Dele's disclosed experience. It now meets Dele at his door first, marks chapter transitions without
 locking input, and separates observed actions from unverified interpretations in the
 ending. The Ratcliffe note is optional and appears after the reflection fields.
 

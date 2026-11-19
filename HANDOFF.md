@@ -1,3 +1,7 @@
+## 8.5.2 safety release candidate — PR #3 integration (2026-11-19)
+
+**Status:** Pending fresh CI and browser verification, not classroom-ready. This branch combines main `89cfa38` (PR #9 sofa rig) with original PR #3 consent changes, preserving both histories. Guided route Noor → Dele encounter → Walt. Dele exits do not offer immediate replay in guided/pilot or after a resident boundary. Completed encounters append to `cache.history` under the original v1 storage key. New regressions test persistence, pilot speed and Rooms-only dice. Preview notice and commit build stamp added. No human, lived-experience or independent assistive-technology validation. See `RELEASE_PROCEDURE.md`: current `main` auto-deploys production; proposed release-only branch is not yet configured.
+
 ## Sofa rig — final visual review notes (2026-11-18 / PR #9)
 
 **Source of truth:** [PR #9](https://github.com/RileyTheRiler/being-found/pull/9), branch `feat/sofa-articulated-rig-20261118`, forked from verified `main` `7207a02`. Draft PR #3 (8.5.2B) remains isolated. Check the actual PR head and CI before merge; **do not infer production release from these notes**.
@@ -78,6 +82,15 @@
 **Correction:** Updated the existing project `being-found` (`prj_DyoE8rtjWrJeGBJxDFrDflEmvGkT`) to use repository-root build, `npm run build`, `dist` output and framework `null`; then created a **production** deployment via Git source `RileyTheRiler/being-found`, ref `main`, commit `b7c8e15b44500faaafde3bdd923be66c4030a6ae`. Deployment `dpl_GcMZaVbDFbVrJ2BbCLTBuzC94dQf` reached `READY`; build logs printed `Being Found 8.5.1 built: 628647 bytes` followed by `postbuild.js` output. Vercel assigned `being-found.vercel.app`.
 
 **Release caution:** This publishes only the verified `main` branch's **8.5.1 gameplay with 8.5.2A foundation**. Draft 8.5.2B PR #3 is not in production. Later GitHub pushes should still be checked against both GitHub Actions and a new Vercel production deployment; a successful Actions run or Git push alone is not proof of live deployment. Do not re-upload source with nested `src/` as a Vercel static output.
+
+## 8.5.2B draft — consent-safe route and guided input gates (branch only)
+
+**Work in progress** on `feat/8.5.2b-consent-route`; do not describe it as released or tested until its PR Actions run passes. Current main remains the verified 8.5.2A foundation with 8.5.1 gameplay.
+
+- Dele encounter records explicit outcomes (`left_note`, `visitor_left`, `resident_ended`, `ended_without_account`). Every ended encounter in Guided Story now goes to Walt, not automatically into Dele's authored interior. Standalone Rooms keeps the authored day separately. Chapter cues become Noor 1/3, Dele 2/3, Walt 3/3.
+- Guided dice disabled via `BFFlags`; one activation for heavy actions; state-dependent movement penalties removed for the guided policy in both movement paths; sealed actions remain tappable and are rendered without strike/lock imagery. Legacy free play is intended to retain its existing mechanics.
+- `qa_consent_branches.py` and `qa_route_no_capability.py` added to CI and the local manifest; `qa_guided84.py` updated for deliberate route change.
+- **Not complete:** pilot readiness, accessibility fixes, epilogue world-swap/hidden-fit redesign, narrative length review, lived-experience/assistive-technology review, full CI verification, and Vercel deployment.
 
 ## 8.5.2A foundation — merged and PR checks passed (November 18, 2026)
 

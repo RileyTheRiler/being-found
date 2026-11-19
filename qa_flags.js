@@ -23,10 +23,12 @@ assert.equal(normal.flags.pilot, false);
 assert.equal(normal.flags.guided, false);
 assert.equal(normal.flags.dice, true);
 assert.equal(normal.flags.heavyHold, true);
+assert.equal(normal.flags.blocked('dice'), false);
+assert.equal(normal.flags.blocked('unknown'), true);
 normal.set.add('cl-route');
 assert.equal(normal.flags.guided, true);
 for (const key of ['dice', 'heavyHold', 'moodSpeed', 'worldSwap', 'sealedLegacy'])
-  assert.equal(normal.flags[key], false, key + ' must default off while guided');
+  { assert.equal(normal.flags[key], false, key + ' must default off while guided'); assert.equal(normal.flags.blocked(key), true); }
 normal.set.delete('cl-route');
 assert.equal(normal.flags.dice, true, 'flags must respond to route exit');
 
@@ -49,3 +51,9 @@ assert.equal(pilot.flags.dice, false, 'pilot must ignore local overrides');
 assert.equal(pilot.flags.heavyHold, false, 'pilot must ignore local overrides');
 
 console.log('8.5.2A flags: module order, dynamic route changes, local overrides, pilot isolation passed.');
+
+// When flag initialization fails, consumers must keep classroom routes fail-closed.
+const fallback=(flags,mode)=>flags?.blocked?.('dice') ?? (mode==='guided'||mode==='pilot');
+assert.equal(fallback(null,'guided'),true);
+assert.equal(fallback(null,'pilot'),true);
+assert.equal(fallback(null,'rooms'),false);
