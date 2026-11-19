@@ -223,7 +223,7 @@
    const sitAmount=seat?.kind==='sit'?seat.progress:
      seat?.kind==='rise'?1-seat.progress:o?.pose==='sit'?1:0;
    const modeledSeat=!!window.BFRig?.canArticulateSeat?.(o);
-   const floorCorrection=modeledSeat?(FLOOR-y)*sitAmount:0;
+   const floorCorrection=modeledSeat?FLOOR-y:0;
    if(sitAmount<.85)el(c,x,y+floorCorrection+1,28*(1-sitAmount*.5),7,'rgba(35,47,41,.15)');
    c.translate(x,y+floorCorrection);
    const figureScale=2.90*(modeledSeat?1:1-.15*sitAmount);
@@ -232,7 +232,7 @@
    // actors get a stable atlas torso and planted two-segment leg pose.
    const displayPose=seat?.kind==='sit'&&sitAmount<.12?'stand':
      seat?.kind==='rise'&&sitAmount>.56?'sit':o?.pose;
-   drawFigure(0,0,modeledSeat?{...o,bfSeatAmount:sitAmount}:
+   drawFigure(0,0,modeledSeat?{...o,bfSeatAmount:sitAmount,bfFloorCorrection:floorCorrection}:
      displayPose===o?.pose?o:{...o,pose:displayPose});
    c.restore();
  }
