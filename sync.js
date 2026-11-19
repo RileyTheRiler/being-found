@@ -20,7 +20,7 @@
    syncScene(s);
    // A queued second action is not underway until choose() runs again.
    if(s.sim?.act)return;
-   intent={obj:m.obj,act:m.a?.id||'',kind:m.a?.kind||'',started:performance.now(),
+   intent={obj:m.obj,act:m.a?.id||'',kind:m.a?.kind||'',state:m.st,started:performance.now(),
      alreadySitting:m.obj==='sofa'&&s.sim?.pose==='sit'&&s.sim?.at==='sofa'};
    arrival=null;
  }
@@ -37,7 +37,7 @@
    syncScene(s);
    const sim=s.sim;
    if(!sim?.act||!sim?.at||sim.at!==intent?.obj)return null;
-   return {obj:intent.obj,act:intent.act,kind:intent.kind,
+   return {obj:intent.obj,act:intent.act,kind:intent.kind,state:intent.state,
      u:clamp((sim.prog||0)/Math.max(.1,sim.dur||1)),
      arrived:arrival===intent.obj,alreadySitting:!!intent.alreadySitting};
  }
@@ -105,7 +105,7 @@
    const work=clamp((u-.32)/.47);
    const stroke=stage===stages[2]?Math.sin(work*Math.PI*5):0;
    const frame=stage===stages[0]?0:stage===stages[3]?7+Math.round(3*reach):stage===stages[2]?9+(stroke>0?1:0):7+Math.round(3*reach);
-   return {obj:a.obj,act:a.act,u,stage,reach,work,stroke,frame};
+   return {obj:a.obj,act:a.act,state:a.state,u,stage,reach,work,stroke,frame};
  }
  function frame(s=S,o){
    if(!home(s)||!o?.bfMainActor)return null;
@@ -181,6 +181,7 @@
  function paintEasel(c,s,t){
    if(!home(s))return;
    const p=painted(s),m=workMotion(s),doing=m?.obj==='easel';
+   const makesMark=m?.state==='open'||m?.state==='hollow';
    if(p>.04){
      c.save();c.beginPath();c.rect(953,340,63,105);c.clip();
      for(let i=0;i<7;i++){
@@ -195,7 +196,7 @@
      // Brief trial marks follow the brush along the canvas but are not saved.
      // The authored painting only persists when its existing outcome allows it.
      const work=m.work,working=m.stage==='stroke';
-     const passes=working?Math.min(4,Math.floor(work*5)):m.stage==='return'?4:0;
+     const passes=!makesMark?0:working?Math.min(4,Math.floor(work*5)):m.stage==='return'?4:0;
      c.save();c.beginPath();c.rect(954,340,61,104);c.clip();
      for(let i=0;i<passes;i++){
        const x=970+i*6,y=430-i*8;
