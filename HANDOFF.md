@@ -1,13 +1,13 @@
-## Phone interaction animation refinement — November 18, 2026 (review branch)
+## Phone interaction animation refinement — merged November 18, 2026
 
-**Branch:** `fix/phone-animation-choreography` from `main` `2cee90c13010af88b57377a112168cd45ad658cc`. **Not yet merged or verified as live.** This is a bounded presentation/pacing pass, separate from the unfinished 8.5.2B gameplay work.
+**Main code commit:** `8a9041b2b3d201a79dbd93246ba94dd1549ff5b9`, [PR #7](https://github.com/RileyTheRiler/being-found/pull/7) merged. [GitHub Actions run 44444265790](https://github.com/RileyTheRiler/being-found/actions/runs/44444265790) passed **33/33 steps** on the final reviewed branch head. Vercel production deployment `dpl_HN3Lt4nhjupVCPXVWaJrNPF8Eb42` reached **READY** on that merged commit and assigned `being-found.vercel.app`. Gameplay and narrative 8.5.2B work remains separate and unmerged.
 
 - Root cause: phone `call` and `msg` actions inherited ~1-second default action durations. `sync.js` switched immediately to a single held-pose cell at 28% of the action and dropped to idle at completion. The phone on the table also disappeared and returned abruptly.
 - `build.js`: set phone-specific minimum animation time (call 4.1 seconds, message 3.5 seconds) after authored state-specific routine durations are calculated. Other actions retain existing durations. No change to dialogue, effects, goals, save schema or input requirements.
 - `sync.js`: deterministic, normalized reach → lift → use → lower → release phases, synchronized to the existing `S.sim.prog/S.sim.dur` action clock. `phoneMotion` exposes pose and whether the handset is physically on the table, without independent timers that might outlive a chapter.
 - `sprite_rig.js`: transition between baked reach and phone atlas poses. The first full-body alpha crossfade made Noor semi-transparent in CI screenshots; it was corrected to an opaque primary sprite with a small *arm-only* transition overlay. `room.js` draws the table handset only during the correct phases. `art.js` applies matching arm/handset timing for the procedural fallback.
 - `qa_phone_motion.py`: actual Noor phone action via UI on desktop 1440×900 and phone 390×844, ordered phase assertions, painted canvas hashes, screenshots, action duration and returned-to-table check. Added to `qa_all.py` and GitHub Actions.
-- Pending: production build, complete CI, actual screenshot inspection, PR merge and Vercel deployment verification. This should be assessed as a short *illustrative phone gesture*, not an actual-duration phone conversation; manual evaluation of legibility and pacing remains needed.
+- **Validation limits:** Automated desktop/mobile screenshot review confirmed reach, lift, hold, lower, and return frames and an opaque model during transitions. The baked atlas still holds the phone outward rather than fully to Noor's ear; truly realistic call/text poses require re-authoring the rig. This is a short *illustrative phone gesture*, not an actual-duration conversation. User visual confirmation and real-device/accessibility review remain outstanding.
 
 ## Visual walking and sofa seating correction — merged November 18, 2026
 
