@@ -55,7 +55,14 @@ def check(browser, case, viewport):
         page.wait_for_function("window.LWDele?.state?.stage === 'ended'", timeout=10000)
         actual = page.evaluate("LWDele.state.outcome")
         assert actual == expected, (name, expected, actual)
+        assert page.locator('#dlMoves [data-dla="revisit"]').count() == 0, 'Guided scene offered immediate revisit'
+        prior = page.evaluate('LWDele.history')
+        assert prior and prior[-1]['outcome'] == expected and prior[-1]['context'] == context, (name, prior)
         page.locator('#dlMoves [data-dla="reflect"]').click()
+        assert page.locator('#dlCard [data-dlu="revisit"]').count() == 0, 'Guided summary offered immediate revisit'
+        page.evaluate('LWDele.dev.showRoom()')
+        assert page.locator('#dlCard [data-dlu="revisit"]').count() == 0, 'Guided room offered immediate revisit'
+        page.locator('#dlCard [data-dlu="reflect"]').click()
         page.locator('#dlCard [data-dlu="note"]').click()
         assert page.locator('#dlCard [data-dlu="classRoom"]').is_visible()
         # The classroom route must not silently offer Dele's private account.
@@ -68,6 +75,14 @@ def check(browser, case, viewport):
         page.locator('#clOverlay [data-cl="walt"]').click()
         page.wait_for_function("LWClass?.stage === 'walt'")
         assert page.locator("#enc").is_visible(), name + ": Walt did not open"
+        assert page.evaluate('LWDele.history') == prior, 'Walt handoff discarded encounter outcome'
+        page.evaluate('(ctx) => {LWDele.open();LWDele.forceContext=ctx;LWDele.begin();}', context)
+        assert page.evaluate('LWDele.history') == prior, 'begin() reset previous outcomes'
+        page.locator('#dlMoves [data-dla="depart"]').click()
+        assert len(page.evaluate('LWDele.history')) == len(prior)+1, 'Subsequent visit not appended'
+        page.reload()
+        page.wait_for_function('!!window.LWDele')
+        assert len(page.evaluate('LWDele.history')) == len(prior)+1, 'Visit history not persisted through reload'
         assert not errors, (name, errors)
         print(f"{name} {viewport['width']}x{viewport['height']} PASS", flush=True)
     finally:

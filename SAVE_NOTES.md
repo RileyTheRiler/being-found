@@ -176,3 +176,8 @@ Branch `feat/8.5.2b-consent-route` starts from post-foundation main. Removed man
 
 **Release caution:** This publishes only the verified `main` branch's **8.5.1 gameplay with 8.5.2A foundation**. Draft 8.5.2B PR #3 is not in production. Later GitHub pushes should still be checked against both GitHub Actions and a new Vercel production deployment; a successful Actions run or Git push alone is not proof of live deployment. Do not re-upload source with nested `src/` as a Vercel static output.
 
+
+
+## Step 24 — 8.5.2 draft integration and consent regression (2026-11-19)
+
+A two-parent commit preserved original PR #3 consent work and newer main/PR #9 animation changes. Subsequent edits prevent immediate boundary revisits, preserve ordered Dele outcome history with backward-compatible storage, move old dice assertions to standalone Rooms while retaining guided negative checks, add guided/pilot speed parity, centralize `BFFlags.blocked()` with explicit classroom fallbacks, and add version/build stamp plus classroom preview notice. No production merge, manual device, human review or classroom pilot established yet. Check this branch's Actions results before promotion.

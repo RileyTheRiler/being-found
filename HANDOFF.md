@@ -1,3 +1,7 @@
+## 8.5.2 safety release candidate — PR #3 integration (2026-11-19)
+
+**Status:** Pending fresh CI and browser verification, not classroom-ready. This branch combines main `89cfa38` (PR #9 sofa rig) with original PR #3 consent changes, preserving both histories. Guided route Noor → Dele encounter → Walt. Dele exits do not offer immediate replay in guided/pilot or after a resident boundary. Completed encounters append to `cache.history` under the original v1 storage key. New regressions test persistence, pilot speed and Rooms-only dice. Preview notice and commit build stamp added. No human, lived-experience or independent assistive-technology validation.
+
 ## Sofa rig — final visual review notes (2026-11-18 / PR #9)
 
 **Source of truth:** [PR #9](https://github.com/RileyTheRiler/being-found/pull/9), branch `feat/sofa-articulated-rig-20261118`, forked from verified `main` `7207a02`. Draft PR #3 (8.5.2B) remains isolated. Check the actual PR head and CI before merge; **do not infer production release from these notes**.
