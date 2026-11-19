@@ -207,8 +207,11 @@
  function roomFront(c,S){
   // A seated resident's lap goes behind the front cushion; a walker does not.
   const mainSeated=S.sim?.pose==='sit'&&S.sim?.at==='sofa';
+  const seat=window.BFStageSync?.seatMotion?.(S);
+  const frontReady=(mainSeated&&(!seat||seat.progress>.55))||
+    (seat?.kind==='rise'&&seat.progress<.44);
   const npcSeated=S.npc?.pose==='sit'&&S.npc?.at==='sofa';
-  if(mainSeated||npcSeated)drawSofaFront(c);
+  if(frontReady||npcSeated)drawSofaFront(c);
   // Bottom floor reflection ties character's contact shadow to the ground.
   const g=c.createLinearGradient(0,557,0,640);g.addColorStop(0,'rgba(247,232,197,.06)');g.addColorStop(1,'rgba(47,53,45,.08)');box(c,0,558,SW,72,g);
  }
@@ -217,12 +220,18 @@
    // A seated sprite is still rooted to a shoe pivot in its atlas. Shrink it
    // together with the raised seat anchor so the torso rests ON the cushions.
    // Otherwise the atlas model looks as though its hips pass through the sofa.
-   const sitting=o?.pose==='sit';
-   if(!sitting)el(c,x,y+1,28,7,'rgba(35,47,41,.15)');
+   const seat=o?.bfMainActor?window.BFStageSync?.seatMotion?.(window.LW?.S):null;
+   const sitAmount=seat?.kind==='sit'?seat.progress:
+     seat?.kind==='rise'?1-seat.progress:o?.pose==='sit'?1:0;
+   if(sitAmount<.85)el(c,x,y+1,28*(1-sitAmount*.5),7,'rgba(35,47,41,.15)');
    c.translate(x,y);
-   const figureScale=2.90*(sitting ? 0.85 : 1);
+   const figureScale=2.90*(1-.15*sitAmount);
    c.scale(figureScale,figureScale);
-   drawFigure(0,0,o);
+   // The procedural fallback also has to receive the transitional body
+   // posture, without modifying the actual action or save state.
+   const displayPose=seat?.kind==='sit'&&sitAmount<.55?'stand':
+     seat?.kind==='rise'&&sitAmount>.56?'sit':o?.pose;
+   drawFigure(0,0,displayPose===o?.pose?o:{...o,pose:displayPose});
    c.restore();
  }
  function render({ctx,VIEW,S,drawFigure,simOpts,npcOpts,simFoot}){
