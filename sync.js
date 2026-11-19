@@ -91,8 +91,10 @@
    if(leaving)return {kind:'rise',u:leaving.u,progress:ease(leaving.u),stage:leaving.u<.4?'lean':'push'};
    if(s.sim?.at!=='sofa'||s.sim?.pose!=='sit')return null;
    const a=current(s),u=a?.obj==='sofa'&&!a.alreadySitting?a.u:1;
-   const progress=ease(u/.64);
-   return {kind:'sit',u,progress,stage:progress<.20?'turn':progress<.8?'lower':'settle'};
+   // Keep the standing shoe pivot planted through the initial turn. Begin
+   // shifting to the seat only once the legs have started bending.
+   const progress=ease((u-.24)/.50);
+   return {kind:'sit',u,progress,stage:u<.24?'turn':progress<.72?'lower':'settle'};
  }
  // The art is deliberately an abbreviated gesture, not the complete duration
  // of the authored meal or painting. Respect outcome-specific state elsewhere.
@@ -114,7 +116,7 @@
    const a=current(s);if(!a)return null;
    // The seat interpolation is drawn by BFNavigation and BFRig together.
    // The atlas remains opaque when the pose changes at the midpoint.
-   if(seat?.kind==='sit')return seat.progress<.55?['reach',7+Math.min(3,Math.floor(seat.progress*6))]:['sit',11];
+   if(seat?.kind==='sit')return seat.progress<.12?['reach',7+Math.min(3,Math.floor(seat.progress*10))]:['sit',11];
    if(a.obj==='phone'&&['call','msg'].includes(a.act)){
      const p=phoneMotion(s),col=p.next!=null&&p.mix>=.5?p.next:p.frame;
      return [p.stage==='use'?'phone':'reach',col];
