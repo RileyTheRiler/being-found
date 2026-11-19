@@ -67,7 +67,7 @@ const fs=require('node:fs'),path=require('node:path');
  // Keyboard-generated clicks also count as activations; no hidden keyboard timer.
  // Only authored checks can bypass the requirement after the player opts to roll or skip.
  inject("if(m.st==='heavy'){ if(!t.dataset.held){",
-   "if(m.st==='heavy'){ if(t.dataset.bfBypass==='1'||((document.body.classList.contains('cl-route')||window.BFFlags?.guided)&&window.BFFlags?.heavyHold!==true)){choose(m);return;} if(!t.dataset.held){");
+   "if(m.st==='heavy'){ if(t.dataset.bfBypass==='1'||(window.BFFlags?.blocked?.('heavyHold') ?? (document.body.classList.contains('cl-route') || new URLSearchParams(location.search).get('pilot')==='1'))){choose(m);return;} if(!t.dataset.held){");
  // Compatibility fallback for other residents: their existing A* grid is untouched.
  inject('s.path=findPath([s.x,s.y],pt);',`s.path=findPath([s.x,s.y],pt);
   s.path=window.BFMotion?.smoothPath?.([s.x,s.y],s.path,losClear)||s.path;
@@ -114,8 +114,12 @@ const fs=require('node:fs'),path=require('node:path');
     ctx.translate(ox,oy);ctx.rotate(-o.bfGesture*.9);ctx.translate(-ox,-oy);}
   ${arm}
   ctx.restore();`);
- const version=require('./package.json').version, css=['dice','ui','story','cinema','movement','art','sprite_rig','patterns','interaction','room'], js=['flags','patterns','difficulty','story','dice','ui','cinema','movement','art','sprite_rig','interaction','room','navigation','sync'];
- html=html.replace(/<\/head\s*>/i,'<link rel="preload" as="image" type="image/webp" href="assets/noor_atlas.webp">\n'+css.map(n=>`<link rel="stylesheet" href="${n}.css?v=${version}">`).join('\n')+'\n</head>');
+ const version=require('./package.json').version;
+  let shortSha=String(process.env.VERCEL_GIT_COMMIT_SHA||process.env.GITHUB_SHA||'').slice(0,12);
+  if(!shortSha){try{shortSha=require('node:child_process').execFileSync('git',['rev-parse','--short=12','HEAD'],{encoding:'utf8',stdio:['ignore','pipe','ignore']}).trim();}catch(e){shortSha='local';}}
+  html=html.replace(/__BF_BUILD_STAMP__/g,version+' · '+shortSha);
+  const css=['dice','ui','story','cinema','movement','art','sprite_rig','patterns','interaction','room'], js=['flags','patterns','difficulty','story','dice','ui','cinema','movement','art','sprite_rig','interaction','room','navigation','sync'];
+ html=html.replace(/<\/head\s*>/i,`<meta name="being-found-build" content="${version} ${shortSha}">\n`+'<link rel="preload" as="image" type="image/webp" href="assets/noor_atlas.webp">\n'+css.map(n=>`<link rel="stylesheet" href="${n}.css?v=${version}">`).join('\n')+'\n</head>');
  html=html.replace(/<\/body\s*>/i,js.map(n=>`<script defer src="${n}.js?v=${version}"></script>`).join('\n')+'\n</body>');
  html=html.replace('Being Found 6.7 ·',`Being Found ${version} ·`);
  fs.mkdirSync('dist',{recursive:true});fs.writeFileSync('dist/index.html',html);

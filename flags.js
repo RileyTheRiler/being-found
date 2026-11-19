@@ -20,6 +20,7 @@
     get heavyHold() { return enabled('heavyHold', () => !guided()); },
     get moodSpeed() { return enabled('moodSpeed', () => !guided()); },
     get worldSwap() { return enabled('worldSwap', () => !guided()); },
-    get sealedLegacy() { return enabled('sealedLegacy', () => !guided()); }
+    get sealedLegacy() { return enabled('sealedLegacy', () => !guided()); },
+    blocked(name) { return ['dice','heavyHold','moodSpeed','worldSwap','sealedLegacy'].includes(name) ? this[name] === false : true; }
   });
 })();
