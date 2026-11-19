@@ -53,6 +53,15 @@ const fs=require('node:fs'),path=require('node:path');
  inject('s.onDone=()=>finishAction(m,false); if(key) dirRun(',
    `if(m.obj==='phone'&&['call','msg'].includes(m.a.id))
       s.dur=Math.max(s.dur,m.a.id==='call'?4.1:3.5);
+    // Physical choreography: a sofa descent, a small cooking sequence and
+    // a brushstroke need more than the one-second generic action. Limit
+    // this pacing pass to Noor's rendered flat, not clinical story logic.
+    if(S.flat?.id==='rooted'){
+      if(m.obj==='sofa')s.dur=Math.max(s.dur,2.35);
+      if(m.obj==='stove'&&['fry','cook','two'].includes(m.a.id))
+        s.dur=Math.max(s.dur,3.55);
+      if(m.obj==='easel'&&m.a.id==='paint')s.dur=Math.max(s.dur,3.7);
+    }
     s.onDone=()=>finishAction(m,false); if(key) dirRun(`);
  // The original pointer hold and three-activation threshold remain in place.
  // Keyboard-generated clicks also count as activations; no hidden keyboard timer.

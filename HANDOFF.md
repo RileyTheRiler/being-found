@@ -1,3 +1,14 @@
+## Staged physical actions — November 18, 2026 (review branch)
+
+**Branch:** `feat/physical-action-animation-pass` from verified main `743934e447dd72f1cf645331c5a742bff8ac65b1`. **Not merged or deployed.** Narrative/gameplay and unmerged draft 8.5.2B PR #3 are unchanged.
+
+- **Sofa enter:** The original action sets `S.sim.pose='sit'` at arrival. A new purely visual `BFStageSync.seatMotion` ties scene-space foot-position (floor 574 → cushion 516), body scale (100%→85%), seated atlas frame, and foreground sofa masking to a single eased part of the authored action. Repeated seat actions while already seated do not stand the actor up.
+- **Sofa exit:** `BFNavigation.goTo` detects leaving the occupied sofa; the existing route stays queued but its feet remain near the sofa until a 0.82-second stand-up completes. `BFStageSync.seatMotion` and the model atlas change pose along the upward position/scale interpolation. Only then does ordinary walking begin. Cancels/reset/phase changes clear the transition. No separate story events or save state.
+- **Cooking:** Rooted-flat cooking display time is at least 3.55 seconds for `fry/cook/two`; `BFStageSync.workMotion` supplies preparation, reach, work and return phases. The pan, a grounded utensil, and steam follow the same stage. The authored breakfast outcome still owns persistent pan/egg state.
+- **Painting:** Rooted-flat `paint` display time is at least 3.7 seconds. Its brush moves during a dedicated stroke phase; temporary trial marks clear after the action, and permanent paint still depends on the authored `S.fx.painted` outcome. All other stages/narrative choices preserved.
+- **Tests:** `qa_character_motion.py` now checks the gradual sofa descent. `qa_physical_actions.py` triggers the actual sofa/stove/easel menus on 1440×900 desktop and 390×844 phone, inspects per-stage positions and real rendered frames, screenshots, completion and non-persistence of temporary props; registered in local QA and CI.
+- **Pending:** GitHub build/CI, inspect screenshot artifacts for accidental sprite jumps or detached props, merge/rebase, Vercel production verification, actual user visual review. The existing model atlas is pre-rendered, so these are improved staged illustrations, **not** physically rigged skeleton animations.
+
 ## Phone interaction animation refinement — merged November 18, 2026
 
 **Main code commit:** `8a9041b2b3d201a79dbd93246ba94dd1549ff5b9`, [PR #7](https://github.com/RileyTheRiler/being-found/pull/7) merged. [GitHub Actions run 44444265790](https://github.com/RileyTheRiler/being-found/actions/runs/44444265790) passed **33/33 steps** on the final reviewed branch head. Vercel production deployment `dpl_HN3Lt4nhjupVCPXVWaJrNPF8Eb42` reached **READY** on that merged commit and assigned `being-found.vercel.app`. Gameplay and narrative 8.5.2B work remains separate and unmerged.
