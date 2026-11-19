@@ -138,68 +138,84 @@
  }
  function paintKitchen(c,s,t){
    if(!home(s))return;
-   const a=current(s),doing=a?.obj==='stove',stage=doing?a.u:0;
-   const condition=breakfast(s);
-   // The stage coordinates match the drawn hob and sink in room.js.
+   const a=current(s),m=workMotion(s),doing=a?.obj==='stove',condition=breakfast(s);
+   // The pan stays attached to the hob and turns only during the working beat.
+   // Steam is delayed until heat has actually been applied.
    if(doing||condition==='used'||condition==='untouched'){
-     const tilt=doing&&!reduced()&&stage>.24&&stage<.8?Math.sin(stage*Math.PI*5)*.045:0;
-     // An egg is present only if the scene has proceeded far enough to cook;
-     // the complication branch can instead leave the clean pan unused.
+     const active=m?.stage==='work';
+     const stir=active&&!reduced()?Math.sin(m.work*Math.PI*5):0;
      const lastBreakfast=window.BFStory?.moments?.history?.find(x=>x.name==='Breakfast'&&x.flat===s.flat?.name);
      const skipped=lastBreakfast?.categoryCode==='complication';
-     pan(c,1104,429,tilt,(doing&&stage>.4)||(condition==='used'&&!skipped),false);
-     if(doing&&stage>.34){
-       c.save();c.globalAlpha=clamp((stage-.34)*3)*.55;
+     const egg=(doing&&a.act==='fry'&&m?.u>.52)||(condition==='used'&&!skipped);
+     pan(c,1104,429,stir*.055,egg,false);
+     if(doing&&m?.u>.38){
+       c.save();c.globalAlpha=ease((m.u-.38)/.20)*(1-ease((m.u-.90)/.10))*.48;
        for(let i=0;i<3;i++){
-         const drift=reduced()?0:Math.sin(t*1.6+i)*4;
-         c.beginPath();c.moveTo(1081+i*19,412);c.bezierCurveTo(1078+i*18+drift,396,1097+i*16+drift,378,1085+i*17,354);
+         const drift=reduced()?0:Math.sin(t*1.6+i)*3;
+         c.beginPath();c.moveTo(1081+i*19,412);
+         c.bezierCurveTo(1078+i*18+drift,396,1097+i*16+drift,378,1085+i*17,354);
          c.strokeStyle='#fffbed';c.lineWidth=2.2;c.stroke();
        }
        c.restore();
      }
    }
    if(!doing&&condition==='later'){
-     // The pan stays beside the sink after the player's explicit decision.
      pan(c,1285,426,-.07,false,false);
      ellipse(c,1347,428,10,4,'rgba(162,145,120,.65)');
    }
    if(!doing&&condition==='washed'){
-     // Clean, dry pan on the hanging rack. No detached dish appears in the sink.
      stroke(c,1406,376,1406,400,'#87938b',3);
      c.save();c.translate(1410,405);c.scale(.28,1);ellipse(c,0,0,40,29,'#5a6968');ellipse(c,0,-1,32,22,'#aebbb4');c.restore();
      stroke(c,1410,428,1410,444,'#697875',4);
    }
-   if(doing&&stage>.06&&stage<.65){
-     // Hand-sized utensil moves toward the cooker on the same action clock.
-     const handX=1160+clamp(stage*5)*15;
-     stroke(c,handX,454-stage*18,handX+29,439-stage*18,'#8d6b4f',4);
-     ellipse(c,handX+31,436-stage*18,11,4,'#5d6262');
+   if(doing&&m?.reach>.04){
+     // A short utensil rests against the right side of the hob. The contact
+     // point is stable; only the handle pivots during the working interval.
+     const stir=m.stage==='work'&&!reduced()?Math.sin(m.work*Math.PI*5)*5:0;
+     const tipX=1152+stir,tipY=424;
+     const handX=1203+stir*.35,handY=462-8*m.reach;
+     stroke(c,tipX,tipY,handX,handY,'#9d7653',4);
+     ellipse(c,tipX-4,tipY-2,11,5,'#656c65');
    }
  }
  function paintEasel(c,s,t){
    if(!home(s))return;
-   const p=painted(s),a=current(s),doing=a?.obj==='easel'&&a.act==='paint';
+   const p=painted(s),m=workMotion(s),doing=m?.obj==='easel';
    if(p>.04){
      c.save();c.beginPath();c.rect(953,340,63,105);c.clip();
      for(let i=0;i<7;i++){
        if(p<(i+1)/8)break;
-       c.beginPath();c.moveTo(956+i*7,424-i*6);c.quadraticCurveTo(976+i*3,406-i*11,1004+i*2,381+i*2);
+       c.beginPath();c.moveTo(956+i*7,424-i*6);
+       c.quadraticCurveTo(976+i*3,406-i*11,1004+i*2,381+i*2);
        c.lineWidth=3.2;c.strokeStyle=['#779aa2','#d7a37d','#78948f','#7fa6b1'][i%4];c.stroke();
      }
      c.restore();
    }
    if(doing){
-     const y=405-(a.u*16),x=982+Math.sin(a.u*Math.PI*3)*7;
-     stroke(c,x-9,y+12,x+6,y-6,'#967650',3);
-     ellipse(c,x+7,y-8,4,6,'#427b82');
-     if(!reduced())ellipse(c,x+10,y-8,2,2,'#b7d0cc');
+     // Brief trial marks follow the brush along the canvas but are not saved.
+     // The authored painting only persists when its existing outcome allows it.
+     const work=m.work,working=m.stage==='stroke';
+     const passes=working?Math.min(4,Math.floor(work*5)):m.stage==='return'?4:0;
+     c.save();c.beginPath();c.rect(954,340,61,104);c.clip();
+     for(let i=0;i<passes;i++){
+       const x=970+i*6,y=430-i*8;
+       stroke(c,x,y,x+12,y-10,['#779aa2','#d7a37d','#78948f','#7fa6b1'][i],2.5);
+     }
+     c.restore();
+     if(m.reach>.03){
+       const wave=working&&!reduced()?Math.sin(work*Math.PI*4)*9:0;
+       const x=977+wave,y=432-(working?work*19:0);
+       stroke(c,x-7,y+13,x+5,y-7,'#9d7653',3.3);
+       ellipse(c,x+6,y-8,4,5,'#427b82');
+       if(!reduced())ellipse(c,x+8,y-9,2,2,'#b7d0cc');
+     }
    }
  }
  function paintSofa(c,s){
    if(!home(s))return;
-   const sitting=s.sim?.at==='sofa'&&s.sim?.pose==='sit',a=current(s),u=a?.obj==='sofa'?a.u:1;
+   const sitting=s.sim?.at==='sofa'&&s.sim?.pose==='sit',seat=seatMotion(s);
    if(!sitting)return;
-   const comp=clamp((u-.2)/.58);
+   const comp=seat?.progress??1;
    // The cushion compresses as Noor settles, then remains gently indented.
    const dent=3.5*comp;
    box(c,415,483+dent,97,13,'rgba(108,85,60,.14)',7);
