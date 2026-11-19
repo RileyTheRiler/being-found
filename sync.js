@@ -204,8 +204,11 @@
      }
      c.restore();
      if(m.reach>.03){
-       const wave=working&&!reduced()?Math.sin(work*Math.PI*4)*9:0;
-       const x=977+wave,y=432-(working?work*19:0);
+       const wave=working&&!reduced()&&makesMark?Math.sin(work*Math.PI*4)*9:0;
+       // In the dim/blocked version she mixes a color and stops with the
+       // brush above the palette; no trial marks touch the canvas.
+       const x=makesMark?977+wave:1005;
+       const y=makesMark?432-(working?work*19:0):465-6*m.reach;
        stroke(c,x-7,y+13,x+5,y-7,'#9d7653',3.3);
        ellipse(c,x+6,y-8,4,5,'#427b82');
        if(!reduced())ellipse(c,x+8,y-9,2,2,'#b7d0cc');
