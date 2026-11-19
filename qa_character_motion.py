@@ -113,7 +113,7 @@ def test(browser,name,width,height,touch):
         page.wait_for_timeout(150)
         early=sample(page)
         assert 516<=early["position"][1]<=574,(name,"sofa movement outside scene",early)
-        page.wait_for_function("""() => BFStageSync.seatMotion(LW.S)?.progress>=.98""",timeout=9000)
+        page.wait_for_function("""() => BFStageSync.seatMotion(LW.S)?.progress===1""",timeout=9000)
         seat=sample(page)
         assert seat["state"]=="sit",(name,"seated sprite not selected",seat)
         assert abs(seat["position"][0]-455)<.05 and abs(seat["position"][1]-516)<.05,(name,"seated anchor did not settle on cushion",seat)
