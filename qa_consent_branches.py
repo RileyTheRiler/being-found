@@ -62,7 +62,9 @@ def check(browser, case, viewport):
         assert page.locator('#dlCard [data-dlu="revisit"]').count() == 0, 'Guided summary offered immediate revisit'
         page.evaluate('LWDele.dev.showRoom()')
         assert page.locator('#dlCard [data-dlu="revisit"]').count() == 0, 'Guided room offered immediate revisit'
-        page.locator('#dlCard [data-dlu="note"]').click()
+        # Room's Return to note link is collapsed under More options.
+        # Exercise the actual note state before continuing to its record.
+        page.evaluate('LWDele.dev.showNote()')
         page.locator('#dlCard [data-dlu="reflect"]').click()
         page.locator('#dlCard [data-dlu="note"]').click()
         assert page.locator('#dlCard [data-dlu="classRoom"]').is_visible()
