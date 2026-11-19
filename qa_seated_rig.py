@@ -18,7 +18,7 @@ CHROME = os.environ.get("BF_CHROME") or shutil.which("google-chrome") or shutil.
 def boot(page):
     page.goto(URL, wait_until="load")
     page.wait_for_function("typeof window.LW?.startFlat==='function'")
-    page.evaluate("document.querySelector('#plSkip')?.click()")
+    page.evaluate("() => window.LWPrologue?.finish?.()")
     page.evaluate("() => {LW.closeModals();LW.startFlat(0);BFSkillChecks.setEnabled(false);}")
     page.wait_for_function("BFRig.loaded===true", timeout=20000)
 
@@ -112,6 +112,7 @@ def test_other_characters(browser):
                const s=LW.S.sim;s.path=[];s.pose='sit';s.at='sofa';
                BFRoom.navigate('living');
             }""",ix)
+            p.evaluate("() => window.LWPrologue?.finish?.()")
             p.wait_for_function("BFRig.loaded",timeout=20000)
             p.wait_for_function("BFRig.lastSeatGeometry?.amount===1",timeout=10000)
             v=sample(p)
