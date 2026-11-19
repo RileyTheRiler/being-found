@@ -20,7 +20,8 @@
    syncScene(s);
    // A queued second action is not underway until choose() runs again.
    if(s.sim?.act)return;
-   intent={obj:m.obj,act:m.a?.id||'',kind:m.a?.kind||'',started:performance.now()};
+   intent={obj:m.obj,act:m.a?.id||'',kind:m.a?.kind||'',started:performance.now(),
+     alreadySitting:m.obj==='sofa'&&s.sim?.pose==='sit'&&s.sim?.at==='sofa'};
    arrival=null;
  }
  function arrive(id,s=S){if(!home(s))return;syncScene(s);arrival=id;}
@@ -38,7 +39,7 @@
    if(!sim?.act||!sim?.at||sim.at!==intent?.obj)return null;
    return {obj:intent.obj,act:intent.act,kind:intent.kind,
      u:clamp((sim.prog||0)/Math.max(.1,sim.dur||1)),
-     arrived:arrival===intent.obj};
+     arrived:arrival===intent.obj,alreadySitting:!!intent.alreadySitting};
  }
  function breakfast(s=S){
    if(!home(s))return 'untouched';
@@ -81,17 +82,46 @@
    return {u,stage,frame,next,mix,table,action:a.act};
  }
  function phoneHeld(s=S){const p=phoneMotion(s);return !!p&&!p.table;}
+ // The sitting pose in the old engine begins at arrival. This presentation
+ // stage moves the model from the floor to the cushion instead of teleporting
+ // its feet. Leaving the seat is paced by BFNavigation before walking begins.
+ function seatMotion(s=S){
+   if(!home(s))return null;
+   const leaving=window.BFNavigation?.seatExit;
+   if(leaving)return {kind:'rise',u:leaving.u,progress:ease(leaving.u),stage:leaving.u<.4?'lean':'push'};
+   if(s.sim?.at!=='sofa'||s.sim?.pose!=='sit')return null;
+   const a=current(s),u=a?.obj==='sofa'&&!a.alreadySitting?a.u:1;
+   const progress=ease(u/.64);
+   return {kind:'sit',u,progress,stage:progress<.20?'turn':progress<.8?'lower':'settle'};
+ }
+ // The art is deliberately an abbreviated gesture, not the complete duration
+ // of the authored meal or painting. Respect outcome-specific state elsewhere.
+ function workMotion(s=S){
+   const a=current(s);
+   if(!a||!(a.obj==='stove'||a.obj==='easel'&&a.act==='paint'))return null;
+   const u=a.u,stages=a.obj==='stove'?['prepare','reach','work','return']:['prepare','lift','stroke','return'];
+   const stage=u<.16?stages[0]:u<.32?stages[1]:u<.79?stages[2]:stages[3];
+   const reach=ease((u-.12)/.2)*(1-ease((u-.8)/.2));
+   const work=clamp((u-.32)/.47);
+   const stroke=stage===stages[2]?Math.sin(work*Math.PI*5):0;
+   const frame=stage===stages[0]?0:stage===stages[3]?7+Math.round(3*reach):stage===stages[2]?9+(stroke>0?1:0):7+Math.round(3*reach);
+   return {obj:a.obj,act:a.act,u,stage,reach,work,stroke,frame};
+ }
  function frame(s=S,o){
    if(!home(s)||!o?.bfMainActor)return null;
+   const seat=seatMotion(s);
+   if(seat?.kind==='rise')return seat.progress<.44?['sit',11]:['reach',10-Math.min(3,Math.floor((seat.progress-.44)/.56*4))];
    const a=current(s);if(!a)return null;
-   // Pose and physical seat anchor change together. Never select the
-   // standing/reach sprite while the actor is already at the seated pivot.
-   if(a.obj==='sofa'&&s.sim.pose==='sit')return ['sit',11];
+   // The seat interpolation is drawn by BFNavigation and BFRig together.
+   // The atlas remains opaque when the pose changes at the midpoint.
+   if(seat?.kind==='sit')return seat.progress<.55?['reach',7+Math.min(3,Math.floor(seat.progress*6))]:['sit',11];
    if(a.obj==='phone'&&['call','msg'].includes(a.act)){
      const p=phoneMotion(s),col=p.next!=null&&p.mix>=.5?p.next:p.frame;
      return [p.stage==='use'?'phone':'reach',col];
    }
-   if(a.obj==='stove'||a.obj==='easel'||a.obj==='window')return ['reach',7+Math.min(3,Math.floor(a.u*4))];
+   const work=workMotion(s);
+   if(work)return [work.stage==='prepare'?'idle':'reach',work.frame];
+   if(a.obj==='window')return ['reach',7+Math.min(3,Math.floor(a.u*4))];
    return null;
  }
  function box(c,x,y,w,h,color,r=0){c.beginPath();c.roundRect(x,y,w,h,r);c.fillStyle=color;c.fill();}
@@ -194,8 +224,9 @@
    const a=current(s);
    return {version:'8.1',flat:s?.flat?.id,scene:sceneId(s),arrival,last,
      current:a,breakfast:breakfast(s),painted:painted(s),phoneHeld:phoneHeld(s),phoneMotion:phoneMotion(s),
+     seatMotion:seatMotion(s),workMotion:workMotion(s),
      draws,propDraws};
  }
- window.BFStageSync={version:'8.1.1',isHome:home,begin,arrive,finish,reset,current,breakfast,painted,phoneHeld,phoneMotion,frame,
+ window.BFStageSync={version:'8.1.2',isHome:home,begin,arrive,finish,reset,current,breakfast,painted,phoneHeld,phoneMotion,seatMotion,workMotion,frame,
    paintKitchen(c,s,t){draws++;paintKitchen(c,s,t);},paintEasel,paintSofa,paintActorProp,snapshot};
 })();
