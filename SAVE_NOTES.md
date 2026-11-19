@@ -1,3 +1,14 @@
+## Phone interaction animation refinement — November 18, 2026 (review branch)
+
+**Branch:** `fix/phone-animation-choreography` from `main` `2cee90c13010af88b57377a112168cd45ad658cc`. **Not yet merged or verified as live.** This is a bounded presentation/pacing pass, separate from the unfinished 8.5.2B gameplay work.
+
+- Root cause: phone `call` and `msg` actions inherited ~1-second default action durations. `sync.js` switched immediately to a single held-pose cell at 28% of the action and dropped to idle at completion. The phone on the table also disappeared and returned abruptly.
+- `build.js`: set phone-specific minimum animation time (call 4.1 seconds, message 3.5 seconds) after authored state-specific routine durations are calculated. Other actions retain existing durations. No change to dialogue, effects, goals, save schema or input requirements.
+- `sync.js`: deterministic, normalized reach → lift → use → lower → release phases, synchronized to the existing `S.sim.prog/S.sim.dur` action clock. `phoneMotion` exposes pose and whether the handset is physically on the table, without independent timers that might outlive a chapter.
+- `sprite_rig.js`: crossfade briefly between baked reach and phone atlas poses. `room.js` draws the table handset only during the correct phases. `art.js` applies matching arm/handset timing for the procedural fallback.
+- `qa_phone_motion.py`: actual Noor phone action via UI on desktop 1440×900 and phone 390×844, ordered phase assertions, painted canvas hashes, screenshots, action duration and returned-to-table check. Added to `qa_all.py` and GitHub Actions.
+- Pending: production build, complete CI, actual screenshot inspection, PR merge and Vercel deployment verification. This should be assessed as a short *illustrative phone gesture*, not an actual-duration phone conversation; manual evaluation of legibility and pacing remains needed.
+
 ## Visual walking and sofa seating correction — merged November 18, 2026
 
 **Main code commit:** `db558064b49a0035af69cbbfcc37c2cfe1e0d7f4`, [PR #6](https://github.com/RileyTheRiler/being-found/pull/6) merged. Pre-merge GitHub Actions [run 44421600423](https://github.com/RileyTheRiler/being-found/actions/runs/44421600423) passed its full regression workflow. Vercel production deployment `dpl_J5HGWfAM5tkcnVYDFi3SDYgJtQuD` is `READY` on the code commit, with `being-found.vercel.app` assigned.
