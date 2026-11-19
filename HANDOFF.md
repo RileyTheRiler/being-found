@@ -1,3 +1,12 @@
+## Articulated sofa prototype — branch verification pending (November 18, 2026)
+
+**Base:** `7207a02b9b8defda975ff59e8cdd46840c58d69d` on `main`. **Branch:** `feat/sofa-articulated-rig-20261118`. This is a focused rendering change; the separate draft 8.5.2B PR #3 is untouched.
+
+- **Architecture:** The modeled atlases provide no intermediate sit/rise frames or body-part bones at runtime. `ANIMATION_ARCHITECTURE.md` compares regeneration, vector rigging, runtime GLB and hybrid compositing and explains the limited selected approach.
+- **Code:** `sprite_rig.js` renders the opaque modeled head/upper body plus two independently posed lower limbs driven by the authored seat/rise progress. Shoes remain planted while the knees move forward, hips descend and the torso leans transiently. `room.js` restores the shoe baseline rather than shrinking the entire model as it rises to the sofa anchor. The sofa front apron stays a separate depth layer.
+- **QA:** `qa_seated_rig.py` exercises the real sofa/stove menus on desktop, phone and tablet, samples geometry, records screenshots, checks reduced motion and tests modeled Tomas/Dele. `qa_physical_actions.py` now expects the composite atlas source instead of the static seated cell. CI and `qa_all.py` include the new test.
+- **Caution:** No build, CI, deployment or visual-quality conclusion is established by these edits alone. The vector pants may not exactly match the raster clothes, the sofa depth mask needs human screenshot review, NPCs retain the procedural fallback, and GLB asset regeneration has not occurred. Do not merge without a passing complete QA workflow and visual inspection. Keep gameplay/narrative unchanged.
+
 ## Staged physical actions — merged November 18, 2026
 
 **Main code commit:** `26a785464fd793f11640d660c59e5d5027c395db`, [PR #8](https://github.com/RileyTheRiler/being-found/pull/8) merged. [GitHub Actions run 44451852112](https://github.com/RileyTheRiler/being-found/actions/runs/44451852112) passed **34/34 steps** on the reviewed branch, including actual desktop/mobile sofa, kitchen, easel and walking regressions. Vercel production deployment `dpl_A9gQnAApEGEMUTiQSRzrq5rHbjNM` reached **READY** on that merge commit with `being-found.vercel.app` assigned. Narratives, game results and draft 8.5.2B PR #3 remain unchanged.
