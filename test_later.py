@@ -21,6 +21,8 @@ with sync_playwright() as p:
   page.wait_for_function("!!document.querySelector('#mTitle .title-more')")
   page.evaluate("document.querySelector('#mTitle .title-more').open = true")
   page.locator('#mTitle .title-more [data-go="start"]').click(timeout=7000)
+  # Standalone Rooms has an introduction card after the title selection.
+  page.locator('#mIntro [data-go="flat"]').click(timeout=7000)
   page.wait_for_timeout(600)
   def snap():return page.evaluate('''() => {const S=LW.S;return {...BFStageSync.snapshot(S),navX:BFNavigation.x,navActive:BFNavigation.active,at:S.sim.at,pose:S.sim.pose,simAct:!!S.sim.act,clock:S.clock,panels:document.querySelectorAll('[data-bf-followup]').length,rigDraws:BFRig.totalDraws};}''')
   start=snap();assert start['version']=='8.1' and start['rigDraws']>0 and start['breakfast']=='untouched',start
