@@ -12,9 +12,9 @@ for(const [name,regex] of labels){
 }
 for(const [src,dst] of [
  ['shell.js','bf83.js'],['shell.css','bf83.css'],['phase2.css','bf835.css'],
- ['phase3.js','bf837.js'],['phase3.css','bf837.css'],['title_access.js','title_access.js']])fs.copyFileSync(p.join(__dirname,src),p.join(dir,dst));
+ ['phase3.js','bf837.js'],['phase3.css','bf837.css'],['title_access.js','title_access.js'],['a11y_853.css','a11y_853.css']])fs.copyFileSync(p.join(__dirname,src),p.join(dir,dst));
 const version=require('./package.json').version;
-const extra=['bf83','bf835','bf837'].map(n=>`<link rel="stylesheet" href="${n}.css?v=${version}">`).join('')+['bf83','bf837','title_access'].map(n=>`<script defer src="${n}.js?v=${version}"></script>`).join('');
+const extra=['bf83','bf835','bf837','a11y_853'].map(n=>`<link rel="stylesheet" href="${n}.css?v=${version}">`).join('')+['bf83','bf837','title_access'].map(n=>`<script defer src="${n}.js?v=${version}"></script>`).join('');
 const at=html.toLowerCase().indexOf('</head>');html=at>=0?html.slice(0,at)+extra+html.slice(at):extra+html;
 html=html.replace(/<title>[^<]*<\/title>/i,`<title>Being Found ${version}</title>`);
 fs.writeFileSync(file,html,'utf8');fs.mkdirSync(p.join(dir,'qa'),{recursive:true});
