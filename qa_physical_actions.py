@@ -53,7 +53,7 @@ def test(browser,name,w,h,touch):
         action(page,"living","sofa","Sit down for a minute")
         page.wait_for_function("LW.S.sim.at==='sofa'&&!!LW.S.sim.act",timeout=22000)
         anchors=[];frames=[]
-        for u,stage in ((.08,"turn"),(.29,"lower"),(.45,"lower"),(.72,"settle")):
+        for u,stage in ((.08,"turn"),(.29,"lower"),(.40,"lower"),(.72,"settle")):
             v=set_u(page,u)
             assert v["seat"] and v["seat"]["kind"]=="sit",(name,u,v)
             assert v["seat"]["stage"]==stage,(name,u,v)
