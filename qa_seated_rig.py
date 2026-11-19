@@ -116,9 +116,14 @@ def test_other_characters(browser):
             p.evaluate("""(ix) => {
                LW.closeModals();LW.startFlat(ix);
                const s=LW.S.sim;s.path=[];s.pose='sit';s.at='sofa';
-               BFRoom.navigate('living');
+               s.x=OBJECTS.sofa.stand[0];s.y=OBJECTS.sofa.stand[1];
             }""",ix)
-            p.evaluate("() => window.LWPrologue?.finish?.()")
+            # Let room render process the new flat before manually selecting
+            # Living. Otherwise its first-frame camera reset undoes the tab.
+            p.wait_for_timeout(320)
+            p.evaluate("() => { LWPrologue?.finish?.();BFRoom.navigate('living'); }")
+            p.wait_for_function("BFRoom.selected==='living'",timeout=8000)
+            p.wait_for_timeout(800)
             p.wait_for_function("BFRig.loaded",timeout=20000)
             # Atlas loading is asynchronous across flats. Wait for the new
             # character's rendered frame, not stale geometry from the old flat.
