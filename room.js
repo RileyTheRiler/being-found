@@ -149,6 +149,11 @@
  }
  function drawSofaFrontRaw(c){rr(c,281,518,294,23,10,'#bca37c');line(c,308,539,546,539,'rgba(74,65,54,.22)',3);}
  function drawSofaFront(c){sofaGeometry(c,()=>drawSofaFrontRaw(c));}
+ function drawSofaLapMask(c){
+   // Only the top upholstery lip hides a seated thigh. The full apron is
+   // already behind the character, so it must not erase knees or shins.
+   sofaGeometry(c,()=>rr(c,281,518,294,10,7,'#bca37c'));
+ }
  function drawPhone(c,S,t){
    rr(c,610,501,103,17,3,'#957961');rr(c,625,516,10,59,3,'#7c6254');rr(c,690,516,10,59,3,'#7c6254');
    // Prefer the authored phone choreography. The older art fallback only
@@ -222,7 +227,7 @@
   const frontReady=(mainSeated&&(!seat||seat.progress>.12))||
     (seat?.kind==='rise'&&seat.progress<.44);
   const npcSeated=S.npc?.pose==='sit'&&S.npc?.at==='sofa';
-  if(frontReady||npcSeated)drawSofaFront(c);
+  if(frontReady||npcSeated)drawSofaLapMask(c);
   // Bottom floor reflection ties character's contact shadow to the ground.
   const g=c.createLinearGradient(0,557,0,640);g.addColorStop(0,'rgba(247,232,197,.06)');g.addColorStop(1,'rgba(47,53,45,.08)');box(c,0,558,SW,72,g);
  }
