@@ -1,6 +1,6 @@
-# Being Found 8.5.2 — safety release candidate
+# Being Found 8.5.2 — classroom preview
 
-**Classroom status:** Preview build. Not yet reviewed for classroom use. Scripted QA is not lived-experience or independent assistive-technology validation.
+**Classroom status:** Released as a preview, not approved for classroom use. Scripted QA is not lived-experience or independent assistive-technology validation. See `CURRENT_STATE.md` and `RELEASE_PROCEDURE.md`.
 
 
 Editable source for Being Found. This line continues from the 8.3.7 preview.

@@ -186,3 +186,7 @@ A two-parent commit preserved original PR #3 consent work and newer main/PR #9 a
 ## Step 25 — deployment-policy audit
 
 Vercel's current production target follows `main`. Preview branches do not target production. The project update connector does not expose an operation to change Git production branch, so no potentially disruptive account-level deployment setting was changed. Added `RELEASE_PROCEDURE.md` documenting the current release gate, exact commit verification and a proposed release-branch workflow pending account-level approval.
+
+## Step 26 — 8.5.2 merge and production verification (2026-11-19)
+
+PR #3 was marked ready then merged after [38/38 green steps](https://github.com/RileyTheRiler/being-found/actions/runs/44581670898) on tested head `541064e579340a8c786be7c4e06c591baeb05d5e`. Merge commit `989e2ebcc60362b7a38a646343fdff41333878ad`. Initial Vercel production deployment `dpl_TSRKwixNzhL8vMZ1wq9kdqzDDdnk` reported READY, target production and alias `being-found.vercel.app` with matching SHA. The post-merge main run is [44583201971](https://github.com/RileyTheRiler/being-found/actions/runs/44583201971); check its latest conclusion before relying on it. The release retains the explicit classroom-preview notice. No actual device, screen-reader, participant or lived-experience validation was performed. The full 30-finding status inventory awaits the complete independent delta review; current known blockers are in `CURRENT_STATE.md`.
