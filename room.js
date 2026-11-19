@@ -217,21 +217,23 @@
  }
  function drawActor(c,x,y,o,drawFigure){
    c.save();
-   // A seated sprite is still rooted to a shoe pivot in its atlas. Shrink it
-   // together with the raised seat anchor so the torso rests ON the cushions.
-   // Otherwise the atlas model looks as though its hips pass through the sofa.
+   // Restore the floor shoe baseline while the sofa's navigational contact
+   // anchor rises to the cushion. Knees and hips now move independently.
    const seat=o?.bfMainActor?window.BFStageSync?.seatMotion?.(window.LW?.S):null;
    const sitAmount=seat?.kind==='sit'?seat.progress:
      seat?.kind==='rise'?1-seat.progress:o?.pose==='sit'?1:0;
-   if(sitAmount<.85)el(c,x,y+1,28*(1-sitAmount*.5),7,'rgba(35,47,41,.15)');
-   c.translate(x,y);
-   const figureScale=2.90*(1-.15*sitAmount);
+   const modeledSeat=!!window.BFRig?.canArticulateSeat?.(o);
+   const floorCorrection=modeledSeat?(FLOOR-y)*sitAmount:0;
+   if(sitAmount<.85)el(c,x,y+floorCorrection+1,28*(1-sitAmount*.5),7,'rgba(35,47,41,.15)');
+   c.translate(x,y+floorCorrection);
+   const figureScale=2.90*(modeledSeat?1:1-.15*sitAmount);
    c.scale(figureScale,figureScale);
-   // The procedural fallback also has to receive the transitional body
-   // posture, without modifying the actual action or save state.
+   // The procedural fallback retains its existing pose behavior; modeled
+   // actors get a stable atlas torso and planted two-segment leg pose.
    const displayPose=seat?.kind==='sit'&&sitAmount<.12?'stand':
      seat?.kind==='rise'&&sitAmount>.56?'sit':o?.pose;
-   drawFigure(0,0,displayPose===o?.pose?o:{...o,pose:displayPose});
+   drawFigure(0,0,modeledSeat?{...o,bfSeatAmount:sitAmount}:
+     displayPose===o?.pose?o:{...o,pose:displayPose});
    c.restore();
  }
  function render({ctx,VIEW,S,drawFigure,simOpts,npcOpts,simFoot}){
