@@ -106,7 +106,14 @@
   const pants=o.char?.pants||'#475266';
   const shoe=o.char?.shoe||'#303642';
   const leftHip=[-7.3,-44+10*t],rightHip=[7.3,-44+10*t];
-  const leftFoot=[-7.3,-3],rightFoot=[7.3,-3];
+  // The character takes a small, lifted stabilizing step before the knees
+  // finish folding. Without this, the ankle stays under the pelvis and the
+  // calf forms an implausible backwards V beneath the sofa.
+  const stepU=Math.min(1,t/.65);
+  const footStep=stepU*stepU*(3-2*stepU);
+  const footLift=systemReduced()?0:2.6*Math.sin(Math.PI*footStep);
+  const leftFoot=[-7.3+front*20*footStep,-3-footLift];
+  const rightFoot=[7.3+front*20*footStep,-3-footLift];
   function joint(h,a,side){
    const dx=a[0]-h[0],dy=a[1]-h[1],d=Math.hypot(dx,dy)||1;
    // Each leg retains approximately constant segment lengths as the hips
@@ -117,7 +124,7 @@
   const leftKnee=joint(leftHip,leftFoot,-1),rightKnee=joint(rightHip,rightFoot,1);
   lastSeatGeometry={amount:t,character:asset.id,sourceColumn:0,
    hip:[(leftHip[1]+rightHip[1])*.5],floorCorrection:o.bfFloorCorrection||0,knees:[leftKnee,rightKnee],
-   feet:[leftFoot,rightFoot],legLengths:[21.5,21.5],lean:systemReduced()?0:Math.sin(Math.PI*t)*.13};
+   feet:[leftFoot,rightFoot],footStep,footLift,legLengths:[21.5,21.5],lean:systemReduced()?0:Math.sin(Math.PI*t)*.13};
   ctx.save();ctx.translate(x,y);ctx.scale(s,s);
   // A fixed shoe baseline prevents the raised cushion location from making
   // feet float. The torso passes behind the existing sofa-front mask.
