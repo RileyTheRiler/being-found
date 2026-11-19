@@ -1,6 +1,7 @@
 """8.5.3: title-screen modal keyboard ownership on phone and desktop."""
 import os
 import shutil
+import json
 from playwright.sync_api import sync_playwright
 
 BASE=os.environ.get('BF_TEST_URL','http://127.0.0.1:8770/index.html')
@@ -29,7 +30,7 @@ def run(browser,label,width,height,mobile):
         assert isolated,label+': game controls remained reachable behind title'
         for _ in range(25):
             page.keyboard.press('Tab')
-            assert in_title(page),label+': Tab escaped title'
+            assert in_title(page),(label+': Tab escaped title '+json.dumps(page.evaluate("""() => ({active:document.activeElement?.outerHTML?.slice(0,250),own:window.BFTitleFocus?.active,appInert:document.querySelector('#app')?.inert,title:document.querySelector('#mTitle')?.className,prologueHidden:document.querySelector('#prologue')?.hidden})""")))
         for _ in range(25):
             page.keyboard.press('Shift+Tab')
             assert in_title(page),label+': Shift+Tab escaped title'
