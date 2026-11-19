@@ -116,7 +116,7 @@
   }
   const leftKnee=joint(leftHip,leftFoot,-1),rightKnee=joint(rightHip,rightFoot,1);
   lastSeatGeometry={amount:t,character:asset.id,sourceColumn:0,
-   hip:[(leftHip[1]+rightHip[1])*.5],knees:[leftKnee,rightKnee],
+   hip:[(leftHip[1]+rightHip[1])*.5],floorCorrection:o.bfFloorCorrection||0,knees:[leftKnee,rightKnee],
    feet:[leftFoot,rightFoot],legLengths:[21.5,21.5],lean:reduce()?0:Math.sin(Math.PI*t)*.13};
   ctx.save();ctx.translate(x,y);ctx.scale(s,s);
   // A fixed shoe baseline prevents the raised cushion location from making
