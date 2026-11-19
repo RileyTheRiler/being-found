@@ -1,4 +1,4 @@
-# Being Found 8.5.2 — classroom preview
+# Being Found 8.5.3 — classroom preview
 
 **Classroom status:** Released as a preview, not approved for classroom use. Scripted QA is not lived-experience or independent assistive-technology validation. See `CURRENT_STATE.md` and `RELEASE_PROCEDURE.md`.
 
@@ -8,8 +8,9 @@ Editable source for Being Found. This line continues from the 8.3.7 preview.
 ## Build
 
 1. Install Node.js 20 or newer.
-2. Run `npm run build` in this folder.
-3. The browser game lands in `dist/`.
+2. Run `npm ci` to install the pinned axe-core test dependency.
+3. Run `npm run build` in this folder.
+4. The browser game lands in `dist/`.
 
 The build reads its version from `package.json` and writes relative paths, so `dist/` runs from any folder or host.
 
@@ -28,6 +29,7 @@ CI in [`.github/workflows/quality.yml`](.github/workflows/quality.yml) runs on p
 Locally, install Python Playwright and use a Chrome/Chromium browser:
 
 ```sh
+npm ci
 npm run build
 python3 -m pip install playwright
 python3 -m http.server 8770 --directory dist
@@ -43,6 +45,8 @@ python3 qa_audio.py                 # soundtrack off by default, enable, volume 
 python3 qa_flats_stove.py           # kitchen actions in every flat; Dele's phone hint
 python3 qa_guided84.py              # guided narrative, Dele encounter, ending and reduced motion
 python3 qa_access85.py              # keyboard guide, focus and reduced-motion scroll
+python3 qa_title_focus.py           # title modal Tab/Shift+Tab and exit focus handoff
+python3 qa_axe.py                   # nine guided states x phone/desktop, serious/critical gate
 python3 qa_heavy_access.py          # keyboard/pointer heavy-action parity with story checks off
 python3 qa_editorial.py             # source + production narrative wording guard
 python3 qa_js_syntax.py            # parse source and generated JavaScript, catch early syntax errors
@@ -99,3 +103,7 @@ Use `CLASSROOM_PILOT.md` and `pilot/FACILITATOR_SHEET.md` for an independent fir
 ## 8.5.2A development foundation (not a gameplay release)
 
 Read [DESIGN_GUARDRAILS.md](DESIGN_GUARDRAILS.md) before modifying the classroom route. A feature branch adds `flags.js`, a local-only override policy, fail-closed source loading, `qa_flags.js` and an explicit `qa_all.py` runner. The flags currently have **no gameplay call sites**. They do not yet disable dice or movement penalties. Use `npm run qa` for build plus all existing manifest tests, or `python3 qa_all.py --list` to inspect the test list. The existing GitHub Actions individual regression steps remain authoritative until the branch is verified and merged.
+
+## 8.5.3 accessibility scope
+
+[PR #11](https://github.com/RileyTheRiler/being-found/pull/11) addresses title keyboard focus, modal semantics, a pinned axe-core quality gate and five recurring automated accessibility findings. The audit writes detailed results (including moderate/incomplete findings) to `qa-artifacts/axe-8.5.3.json` in CI. The release is **still a classroom preview** and is not validated for assistive technology, real devices or lived experience. Inspect `main`, GitHub Actions, and Vercel metadata before asserting deployment; a successful preview build is not a production deployment.
