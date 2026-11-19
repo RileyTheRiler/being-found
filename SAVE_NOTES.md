@@ -181,3 +181,8 @@ Branch `feat/8.5.2b-consent-route` starts from post-foundation main. Removed man
 ## Step 24 — 8.5.2 draft integration and consent regression (2026-11-19)
 
 A two-parent commit preserved original PR #3 consent work and newer main/PR #9 animation changes. Subsequent edits prevent immediate boundary revisits, preserve ordered Dele outcome history with backward-compatible storage, move old dice assertions to standalone Rooms while retaining guided negative checks, add guided/pilot speed parity, centralize `BFFlags.blocked()` with explicit classroom fallbacks, and add version/build stamp plus classroom preview notice. No production merge, manual device, human review or classroom pilot established yet. Check this branch's Actions results before promotion.
+
+
+## Step 25 — deployment-policy audit
+
+Vercel's current production target follows `main`. Preview branches do not target production. The project update connector does not expose an operation to change Git production branch, so no potentially disruptive account-level deployment setting was changed. Added `RELEASE_PROCEDURE.md` documenting the current release gate, exact commit verification and a proposed release-branch workflow pending account-level approval.
