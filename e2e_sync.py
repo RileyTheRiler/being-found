@@ -16,8 +16,8 @@ with sync_playwright() as p:
   page.route('**/*',lambda route:route.abort())
   page.set_content(html,wait_until='domcontentloaded',timeout=30000)
   page.evaluate("document.querySelector('#plSkip')?.click()")
-  page.get_by_role('button',name='Start the guided story').click(timeout=7000)
-  page.get_by_role('button',name='Enter Noor’s room').click(timeout=7000)
+  page.locator('.title-more summary').click()
+  page.get_by_role('button',name='Begin Noor’s room separately').click(timeout=7000)
   page.wait_for_timeout(600)
   def snap():return page.evaluate('''() => {const S=LW.S;return {...BFStageSync.snapshot(S),navX:BFNavigation.x,navActive:BFNavigation.active,at:S.sim.at,pose:S.sim.pose,simAct:!!S.sim.act,clock:S.clock,panels:document.querySelectorAll('[data-bf-followup]').length,rigDraws:BFRig.totalDraws};}''')
   start=snap();assert start['version']=='8.1' and start['rigDraws']>0 and start['breakfast']=='untouched',start

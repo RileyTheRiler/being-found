@@ -92,6 +92,9 @@ jobs:
       - name: Guided input parity and capability regression
         run: python3 qa_route_no_capability.py
 
+      - name: Guided and pilot movement speed parity
+        run: node qa_speed_parity.js
+
       - name: Guided keyboard and reduced-motion accessibility regression
         run: python3 qa_access85.py
 

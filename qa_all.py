@@ -23,7 +23,8 @@ PY = sys.executable
 CASES = (
     ("pilot self-test", (PY, "pilot_summary.py", "--self-test")),
     ("pilot empty template", (PY, "pilot_summary.py", "pilot/observations.csv")),
-    ("8.5.2A flag policy", ("node", "qa_flags.js")),
+    ("8.5.2 flag policy", ("node", "qa_flags.js")),
+    ("guided and pilot speed parity", ("node", "qa_speed_parity.js")),
     ("JavaScript parser", (PY, "qa_js_syntax.py")),
     ("editorial guards", (PY, "qa_editorial.py")),
     ("Wren and Ilse", (PY, "qa_wren_ilse.py")),
