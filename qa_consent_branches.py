@@ -62,6 +62,7 @@ def check(browser, case, viewport):
         assert page.locator('#dlCard [data-dlu="revisit"]').count() == 0, 'Guided summary offered immediate revisit'
         page.evaluate('LWDele.dev.showRoom()')
         assert page.locator('#dlCard [data-dlu="revisit"]').count() == 0, 'Guided room offered immediate revisit'
+        page.locator('#dlCard [data-dlu="note"]').click()
         page.locator('#dlCard [data-dlu="reflect"]').click()
         page.locator('#dlCard [data-dlu="note"]').click()
         assert page.locator('#dlCard [data-dlu="classRoom"]').is_visible()
