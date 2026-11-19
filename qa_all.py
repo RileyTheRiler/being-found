@@ -33,6 +33,7 @@ CASES = (
     ("heavy-input parity", (PY, "qa_heavy_access.py")),
     ("five viewport smoke", (PY, "qa_smoke.py")),
     ("character motion and sofa", (PY, "qa_character_motion.py")),
+    ("phone pickup and return", (PY, "qa_phone_motion.py")),
     ("menu checks", (PY, "menu_check.py")),
     ("save and resume", (PY, "qa_save_resume.py")),
     ("Reflect focus", (PY, "qa_focus.py")),

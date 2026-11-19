@@ -98,6 +98,9 @@ jobs:
       - name: Character walking and sofa depth
         run: python3 qa_character_motion.py
 
+      - name: Phone pickup, held pose and return
+        run: python3 qa_phone_motion.py
+
       - name: Route and menu tests
         run: python3 menu_check.py
 

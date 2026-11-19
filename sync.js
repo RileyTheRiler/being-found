@@ -59,14 +59,38 @@
    if(!home(s))return 0;
    return clamp(((s.fx?.painted??.55)-.55)/.45);
  }
- function phoneHeld(s=S){const a=current(s);return !!(a&&a.obj==='phone'&&['call','msg'].includes(a.act)&&a.u>=.28);}
+ // Presentational phone motion is tied to the existing authored action clock,
+ // not to a timer that can outlive a scene change or complete the action twice.
+ // A deliberate lift, sustained use, and reverse return all fit in the
+ // phone-specific minimum duration set by build.js.
+ const ease=t=>{const v=clamp(t);return v*v*(3-2*v);};
+ function phoneMotion(s=S){
+   const a=current(s);
+   if(!a||a.obj!=='phone'||!['call','msg'].includes(a.act))return null;
+   const u=a.u;
+   let frame=0,next=null,mix=0,stage='rest';
+   if(u<.04){stage='orient';}
+   else if(u<.22){stage='reach';frame=7+Math.min(3,Math.floor((u-.04)/.18*4));}
+   else if(u<.29){stage='lift';frame=10;next=12;mix=ease((u-.22)/.07);}
+   else if(u<.75){stage='use';frame=12;}
+   else if(u<.82){stage='lower';frame=12;next=10;mix=ease((u-.75)/.07);}
+   else if(u<.96){stage='release';frame=10-Math.min(3,Math.floor((u-.82)/.14*4));}
+   else{stage='rest';}
+   // The handset cannot simultaneously be on the table and in the hand.
+   const table=u<.22||u>=.96;
+   return {u,stage,frame,next,mix,table,action:a.act};
+ }
+ function phoneHeld(s=S){const p=phoneMotion(s);return !!p&&!p.table;}
  function frame(s=S,o){
    if(!home(s)||!o?.bfMainActor)return null;
    const a=current(s);if(!a)return null;
    // Pose and physical seat anchor change together. Never select the
    // standing/reach sprite while the actor is already at the seated pivot.
    if(a.obj==='sofa'&&s.sim.pose==='sit')return ['sit',11];
-   if(a.obj==='phone'&&['call','msg'].includes(a.act))return a.u>=.28?['phone',12]:['reach',7+Math.floor(a.u*7)];
+   if(a.obj==='phone'&&['call','msg'].includes(a.act)){
+     const p=phoneMotion(s),col=p.next!=null&&p.mix>=.5?p.next:p.frame;
+     return [p.stage==='use'?'phone':'reach',col];
+   }
    if(a.obj==='stove'||a.obj==='easel'||a.obj==='window')return ['reach',7+Math.min(3,Math.floor(a.u*4))];
    return null;
  }
@@ -169,9 +193,9 @@
  function snapshot(s=S){
    const a=current(s);
    return {version:'8.1',flat:s?.flat?.id,scene:sceneId(s),arrival,last,
-     current:a,breakfast:breakfast(s),painted:painted(s),phoneHeld:phoneHeld(s),
+     current:a,breakfast:breakfast(s),painted:painted(s),phoneHeld:phoneHeld(s),phoneMotion:phoneMotion(s),
      draws,propDraws};
  }
- window.BFStageSync={version:'8.1',isHome:home,begin,arrive,finish,reset,current,breakfast,painted,phoneHeld,frame,
+ window.BFStageSync={version:'8.1.1',isHome:home,begin,arrive,finish,reset,current,breakfast,painted,phoneHeld,phoneMotion,frame,
    paintKitchen(c,s,t){draws++;paintKitchen(c,s,t);},paintEasel,paintSofa,paintActorProp,snapshot};
 })();

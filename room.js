@@ -140,7 +140,10 @@
  function drawSofaFront(c){rr(c,281,518,294,23,10,'#bca37c');line(c,308,539,546,539,'rgba(74,65,54,.22)',3);}
  function drawPhone(c,S,t){
    rr(c,610,501,103,17,3,'#957961');rr(c,625,516,10,59,3,'#7c6254');rr(c,690,516,10,59,3,'#7c6254');
-   const calling=S.ringing,held=window.BFStageSync?.phoneHeld?.(S)||window.BFArt?.holdingPhone?.(S);
+   // Prefer the authored phone choreography. The older art fallback only
+   // knew "lifted after 25%" and kept the table empty until abrupt completion.
+   const calling=S.ringing,phonePose=window.BFStageSync?.phoneMotion?.(S);
+   const held=phonePose?!phonePose.table:!!window.BFArt?.holdingPhone?.(S);
    if(!held){c.save();c.translate(calling?Math.sin(t*35)*2:0,0);rr(c,651,485,28,13,3,'#343c47');rr(c,656,486,17,9,2,calling?'#97e3e0':'#a8bac0');c.restore();}
  }
  function drawBed(c,S){const col=S.flat?.look?.duvet||'#8396a0';
