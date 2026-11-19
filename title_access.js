@@ -66,11 +66,13 @@
     const items=focusables();
     if(!items.length){event.preventDefault();title.focus({preventScroll:true});return;}
     const current=document.activeElement;
-    if(event.shiftKey&&(current===items[0]||!title.contains(current))){
-      event.preventDefault();items[items.length-1].focus({preventScroll:true});
-    }else if(!event.shiftKey&&(current===items[items.length-1]||!title.contains(current))){
-      event.preventDefault();items[0].focus({preventScroll:true});
-    }
+    const index=items.indexOf(current);
+    const next=event.shiftKey
+      ?(index<0?items.length-1:(index-1+items.length)%items.length)
+      :(index<0?0:(index+1)%items.length);
+    // Full ownership also avoids browser-specific Tab escape at shadow/summary boundaries.
+    event.preventDefault();
+    items[next].focus({preventScroll:true});
   },true);
   document.addEventListener('focusin',event=>{
     if(ownsFocus&&isTitleScreen()&&!title.contains(event.target))queueMicrotask(focusInside);
