@@ -109,7 +109,7 @@
     // The fallback's wrist stays near the ear while a call is underway.
     const phoneReach=phonePose?(
       phonePose.stage==='reach'?clamp((phonePose.u-.04)/.18)*.88:
-      (phonePose.stage==='lift'||phonePose.stage==='use'||phonePose.stage==='lower')?.88:
+      (phonePose.stage==='lift'||phonePose.stage==='use'||phonePose.stage==='lower') ? .88 :
       phonePose.stage==='release'?clamp((.96-phonePose.u)/.14)*.88:0):0;
     const reach=phonePose?phoneReach:(action&&!noMotion?clamp(o.bfGesture??0):0);
     const extraReach=target==='stove'?1:target==='phone'?.75:.6;
