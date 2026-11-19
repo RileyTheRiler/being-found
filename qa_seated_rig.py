@@ -120,7 +120,11 @@ def test_other_characters(browser):
             }""",ix)
             p.evaluate("() => window.LWPrologue?.finish?.()")
             p.wait_for_function("BFRig.loaded",timeout=20000)
-            p.wait_for_function("BFRig.lastSeatGeometry?.amount===1",timeout=10000)
+            # Atlas loading is asynchronous across flats. Wait for the new
+            # character's rendered frame, not stale geometry from the old flat.
+            p.wait_for_function(
+                "(character) => BFRig.lastSeatGeometry?.amount===1 && BFRig.lastSeatGeometry?.character===character",
+                arg=character,timeout=15000)
             v=sample(p)
             assert v["geometry"]["character"]==character,(character,v)
             p.screenshot(path=str(ART/f"desktop-{character}-articulated-seat.png"))
