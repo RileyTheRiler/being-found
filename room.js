@@ -208,7 +208,7 @@
   // A seated resident's lap goes behind the front cushion; a walker does not.
   const mainSeated=S.sim?.pose==='sit'&&S.sim?.at==='sofa';
   const seat=window.BFStageSync?.seatMotion?.(S);
-  const frontReady=(mainSeated&&(!seat||seat.progress>.55))||
+  const frontReady=(mainSeated&&(!seat||seat.progress>.12))||
     (seat?.kind==='rise'&&seat.progress<.44);
   const npcSeated=S.npc?.pose==='sit'&&S.npc?.at==='sofa';
   if(frontReady||npcSeated)drawSofaFront(c);
@@ -229,7 +229,7 @@
    c.scale(figureScale,figureScale);
    // The procedural fallback also has to receive the transitional body
    // posture, without modifying the actual action or save state.
-   const displayPose=seat?.kind==='sit'&&sitAmount<.55?'stand':
+   const displayPose=seat?.kind==='sit'&&sitAmount<.12?'stand':
      seat?.kind==='rise'&&sitAmount>.56?'sit':o?.pose;
    drawFigure(0,0,displayPose===o?.pose?o:{...o,pose:displayPose});
    c.restore();
