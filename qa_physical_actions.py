@@ -63,8 +63,10 @@ def test(browser,name,w,h,touch):
         assert anchors==sorted(anchors,reverse=True),(name,"seat snapped or moved backwards",anchors)
         assert anchors[0]-anchors[1]<6,(name,"standing feet lifted before bend",anchors)
         assert anchors[0]-anchors[-1]>40,(name,"no visible vertical descent",anchors)
-        assert frames[1]!=11 and frames[2]==11,(name,"seated pose not synchronized to descent",frames)
-        assert 11 in frames,(name,"seated atlas never appeared",frames)
+        # The atlas head/torso now comes from the same opaque idle frame,
+        # with separately bent legs. Column 11's static seated body is no
+        # longer used for the modeled sofa pose.
+        assert frames==[0,0,0,0],(name,"hybrid seat source frame changed",frames)
         page.wait_for_function("!LW.S.sim.act",timeout=7000)
         end=snapshot(page)
         assert end["pose"]=="sit" and abs(end["point"][1]-516)<1,(name,end)
