@@ -66,7 +66,9 @@ def test(browser, name, w, h, touch):
             assert g and g["character"]=="noor",(name,label,"missing seat rig",v)
             assert g["sourceColumn"]==0 and v["source"]==0,(name,label,"wrong raster source",v)
             assert len(g["knees"])==len(g["feet"])==2,(name,label,"missing joint",g)
-            assert all(abs(foot[1]+3)<.001 for foot in g["feet"]),(name,label,"feet floated",g)
+            assert all(-5.7<=foot[1]<=-2.99 for foot in g["feet"]),(name,label,"foot lift excessive",g)
+            if label in ("start","seated"):
+                assert all(abs(foot[1]+3)<.001 for foot in g["feet"]),(name,label,"shoe not planted",g)
             # Floor-restoration cancels the legacy vertical cushion pivot.
             floor=v["nav"][1]+g["floorCorrection"]
             assert abs(floor-574)<1,(name,label,"shoe baseline lifted",v)
@@ -77,7 +79,9 @@ def test(browser, name, w, h, touch):
         assert record[-1]["hip"][0]>record[0]["hip"][0]+8,(name,"hip did not lower",record)
         first=abs(record[0]["knees"][0][0]-record[0]["feet"][0][0])
         last=abs(record[-1]["knees"][0][0]-record[-1]["feet"][0][0])
-        assert last>first+4,(name,"knee did not bend",first,last)
+        assert last<first-3,(name,"calf still slopes backwards",first,last)
+        assert abs(record[-1]["feet"][0][0]-record[0]["feet"][0][0])>18,(name,"foot did not reposition",record)
+        assert record[-1]["footStep"]==1 and record[-1]["footLift"]<.001,(name,"shoe did not plant",record[-1])
         page.wait_for_function("!LW.S.sim.act",timeout=8000)
         page.screenshot(path=str(ART/f"{name}-articulated-seat-settled.png"))
         # A real second selection must first trigger rising, not teleporting.
