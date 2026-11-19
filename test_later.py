@@ -21,6 +21,9 @@ with sync_playwright() as p:
   page.locator('#mTitle .bf-dest [data-go="flats"]').click(timeout=7000)
   page.locator('#mFlats .flatcard[data-go="intro"][data-ix="0"]').click(timeout=7000)
   page.locator('#mIntro [data-go="flat"]').click(timeout=7000)
+  # Rooms has an authored entry shot, unlike the guided route. Let it
+  # finish before testing object navigation, rather than racing the overlay.
+  page.wait_for_function("typeof DIR === 'undefined' || !DIR.on",timeout=15000)
   page.wait_for_timeout(600)
   def snap():return page.evaluate('''() => {const S=LW.S;return {...BFStageSync.snapshot(S),navX:BFNavigation.x,navActive:BFNavigation.active,at:S.sim.at,pose:S.sim.pose,simAct:!!S.sim.act,clock:S.clock,panels:document.querySelectorAll('[data-bf-followup]').length,rigDraws:BFRig.totalDraws};}''')
   start=snap();assert start['version']=='8.1' and start['rigDraws']>0 and start['breakfast']=='untouched',start
