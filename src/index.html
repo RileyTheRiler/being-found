@@ -2534,11 +2534,11 @@ function storyHTML(){if(S.mode!=='play'||!S.phase||S.preview)return '';
  const thought=narrativeThought(),g=curGoal(),sugg=storySuggestion();if(!thought&&!g)return '';
  const next=S.place==='street'?'Stay out as long as you like. The front door takes you home.':(g?g.text:'This moment can end whenever you choose.');
  const head=esc(S.flat.name)+' · fictional inner voice';
- const count=S.goals.filter(x=>x.done).length, all=S.goals.length;const storyDots='<span class="story-beats" aria-label="'+count+' of '+all+' story moments completed">'+S.goals.map(x=>'<i class="'+(x.done?'done':'')+'"></i>').join('')+'</span>'; 
+ const count=S.goals.filter(x=>x.done).length, all=S.goals.length;const storyDots='<span class="story-beats" role="img" aria-label="'+count+' of '+all+' story moments completed">'+S.goals.map(x=>'<i class="'+(x.done?'done':'')+'"></i>').join('')+'</span>'; 
  if(collapsed)return '<div class="story-thread story-min" aria-label="Collapsed inner monologue"><div class="story-thread-head"><span>'+head+'</span>'+storyDots+'<button class="story-toggle" type="button" data-story-toggle aria-expanded="false" aria-label="Expand '+esc(S.flat.name)+'’s thoughts">Show thoughts ▾</button></div></div>';
  return '<div class="story-thread" aria-label="Fictional inner monologue"><div class="story-thread-head"><span>'+head+'</span>'+storyDots+'<button class="story-toggle" type="button" data-story-toggle aria-expanded="true" aria-label="Collapse '+esc(S.flat.name)+'’s thoughts">Collapse ▴</button></div>'+
  (thought?'<blockquote>“'+esc(thought)+'”</blockquote>':'')+
- '<div class="story-next"><span>'+esc(next)+'</span>'+(sugg?'<button type="button" data-story-target aria-label="Find '+esc(sugg.name)+'">'+(S.place==='street'?'Head home':'Show me')+'</button>':'')+'</div></div>';
+ '<div class="story-next"><span>'+esc(next)+'</span>'+(sugg?'<button type="button" data-story-target aria-label="'+(S.place==='street'?'Head home':'Show me')+': find '+esc(sugg.name)+'">'+(S.place==='street'?'Head home':'Show me')+'</button>':'')+'</div></div>';
 }
 
 /* ---------- derive the look and the menus from the five variables ---------- */
