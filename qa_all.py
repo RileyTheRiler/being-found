@@ -35,6 +35,7 @@ CASES = (
     ("character motion and sofa", (PY, "qa_character_motion.py")),
     ("phone pickup and return", (PY, "qa_phone_motion.py")),
     ("staged sofa and work animation", (PY, "qa_physical_actions.py")),
+    ("articulated sofa legs and rise", (PY, "qa_seated_rig.py")),
     ("menu checks", (PY, "menu_check.py")),
     ("save and resume", (PY, "qa_save_resume.py")),
     ("Reflect focus", (PY, "qa_focus.py")),

@@ -104,6 +104,9 @@ jobs:
       - name: Staged sofa, cooking and painting animation
         run: python3 qa_physical_actions.py
 
+      - name: Articulated sofa legs and rise across devices
+        run: python3 qa_seated_rig.py
+
       - name: Route and menu tests
         run: python3 menu_check.py
 
