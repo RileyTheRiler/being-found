@@ -16,7 +16,9 @@ CHROME = os.environ.get("BF_CHROME") or shutil.which("google-chrome") or shutil.
 
 
 def boot(page):
-    page.goto(URL, wait_until="load")
+    # Avoid the first-visit cinematic obscuring cross-resident visual evidence.
+    target=URL+("&" if "?" in URL else "?")+"noopening"
+    page.goto(target, wait_until="load")
     page.wait_for_function("typeof window.LW?.startFlat==='function'")
     page.evaluate("() => window.LWPrologue?.finish?.()")
     page.evaluate("() => {LW.closeModals();LW.startFlat(0);BFSkillChecks.setEnabled(false);}")
