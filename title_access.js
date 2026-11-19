@@ -47,6 +47,8 @@
     snapshots.clear();
   }
   function sync(){
+    const heading=title.querySelector('h1');
+    if(heading)heading.id='bf-title-heading';
     if(!isTitleScreen()){release();return;}
     if(!ownsFocus){
       for(const el of app.children){
