@@ -1,6 +1,14 @@
-## 8.5.2 safety release candidate — PR #3 integration (2026-11-19)
+# Being Found — current handoff
 
-**Status:** Pending fresh CI and browser verification, not classroom-ready. This branch combines main `89cfa38` (PR #9 sofa rig) with original PR #3 consent changes, preserving both histories. Guided route Noor → Dele encounter → Walt. Dele exits do not offer immediate replay in guided/pilot or after a resident boundary. Completed encounters append to `cache.history` under the original v1 storage key. New regressions test persistence, pilot speed and Rooms-only dice. Preview notice and commit build stamp added. No human, lived-experience or independent assistive-technology validation. See `RELEASE_PROCEDURE.md`: current `main` auto-deploys production; proposed release-only branch is not yet configured.
+## 8.5.2 safety release — merged 2026-11-19
+
+**Authoritative main release commit:** `989e2ebcc60362b7a38a646343fdff41333878ad`; [PR #3](https://github.com/RileyTheRiler/being-found/pull/3) merged from `feat/8.5.2b-consent-route`. The [reviewed branch CI run 44581670898](https://github.com/RileyTheRiler/being-found/actions/runs/44581670898) passed all 38 quality steps, including real Chrome automated playthroughs and prior animation regressions. Initial 8.5.2 production Vercel deployment `dpl_TSRKwixNzhL8vMZ1wq9kdqzDDdnk` was READY with `being-found.vercel.app` assigned and commit metadata matching `989e2eb`. Verify any later deployment against its exact commit before citing current production state.
+
+**What shipped:** Guided Noor → Dele encounter → Walt (three chapters); no guided/pilot dice, heavy holds, mood-dependent movement penalties or punitive sealed styling; no immediate Dele revisit in guided/pilot or after a resident boundary; four recorded outcomes preserved in ordered localStorage history; existing Rooms dice mechanics retained and re-tested; visible semantic version plus build SHA; nonmodal preview notice; PR #9 sofa and physical animation preserved.
+
+**Classroom status: not approved for a classroom pilot.** The fictional narrative and successful scripted testing do not establish lived-experience validity. Independent assistive-technology/keyboard testing, accessibility fixes, paid lived-experience review and formative participant validation are outstanding. The next release is **8.5.3 accessibility and layout**: title-dialog focus, axe-core serious violations, tablet portrait guide, actor pose/narrative consistency and reduced-motion waits. Refer to `CURRENT_STATE.md` and `RELEASE_PROCEDURE.md`. The release-only Vercel production-branch policy is proposed but **not configured**; `main` still deploys to production.
+
+**Earlier dated sections below are historical technical records.** Their statements about PR #3 being a draft or initial releases being pending no longer describe the current branch.
 
 ## Sofa rig — final visual review notes (2026-11-18 / PR #9)
 
