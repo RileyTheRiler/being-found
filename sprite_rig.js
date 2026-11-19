@@ -68,11 +68,11 @@
   return movementDir;
  }
  function frame(o){
-  // An arrival can set pose='sit' while its action clock is still in its
-  // early 'reach' phase. The seated foot anchor must NEVER draw a standing
-  // sprite or the character appears embedded in the sofa.
-  if(o.pose==='sit'||o.pose==='floor')return ['sit',11];
+  // The stage timeline controls a safe descent and rise before the native
+  // static pose fallback. The foot anchor is interpolated at the same time,
+  // so a seated sprite is never drawn standing at the final cushion pivot.
   const synced=window.BFStageSync?.frame?.(S,o);if(synced)return synced;
+  if(o.pose==='sit'||o.pose==='floor')return ['sit',11];
   const sim=S.sim;
   if(o.moving&&sim.path?.length&&!reduce()){
    // A full authored 6-frame cycle advances per 92 scene px. The previous
