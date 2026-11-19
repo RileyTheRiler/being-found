@@ -68,7 +68,7 @@ def test(browser, name, w, h, touch):
             assert len(g["knees"])==len(g["feet"])==2,(name,label,"missing joint",g)
             assert all(abs(foot[1]+3)<.001 for foot in g["feet"]),(name,label,"feet floated",g)
             # Floor-restoration cancels the legacy vertical cushion pivot.
-            floor=v["nav"][1]+(574-v["nav"][1])*g["amount"]
+            floor=v["nav"][1]+g["floorCorrection"]
             assert abs(floor-574)<1,(name,label,"shoe baseline lifted",v)
             assert v["errors"]<=2,(name,label,"horizontal overflow",v)
             record.append(g)
