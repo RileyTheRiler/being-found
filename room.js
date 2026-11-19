@@ -120,7 +120,16 @@
  }
  function drawMirror(c){rr(c,75,137,177,329,18,'#ad8e70');rr(c,90,151,147,299,13,'#d5dbd5','#ede6d7',7);el(c,165,287,34,75,'rgba(176,195,181,.20)');rr(c,69,458,188,12,5,'#926f58');}
  function drawShelf(c){rr(c,250,124,143,14,2,'#896e58');rr(c,250,242,143,13,2,'#896e58');for(let i=0;i<10;i++){const x=256+i*13;box(c,x,178-(i%4)*9,9,64+(i%4)*9,['#b47f65','#5c8c8b','#c7a56f','#87958e'][i%4]);}rr(c,278,230,18,11,3,'#d2c8ad');}
+ const SOFA_VERTICAL=.70;
+ // Existing sofa art was taller than the modeled resident. A shared 70%
+ // height transform around the feet keeps the cushion, frame and front
+ // occlusion in one coordinate system rather than scaling the character.
+ function sofaGeometry(c,draw){
+   c.save();c.translate(0,FLOOR*(1-SOFA_VERTICAL));c.scale(1,SOFA_VERTICAL);
+   try{draw();}finally{c.restore();}
+ }
  function drawSofa(c,S){
+   sofaGeometry(c,()=>{
    const L=S.flat?.look||{},col=L.sofa||'#b9ab8c';
    // Sofa belongs to Living: feet and contact shadow follow the shared floor.
    el(c,447,575,193,16,'rgba(28,39,33,.19)');
@@ -135,9 +144,11 @@
    window.BFStageSync?.paintSofa?.(c,S);
    // Keep the furniture apron behind a passing walker, rather than over their shins.
    // For seated residents the apron is re-painted in the foreground below.
-   drawSofaFront(c);
+   drawSofaFrontRaw(c);
+   });
  }
- function drawSofaFront(c){rr(c,281,518,294,23,10,'#bca37c');line(c,308,539,546,539,'rgba(74,65,54,.22)',3);}
+ function drawSofaFrontRaw(c){rr(c,281,518,294,23,10,'#bca37c');line(c,308,539,546,539,'rgba(74,65,54,.22)',3);}
+ function drawSofaFront(c){sofaGeometry(c,()=>drawSofaFrontRaw(c));}
  function drawPhone(c,S,t){
    rr(c,610,501,103,17,3,'#957961');rr(c,625,516,10,59,3,'#7c6254');rr(c,690,516,10,59,3,'#7c6254');
    // Prefer the authored phone choreography. The older art fallback only
