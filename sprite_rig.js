@@ -96,7 +96,11 @@
   if(S?.mode==='visit')return false;
   if(!enabled||!asset?.loaded||asset.failed||window.BFArt?.enabled===false||!o?.bfMainActor||!o.char||o.ghost||o.pose==='lie'||S.place==='street')return false;
   const dir=direction(o),[anim,col]=frame(o);
-  lastState=anim;lastFrameIndex=col;lastDirection=dir;
+  const phonePose=window.BFStageSync?.phoneMotion?.(S);
+  // During the two transitions crossfade the hand/phone sprites for a few
+  // frames, instead of snapping from an outstretched hand to the ear.
+  const mostVisible=phonePose?.next!=null&&phonePose.mix>=.5?phonePose.next:col;
+  lastState=anim;lastFrameIndex=mostVisible;lastDirection=dir;
   const scale=(o.scale||1)*.55,width=META.w*scale,height=META.h*scale;
   const left=x-META.w*.5*scale,top=y-META.pivotY*scale;
   ctx.save();
@@ -111,7 +115,16 @@
    ctx.rotate(Math.sin(phase)*.018);
    ctx.translate(-x,-y-1.9*Math.abs(Math.sin(phase)));
   }
-  ctx.drawImage(asset.atlas,col*META.w,dir*META.h,META.w,META.h,left,top,width,height);
+  if(phonePose?.next!=null){
+   const originalAlpha=ctx.globalAlpha;
+   ctx.globalAlpha=originalAlpha*(1-phonePose.mix);
+   ctx.drawImage(asset.atlas,phonePose.frame*META.w,dir*META.h,META.w,META.h,left,top,width,height);
+   ctx.globalAlpha=originalAlpha*phonePose.mix;
+   ctx.drawImage(asset.atlas,phonePose.next*META.w,dir*META.h,META.w,META.h,left,top,width,height);
+   ctx.globalAlpha=originalAlpha;
+  }else{
+   ctx.drawImage(asset.atlas,col*META.w,dir*META.h,META.w,META.h,left,top,width,height);
+  }
   ctx.restore();totalDraws++;return true;
  }
  function initMenu(){
