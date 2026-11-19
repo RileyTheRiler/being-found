@@ -4,7 +4,7 @@ Updated 2026-11-19. Read `HANDOFF.md` first. Source of truth: GitHub `main`, not
 
 ## Release
 
-- Version: **8.5.2 classroom preview**, not classroom-approved.
+- Source version: **8.5.3 classroom preview** on focused [PR #11](https://github.com/RileyTheRiler/being-found/pull/11); not classroom-approved. At this document revision the latest independently verified production source was 8.5.2. Verify the current `main` and Vercel metadata against each other before citing a later public release.
 - Safety PR: [#3](https://github.com/RileyTheRiler/being-found/pull/3), merged to main as `989e2ebcc60362b7a38a646343fdff41333878ad`.
 - Branch validation: [GitHub Actions run 44581670898](https://github.com/RileyTheRiler/being-found/actions/runs/44581670898), **38/38 steps successful**.
 - Initial production verification: Vercel `dpl_TSRKwixNzhL8vMZ1wq9kdqzDDdnk`, target production, READY, exact merge SHA and alias `being-found.vercel.app`. This is a historical release verification, not a claim about any subsequent deployment.
@@ -25,7 +25,7 @@ Updated 2026-11-19. Read `HANDOFF.md` first. Source of truth: GitHub `main`, not
 | Old Rooms dice assertions | Fixed by regression | Real title Rooms → Noor → Go in route; dice Try remains tested |
 | Version/commit stamp and preview notice | Fixed in build/code | Visible title metadata; Vercel deployment commit checked |
 | Release-only Vercel production branch | Partly fixed | Documented release procedure; account-level production branch switch not configured |
-| Title keyboard modal and axe-core serious/critical audit | Open | 8.5.3 P0: focus management, semantics, contrast, accessible names, target size |
+| Title keyboard modal and axe-core serious/critical audit | Implemented on 8.5.3 PR #11, release gated | Title modal focus and 18 axe-core checkpoint audits (9 stages × 2 viewports); focus/contrast/ARIA/name corrections; verify PR/main CI and Vercel exact SHA; real assistive-tech and target-size review remain |
 | Tablet guide, lying/seated NPCs, reduced-motion waits | Open | 8.5.3 layout, pose, duration work |
 | Same-place educational comparison of changed possibilities | Open — design decision | Prefer testing a second authored Noor day; do not add a new branch before design approval |
 | Narrative accuracy and mandatory reading load | Open | 8.5.4 reproducible count, clinical and philosophical editorial pass |
@@ -37,4 +37,4 @@ The complete 21 original plus nine delta-review findings are **not exhaustively 
 
 ## Next action
 
-Start a focused **8.5.3 accessibility release**. First reproduce 21/25 title Tab escapes, implement appropriate modal focus management (only when truly modal), add axe-core to CI for six guided stages, then address target sizes/contrast and tablet placement. Keep the preview notice and consent restrictions. Test on phone and desktop, submit a focused PR, and verify Vercel against exact production SHA. Do not start more character-animation work yet.
+Complete the **8.5.3 accessibility gate** for [PR #11](https://github.com/RileyTheRiler/being-found/pull/11): require all existing 8.5.2 safety and browser regressions plus new title focus and axe-core checks at the exact PR head, then verify Vercel preview. Merge only after review; check post-merge `main` quality run and production deployment SHA/alias independently. Separate remaining target-size, tablet placement, lying/seated NPC and reduced-motion tasks into a reviewed follow-up. Keep the preview notice and consent restrictions. Do not start more character-animation work yet.
