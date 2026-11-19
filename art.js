@@ -104,8 +104,14 @@
     const sway=moving?Math.sin(ph*.5)*.55:0;
     const bob=moving?-Math.abs(Math.sin(ph))*1.25*stride:(noMotion||o.still?0:Math.sin(S.t*1.25)*.25);
     const tense=o.tense||0, slump=o.slump||0, action=o.bfMainActor&&S.sim?.act;
-    const reach=action&&!noMotion?clamp(o.bfGesture??0):0;
     const target=action&&o.bfMainActor?S.sim.at:null;
+    const phonePose=target==='phone'?window.BFStageSync?.phoneMotion?.(S):null;
+    // The fallback's wrist stays near the ear while a call is underway.
+    const phoneReach=phonePose?(
+      phonePose.stage==='reach'?clamp((phonePose.u-.04)/.18)*.88:
+      (phonePose.stage==='lift'||phonePose.stage==='use'||phonePose.stage==='lower') ? .88 :
+      phonePose.stage==='release'?clamp((.96-phonePose.u)/.14)*.88:0):0;
+    const reach=phonePose?phoneReach:(action&&!noMotion?clamp(o.bfGesture??0):0);
     const extraReach=target==='stove'?1:target==='phone'?.75:.6;
     const face=o.face||'front',flip=o.flip||1;
     const profile=(S.flat&&S.flat.id)||'rooted';
@@ -157,7 +163,7 @@
     const rightHand=[11.8+armReach*11,shoulderY+21-armReach*20];
     sleeve(ctx,rightSh,rightEl,rightHand,paint(shirt),paint(skin));
     // An answered call becomes a held phone rather than a detached floating symbol.
-    if(target==='phone'&&reach>.2&&['call','msg'].includes(lastIntent?.id)){
+    if(target==='phone'&&(phonePose?!phonePose.table:reach>.2)&&['call','msg'].includes(lastIntent?.id)){
       ctx.save();ctx.translate(rightHand[0]+1,rightHand[1]-5);ctx.rotate(-.18);
       rounded(ctx,-2.5,-5,5.4,8.3,1);ctx.fillStyle=paint('#25303c');ctx.fill();
       rounded(ctx,-1.7,-4,3.8,5.4,.8);ctx.fillStyle=paint('#93b4bd');ctx.fill();ctx.restore();
@@ -172,7 +178,11 @@
     return true;
   }
   function intent(m){if(!m?.obj)return;lastIntent={obj:m.obj,id:m.a?.id||'',kind:m.a?.kind||'',t:performance.now()};}
-  function holdingPhone(S){return !!(enabled&&S?.sim?.at==='phone'&&S.sim.act&&['call','msg'].includes(lastIntent?.id)&&S.sim.prog/Math.max(.1,S.sim.dur)>.25);}
+  function holdingPhone(S){
+    const p=window.BFStageSync?.phoneMotion?.(S);
+    if(p)return !p.table;
+    return !!(enabled&&S?.sim?.at==='phone'&&S.sim.act&&['call','msg'].includes(lastIntent?.id)&&S.sim.prog/Math.max(.1,S.sim.dur)>.25);
+  }
   function resolve(m,sealed){
     if(m?.obj==='stove'&&!sealed)lastKitchen={id:m.a?.id||'',t:performance.now()};
     if(lastIntent?.obj===m?.obj)lastIntent=null;

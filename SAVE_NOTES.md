@@ -1,3 +1,74 @@
+## Sofa rig — final visual review notes (2026-11-18 / PR #9)
+
+**Source of truth:** [PR #9](https://github.com/RileyTheRiler/being-found/pull/9), branch `feat/sofa-articulated-rig-20261118`, forked from verified `main` `7207a02`. Draft PR #3 (8.5.2B) remains isolated. Check the actual PR head and CI before merge; **do not infer production release from these notes**.
+
+- **Geometry:** `sprite_rig.js` now uses the modeled atlas torso and jointed lower body with independent hips, knees, ankles and a small lifted foot repositioning step. The torso never shrinks to sit. The fixed floor correction addresses the legacy cushion/foot pivot mismatch. A taller static sofa was partly responsible; `room.js` proportionally lowers the existing sofa artwork around its floor contact (vertical factor 0.70). Only the upholstery lip repaints in front of knees; shins and shoes remain visible.
+- **Visual evidence inspected:** Chrome-rendered desktop/phone/tablet sequences from GitHub Actions run [44460028092](https://github.com/RileyTheRiler/being-found/actions/runs/44460028092) show clearer vertical shins, feet beneath knees, an improved sofa size and forward/backward sit/rise. The preceding iterations had visible shin V-shapes and embedded hips, despite automated passes. **This is a bounded improvement, not photorealistic or professional rigging.** The modeled upper arms and raster/vector waist seam remain stiff. No change to phone, painting or cooking choreography in this PR.
+- **QA:** Full 35-step quality workflow passed at `5bff80c0b1ab5aed2ec2a6204100833e519f3930`, before the final camera/prologue test-harness fixes. The separate `Character motion visual QA` workflow builds production output, captures the actual UI-driven Noor sofa sequence and verifies static same-rig poses for Tomas and Dele. When switching flats during visual QA, wait for the new atlas AND room camera; stale atlas results or a panned-away actor invalidate screenshots.
+- **Release gate:** Rerun both workflows at the latest PR head, inspect Dele and Tomas images, keep PR draft until satisfactory, then verify Vercel production commit after merging. Existing narrative, saves, accessibility and 8.5.2B work must remain unchanged. Larger-scale joint/arm fidelity should come from a reproducible asset-authoring pipeline rather than piling on more geometry hacks.
+
+## Articulated sofa prototype — branch verification pending (November 18, 2026)
+
+**Base:** `7207a02b9b8defda975ff59e8cdd46840c58d69d` on `main`. **Branch:** `feat/sofa-articulated-rig-20261118`. This is a focused rendering change; the separate draft 8.5.2B PR #3 is untouched.
+
+- **Architecture:** The modeled atlases provide no intermediate sit/rise frames or body-part bones at runtime. `ANIMATION_ARCHITECTURE.md` compares regeneration, vector rigging, runtime GLB and hybrid compositing and explains the limited selected approach.
+- **Code:** `sprite_rig.js` renders the opaque modeled head/upper body plus two independently posed lower limbs driven by the authored seat/rise progress. Shoes remain planted while the knees move forward, hips descend and the torso leans transiently. `room.js` restores the shoe baseline rather than shrinking the entire model as it rises to the sofa anchor. The sofa front apron stays a separate depth layer.
+- **QA:** `qa_seated_rig.py` exercises the real sofa/stove menus on desktop, phone and tablet, samples geometry, records screenshots, checks reduced motion and tests modeled Tomas/Dele. `qa_physical_actions.py` now expects the composite atlas source instead of the static seated cell. CI and `qa_all.py` include the new test.
+- **Caution:** No build, CI, deployment or visual-quality conclusion is established by these edits alone. The vector pants may not exactly match the raster clothes, the sofa depth mask needs human screenshot review, NPCs retain the procedural fallback, and GLB asset regeneration has not occurred. Do not merge without a passing complete QA workflow and visual inspection. Keep gameplay/narrative unchanged.
+
+## Staged physical actions — merged November 18, 2026
+
+**Main code commit:** `26a785464fd793f11640d660c59e5d5027c395db`, [PR #8](https://github.com/RileyTheRiler/being-found/pull/8) merged. [GitHub Actions run 44451852112](https://github.com/RileyTheRiler/being-found/actions/runs/44451852112) passed **34/34 steps** on the reviewed branch, including actual desktop/mobile sofa, kitchen, easel and walking regressions. Vercel production deployment `dpl_A9gQnAApEGEMUTiQSRzrq5rHbjNM` reached **READY** on that merge commit with `being-found.vercel.app` assigned. Narratives, game results and draft 8.5.2B PR #3 remain unchanged.
+
+- **Sofa enter:** The original action sets `S.sim.pose='sit'` at arrival. A new purely visual `BFStageSync.seatMotion` ties scene-space foot-position (floor 574 → cushion 516), body scale (100%→85%), seated atlas frame, and foreground sofa masking to a single eased part of the authored action. Repeated seat actions while already seated do not stand the actor up.
+- **Sofa exit:** `BFNavigation.goTo` detects leaving the occupied sofa; the existing route stays queued but its feet remain near the sofa until a 0.82-second stand-up completes. `BFStageSync.seatMotion` and the model atlas change pose along the upward position/scale interpolation. Only then does ordinary walking begin. Cancels/reset/phase changes clear the transition. No separate story events or save state.
+- **Cooking:** Rooted-flat cooking display time is at least 3.55 seconds for `fry/cook/two`; `BFStageSync.workMotion` supplies preparation, reach, work and return phases. The pan, a grounded utensil, and steam follow the same stage. The authored breakfast outcome still owns persistent pan/egg state.
+- **Painting:** Rooted-flat `paint` display time is at least 3.7 seconds. Its brush moves during a dedicated stroke phase; temporary trial marks clear after the action, and permanent paint still depends on the authored `S.fx.painted` outcome. All other stages/narrative choices preserved.
+- **Tests:** `qa_character_motion.py` now checks the gradual sofa descent. `qa_physical_actions.py` triggers the actual sofa/stove/easel menus on 1440×900 desktop and 390×844 phone, inspects per-stage positions and rendered frames, screenshots, completion and non-persistence of temporary props. Both run in local QA and CI. Pixel and stage-based tests do **not** prove natural-looking body motion.
+- **Screenshot review and limitations:** Inspected captured sitting, rising, cooking and painting frames. Timing and staging are improved; the modeled seated legs still appear awkward against the cushion, and prop/body contact is approximate. These are enhanced staged illustrations, **not** articulated skeletal animations. Prioritize a dedicated sit/rise/prop rig rather than further layering sprite patches. Human visual review in the live app and real-device/assistive-technology checks remain outstanding.
+
+## Phone interaction animation refinement — merged November 18, 2026
+
+**Main code commit:** `8a9041b2b3d201a79dbd93246ba94dd1549ff5b9`, [PR #7](https://github.com/RileyTheRiler/being-found/pull/7) merged. [GitHub Actions run 44444265790](https://github.com/RileyTheRiler/being-found/actions/runs/44444265790) passed **33/33 steps** on the final reviewed branch head. Vercel production deployment `dpl_HN3Lt4nhjupVCPXVWaJrNPF8Eb42` reached **READY** on that merged commit and assigned `being-found.vercel.app`. Gameplay and narrative 8.5.2B work remains separate and unmerged.
+
+- Root cause: phone `call` and `msg` actions inherited ~1-second default action durations. `sync.js` switched immediately to a single held-pose cell at 28% of the action and dropped to idle at completion. The phone on the table also disappeared and returned abruptly.
+- `build.js`: set phone-specific minimum animation time (call 4.1 seconds, message 3.5 seconds) after authored state-specific routine durations are calculated. Other actions retain existing durations. No change to dialogue, effects, goals, save schema or input requirements.
+- `sync.js`: deterministic, normalized reach → lift → use → lower → release phases, synchronized to the existing `S.sim.prog/S.sim.dur` action clock. `phoneMotion` exposes pose and whether the handset is physically on the table, without independent timers that might outlive a chapter.
+- `sprite_rig.js`: transition between baked reach and phone atlas poses. The first full-body alpha crossfade made Noor semi-transparent in CI screenshots; it was corrected to an opaque primary sprite with a small *arm-only* transition overlay. `room.js` draws the table handset only during the correct phases. `art.js` applies matching arm/handset timing for the procedural fallback.
+- `qa_phone_motion.py`: actual Noor phone action via UI on desktop 1440×900 and phone 390×844, ordered phase assertions, painted canvas hashes, screenshots, action duration and returned-to-table check. Added to `qa_all.py` and GitHub Actions.
+- **Validation limits:** Automated desktop/mobile screenshot review confirmed reach, lift, hold, lower, and return frames and an opaque model during transitions. The baked atlas still holds the phone outward rather than fully to Noor's ear; truly realistic call/text poses require re-authoring the rig. This is a short *illustrative phone gesture*, not an actual-duration conversation. User visual confirmation and real-device/accessibility review remain outstanding.
+
+## Visual walking and sofa seating correction — merged November 18, 2026
+
+**Main code commit:** `db558064b49a0035af69cbbfcc37c2cfe1e0d7f4`, [PR #6](https://github.com/RileyTheRiler/being-found/pull/6) merged. Pre-merge GitHub Actions [run 44421600423](https://github.com/RileyTheRiler/being-found/actions/runs/44421600423) passed its full regression workflow. Vercel production deployment `dpl_J5HGWfAM5tkcnVYDFi3SDYgJtQuD` is `READY` on the code commit, with `being-found.vercel.app` assigned.
+
+- **Diagnosed failure from the real visible sofa action:** physical `pose='sit'` and seated seat anchor activated while `BFStageSync.frame` still chose a standing/reach sprite during the start of the action. The model could appear inside the couch despite synthetic pose tests passing. `sprite_rig.js` now prioritizes seated pose over action timeline; `sync.js` no longer returns the standing/reach cell for a seated actor.
+- **Seated geometry:** `navigation.js` seatY=516 rather than 561. `room.js` scales seated 2.5D actors to 85%, aligns visitor/NPC seating, and moves the sofa marker clear of the seated figure. This aligns the hips with the cushion, though the original prebaked sprite still has limited natural lower-leg geometry.
+- **Walking:** Existing six-frame atlas walk steps switch direction and follow a more visible 92px step cycle plus small weight shift. `qa_character_motion.py` checks actual rendered RGBA pixel differences and samples 4 screenshots of a moving actor, not only internal state. Automated screenshots were inspected and show distinct leg positions.
+- **Motion preference:** Default follows `prefers-reduced-motion`; View → Walking animation enables an explicit override for users who choose animation.
+- **Validation limit:** Automated screenshots and pre-merge tests are not a substitute for user verification in their browser, or real-device/assistive-tech testing. Final seated feet geometry may benefit from a future dedicated rig redesign. Keep separate draft 8.5.2B behavior work isolated.
+
+## Character walking and sofa depth — merged November 18, 2026
+
+**Main implementation:** `d290672bb85a14c8db5b6a31449ed929f342e796`, [PR #5](https://github.com/RileyTheRiler/being-found/pull/5) merged. Pre-merge [GitHub Actions run 44414001551](https://github.com/RileyTheRiler/being-found/actions/runs/44414001551) completed **32/32 successful steps**, including the desktop and phone `qa_character_motion.py` test. Vercel production deployment `dpl_DadtbP9LcVVDYBnw8pmTjcHKE7gs` is `READY` on the same code commit, with `being-found.vercel.app` assigned.
+
+- Three modeled residents' six-frame walking cycles follow actual scene-space travel distance and left/right direction, rather than relying on a disconnected pose clock. Reduced-motion disables stepping animation.
+- The 2.5D sofa's front apron now renders behind a passing walker and in front of a truly seated lap. The main seated actor and seated visitor/NPC share the illustrated sofa at aligned cushion positions; seated NPCs appear in visits.
+- `qa_character_motion.py` is part of local `npm run qa` and CI. It checks walking direction and frame progress plus Noor, Tomas and Dele seated states at 1440×900 and 390×844, with screenshots in CI artifacts.
+- **Not yet independently validated:** detailed real-device/assistive-tech animation review, manual image-based validation of all seating frames, and human usability testing. The authored character sprite atlases were not regenerated.
+- The unfinished consent-safe gameplay work remains separate in draft PR #3.
+
+## Desktop opening and classroom reading pass — review branch (November 18, 2026)
+
+**Branch:** `fix/desktop-guide-and-opening` (separate from draft 8.5.2B PR #3). Built on `main` commit `6902786f42b5862cd32a9b087ecbb7775ce433e1`. **Not merged or deployed.** Version and narrative mechanics remain 8.5.1.
+
+- The ~31-second prologue already existed. It auto-launched only when `beingfound.opening.v1` had not been set, reduced motion was off and `noopening` was absent. On revisits, replay was buried under the title's other-options disclosure. The title now exposes a direct **Watch the animated opening (30 seconds)** control, and finishing/skipping updates `LWPrologue.seen` in the current tab.
+- On wide landscape desktop (>=1300px), `syncGuide()` now puts the classroom Guide **below** `#result` inside `#dock`, preventing the floating overlay from obscuring room art. The previously existing tablet-landscape and narrow-screen behavior remains.
+- `room.js` derives `data-bf-other-room` markers from the same `currentSection()` used by tab ARIA state. Desktop inactive-room markers fade without losing pointer or keyboard access; active/target/ringing markers retain emphasis.
+- `qa_smoke.py` now exercises prologue replay and skip, Guide containment and synchronized marker room flags at 1440×900.
+- The black circular icon at the right edge of the supplied screenshot is **not yet identified in the running DOM**; no speculative removal was made. Check in an extension-free browser and identify its owner before editing.
+- Pending: GitHub Actions green on the review branch, direct browser visual review, real-device/assistive-tech tests, eventual rebase after 8.5.2B. Do not claim these changes are live at `being-found.vercel.app` until merged and deployment verified.
+
 # Being Found 8.5.1: save notes
 
 The hosted save page holds the playable build at its root and this full source under `source/`.
@@ -94,3 +165,14 @@ The 8.5.2A PR [#1](https://github.com/RileyTheRiler/being-found/pull/1) passed G
 ## Step 23 — 8.5.2B draft (branch, CI pending)
 
 Branch `feat/8.5.2b-consent-route` starts from post-foundation main. Removed mandatory classroom entry into Dele's authored day; added explicit encounter end outcomes including early `depart`, visitor leaving, and a resident boundary. Changed guided action checks so saved or default dice do not intercept actions; heavy actions require one activation; guided motion uses normal speed; sealed choices remain visually available and narratively actionable. Updated the guided route test and added a Dele branch matrix plus guided input parity regression. Free-play mechanics are intended to remain unchanged. Do not merge or claim release until PR Actions tests pass and the outstanding QA errors, if any, are resolved.
+
+## Vercel production hosting repair — November 18, 2026
+
+**Verified public URL:** https://being-found.vercel.app/ (independent page fetch returned title `Being Found 8.5.1`, not 404). The second assigned domain `https://being-found-rileys-projects-5252c03b.vercel.app/` also returned the game title.
+
+**Root cause of 404:** Previous Vercel deployments uploaded nested source trees (`src/src/...`) with build logs showing `Build Completed ... [69ms]` and **no `npm run build`**, leaving no deployed root `index.html`. Their `READY` status did not mean the website was correctly built.
+
+**Correction:** Updated the existing project `being-found` (`prj_DyoE8rtjWrJeGBJxDFrDflEmvGkT`) to use repository-root build, `npm run build`, `dist` output and framework `null`; then created a **production** deployment via Git source `RileyTheRiler/being-found`, ref `main`, commit `b7c8e15b44500faaafde3bdd923be66c4030a6ae`. Deployment `dpl_GcMZaVbDFbVrJ2BbCLTBuzC94dQf` reached `READY`; build logs printed `Being Found 8.5.1 built: 628647 bytes` followed by `postbuild.js` output. Vercel assigned `being-found.vercel.app`.
+
+**Release caution:** This publishes only the verified `main` branch's **8.5.1 gameplay with 8.5.2A foundation**. Draft 8.5.2B PR #3 is not in production. Later GitHub pushes should still be checked against both GitHub Actions and a new Vercel production deployment; a successful Actions run or Git push alone is not proof of live deployment. Do not re-upload source with nested `src/` as a Vercel static output.
+

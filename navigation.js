@@ -10,7 +10,7 @@
   const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
   const anchors=Object.freeze({
     mirror: {x:255, y:FLOOR,face:'back', label:'Mirror'},
-    sofa:   {x:464, y:FLOOR,seatX:455,seatY:561,face:'front',label:'Sofa'},
+    sofa:   {x:464, y:FLOOR,seatX:455,seatY:516,face:'front',label:'Sofa'},
     window: {x:548, y:FLOOR,face:'back',label:'Window'},
     phone:  {x:690, y:FLOOR,face:'front',label:'Phone'},
     bed:    {x:854, y:FLOOR,lieX:836,lieY:485,face:'back',label:'Bed'},
@@ -25,7 +25,7 @@
   const nodes=[180,275,425,545,670,825,945,1090,1230,1395,1490].map(x=>({x,y:FLOOR}));
   const state={active:false,x:548,y:FLOOR,phase:'',flat:'',route:[],goal:null,startedAt:0,
     distance:0,completed:0,fromX:548,source:[0,0],destination:[0,0],callback:null,
-    targetId:null,lastArrival:null,orientation:1};
+    targetId:null,lastArrival:null,orientation:1,seatExit:null};
   const valid=S=>!!S&&S.mode==='play'&&S.flat?.id==='rooted'&&(!S.place||S.place==='home');
   const atHome=()=>valid(window.LW?.S);
   const findTarget=(point,objects)=>Object.keys(anchors).find(id=>{
@@ -35,13 +35,13 @@
   function reset(S){
     const s=S?.sim;if(!s)return;
     state.active=false;state.route=[];state.goal=null;state.callback=null;state.phase=S.phaseKey||'';
-    state.flat=S.flat?.id||'';state.targetId=null;state.distance=0;state.completed=0;
+    state.flat=S.flat?.id||'';state.targetId=null;state.distance=0;state.completed=0;state.seatExit=null;
     const a=anchors[s.at];state.x=a?.x??548;state.y=a?.y??FLOOR;
     state.fromX=state.x;state.orientation=1;
     s.bfSideX=state.x;s.bfSideY=state.y;s.bfSideVX=0;
   }
   function cancel(S){
-    state.active=false;state.route=[];state.goal=null;state.callback=null;state.targetId=null;
+    state.active=false;state.route=[];state.goal=null;state.callback=null;state.targetId=null;state.seatExit=null;
     if(S?.sim){S.sim.bfSideVX=0;delete S.sim.bfWalking;}
   }
   function ensure(S){
@@ -70,10 +70,21 @@
     const id=findTarget(pt,objects);
     if(!id)return false; // original game still handles non-furniture destinations
     const a=anchors[id];
+    // Return to a seat already occupied without playing a stand-up/jump.
+    // The authored action can run again but does not visually reset the body.
+    if(id==='sofa'&&s.pose==='sit'&&s.at==='sofa'){
+      state.seatExit=null;s.path=[];s.bfSideVX=0;state.lastArrival=id;
+      window.BFStageSync?.arrive?.(id,S);cb();return true;
+    }
+    const rising=s.pose==='sit'&&s.at==='sofa'&&id!=='sofa';
     if(s.pose!=='stand'){
       const old=objects[s.at];s.pose='stand';
       if(old){s.x=old.stand[0];s.y=old.stand[1];}
     }
+    // Hold the route while the actor shifts weight forward and stands. Its
+    // action input is already queued; the original navigation callback runs
+    // once on arrival and no extra gameplay state is written.
+    state.seatExit=rising?{elapsed:0,duration:.82,u:0}:null;
     // A seated occupant leaves from the sofa's floor contact point.
     state.x=clamp(Number.isFinite(s.bfSideX)?s.bfSideX:state.x,LEFT,RIGHT);
     const route=plan(state.x,a.x);
@@ -101,6 +112,14 @@
     if(!valid(S)||!state.active)return false;
     const s=S.sim;
     if(state.flat!==S.flat.id||state.phase!==(S.phaseKey||'')){cancel(S);return false;}
+    if(state.seatExit){
+      state.seatExit.elapsed=Math.min(state.seatExit.duration,state.seatExit.elapsed+Math.min(dt,.05));
+      state.seatExit.u=state.seatExit.elapsed/state.seatExit.duration;
+      s.bfSideVX=0;
+      if(state.seatExit.u<1)return true;
+      state.seatExit=null;
+      state.startedAt=performance.now();
+    }
     const direction=state.orientation;
     const remaining=Math.abs(state.goal.x-state.x);
     const a=((window.BFFlags?.guided || document.body?.classList.contains('cl-route')) && window.BFFlags?.moodSpeed !== true)?'rooted':S.vars?.attune;
@@ -139,11 +158,18 @@
   function position(S){
     if(!ensure(S))return null;
     const s=S.sim,a=anchors[s.at];
+    if(state.seatExit){
+      const u=state.seatExit.u,e=u*u*(3-2*u),sofa=anchors.sofa;
+      return [sofa.seatX+(sofa.x-sofa.seatX)*e,sofa.seatY+(FLOOR-sofa.seatY)*e];
+    }
     if(!state.active && a){
       state.x=a.x;s.bfSideX=a.x;
-      // Physically sit on the sofa cushion; lie in the bed at the correct
-      // visual contact point without rewriting the original narrative pose.
-      if(s.pose==='sit'&&a.seatX)return [a.seatX,a.seatY];
+      // The pose is already 'sit' at arrival; interpolate its contact point.
+      if(s.pose==='sit'&&a.seatX){
+        const seated=window.BFStageSync?.seatMotion?.(S);
+        const p=seated?.kind==='sit'?seated.progress:1;
+        return [a.x+(a.seatX-a.x)*p,FLOOR+(a.seatY-FLOOR)*p];
+      }
       if(s.pose==='lie'&&a.lieX)return [a.lieX,a.lieY];
     }
     return [Number.isFinite(s.bfSideX)?s.bfSideX:state.x,FLOOR];
@@ -161,5 +187,6 @@
   }
   window.BFNavigation={version:'8.0',anchors,floorCorridor,nodes,plan,reset,cancel,goTo,step,position,section,debugDraw,
     get enabled(){return atHome();},get active(){return state.active},get x(){return state.x},
-    get target(){return state.targetId},get lastArrival(){return state.lastArrival}};
+    get target(){return state.targetId},get lastArrival(){return state.lastArrival},
+    get seatExit(){return state.seatExit?{...state.seatExit}:null}};
 })();

@@ -1,0 +1,65 @@
+name: Character motion visual QA
+
+on:
+  pull_request:
+    paths:
+      - 'room.js'
+      - 'sprite_rig.js'
+      - 'art.js'
+      - 'assets/*_atlas.*'
+      - 'qa_seated_rig.py'
+      - '.github/workflows/visual-characters.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: being-found-character-visual-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  rendered-motion:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      BF_TEST_URL: http://127.0.0.1:8770/index.html
+      BF_TEST_ARTIFACTS: qa-artifacts
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Production build
+        run: npm run build
+      - name: Install browser runner
+        run: python3 -m pip install 'playwright==1.58.0'
+      - name: Find Chrome
+        shell: bash
+        run: |
+          CHROME=$(command -v google-chrome || command -v chromium || true)
+          test -n "$CHROME" || exit 1
+          echo "BF_CHROME=$CHROME" >> "$GITHUB_ENV"
+      - name: Serve built game
+        shell: bash
+        run: |
+          python3 -m http.server 8770 --directory dist > /tmp/bf-visual-http.log 2>&1 &
+          for i in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:8770/index.html > /dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/bf-visual-http.log
+          exit 1
+      - name: Real player sofa and standing screenshots
+        run: python3 qa_seated_rig.py
+      - name: Preserve visual sequences
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: articulated-visual-evidence
+          path: qa-artifacts/*articulated*.png
+          retention-days: 7
+          if-no-files-found: ignore

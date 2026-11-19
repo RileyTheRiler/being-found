@@ -47,6 +47,22 @@ const fs=require('node:fs'),path=require('node:path');
  inject('const key=dirKey(m);',`const key=dirKey(m);
     if(!key && m.st!=='sealed' && !m.a.walk && window.BFCinema?.cameraAllowed)
       dirRun([{shot:'near',focus:['sim',m.obj],spot:m.obj,hold:2.4},DIR_END]);`);
+ // Only phone call/message gestures need enough display time to reach, lift,
+ // hold and put the handset back down. Do not alter story outcomes, saves,
+ // the authored state-specific costs, or the duration of other actions.
+ inject('s.onDone=()=>finishAction(m,false); if(key) dirRun(',
+   `if(m.obj==='phone'&&['call','msg'].includes(m.a.id))
+      s.dur=Math.max(s.dur,m.a.id==='call'?4.1:3.5);
+    // Physical choreography: a sofa descent, a small cooking sequence and
+    // a brushstroke need more than the one-second generic action. Limit
+    // this pacing pass to Noor's rendered flat, not clinical story logic.
+    if(S.flat?.id==='rooted'){
+      if(m.obj==='sofa')s.dur=Math.max(s.dur,2.35);
+      if(m.obj==='stove'&&['fry','cook','two'].includes(m.a.id))
+        s.dur=Math.max(s.dur,3.55);
+      if(m.obj==='easel'&&m.a.id==='paint')s.dur=Math.max(s.dur,3.7);
+    }
+    s.onDone=()=>finishAction(m,false); if(key) dirRun(`);
  // The original pointer hold and three-activation threshold remain in place.
  // Keyboard-generated clicks also count as activations; no hidden keyboard timer.
  // Only authored checks can bypass the requirement after the player opts to roll or skip.

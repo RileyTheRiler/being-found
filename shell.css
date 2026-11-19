@@ -205,3 +205,25 @@ body:not(.cl-route) #app.bf-shell-ready.wide.bf-world-open:not(.sandbox) #colRig
     overflow-wrap:anywhere!important;
   }
 }
+
+
+/* Desktop reading hierarchy: the story stays first; the classroom Guide is
+   docked beneath it rather than obscuring the panoramic illustration. */
+#mTitle .title-opening{display:flex;justify-content:center;width:100%;margin:8px 0 0;min-height:43px}
+@media (min-width:1300px) and (orientation:landscape){
+ body.cl-route #app.bf-shell-ready.wide #dock #clGuide:not([hidden]){
+   box-sizing:border-box!important;
+   position:relative!important;
+   inset:auto!important;
+   top:auto!important;right:auto!important;bottom:auto!important;left:auto!important;
+   width:100%!important;max-width:100%!important;min-width:0!important;
+   max-height:none!important;margin:14px 0 0!important;
+   z-index:auto!important;background:#fffefa!important;
+   border:1px solid var(--bf83-border)!important;
+   border-radius:18px!important;box-shadow:var(--bf83-shadow)!important;
+ }
+ body.cl-route #app.bf-shell-ready.wide #dock #clGuide .cl-guide-actions{flex-wrap:wrap}
+ #app.bf-shell-ready.wide.bf-new-room #stage .pin[data-bf-other-room="true"]:not(.target):not(.sel):not(.ringing):not(:hover):not(:focus-visible){
+   opacity:.56!important;
+ }
+}

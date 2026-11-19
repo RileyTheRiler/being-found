@@ -8,7 +8,7 @@
  const app=document.getElementById('app'),scene=document.getElementById('scene'),stage=document.getElementById('stage');
  if(!app||!scene||!stage)return;
  const SW=1600,SH=720,FLOOR=574;
- const pins={mirror:[191,307],sofa:[464,420],window:[518,279],phone:[690,399],bed:[849,409],easel:[973,345],stove:[1140,392],door:[1442,419]};
+ const pins={mirror:[191,307],sofa:[354,425],window:[518,279],phone:[690,399],bed:[849,409],easel:[973,345],stove:[1140,392],door:[1442,419]};
  const sections={living:{x:410,name:'Living'},sleeping:{x:814,name:'Bedroom'},kitchen:{x:1255,name:'Kitchen'}};
  const roomByObject={mirror:'living',sofa:'living',window:'living',phone:'sleeping',bed:'sleeping',easel:'sleeping',stove:'kitchen',door:'kitchen'};
  const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
@@ -120,7 +120,16 @@
  }
  function drawMirror(c){rr(c,75,137,177,329,18,'#ad8e70');rr(c,90,151,147,299,13,'#d5dbd5','#ede6d7',7);el(c,165,287,34,75,'rgba(176,195,181,.20)');rr(c,69,458,188,12,5,'#926f58');}
  function drawShelf(c){rr(c,250,124,143,14,2,'#896e58');rr(c,250,242,143,13,2,'#896e58');for(let i=0;i<10;i++){const x=256+i*13;box(c,x,178-(i%4)*9,9,64+(i%4)*9,['#b47f65','#5c8c8b','#c7a56f','#87958e'][i%4]);}rr(c,278,230,18,11,3,'#d2c8ad');}
+ const SOFA_VERTICAL=.70;
+ // Existing sofa art was taller than the modeled resident. A shared 70%
+ // height transform around the feet keeps the cushion, frame and front
+ // occlusion in one coordinate system rather than scaling the character.
+ function sofaGeometry(c,draw){
+   c.save();c.translate(0,FLOOR*(1-SOFA_VERTICAL));c.scale(1,SOFA_VERTICAL);
+   try{draw();}finally{c.restore();}
+ }
  function drawSofa(c,S){
+   sofaGeometry(c,()=>{
    const L=S.flat?.look||{},col=L.sofa||'#b9ab8c';
    // Sofa belongs to Living: feet and contact shadow follow the shared floor.
    el(c,447,575,193,16,'rgba(28,39,33,.19)');
@@ -133,11 +142,24 @@
    rr(c,359,434,69,37,13,'#b37566');rr(c,489,433,60,39,12,'#789b93');
    line(c,447,480,447,530,'rgba(93,80,62,.17)',2);
    window.BFStageSync?.paintSofa?.(c,S);
+   // Keep the furniture apron behind a passing walker, rather than over their shins.
+   // For seated residents the apron is re-painted in the foreground below.
+   drawSofaFrontRaw(c);
+   });
  }
- function drawSofaFront(c){rr(c,281,518,294,23,10,'#bca37c');line(c,308,539,546,539,'rgba(74,65,54,.22)',3);}
+ function drawSofaFrontRaw(c){rr(c,281,518,294,23,10,'#bca37c');line(c,308,539,546,539,'rgba(74,65,54,.22)',3);}
+ function drawSofaFront(c){sofaGeometry(c,()=>drawSofaFrontRaw(c));}
+ function drawSofaLapMask(c){
+   // Only the top upholstery lip hides a seated thigh. The full apron is
+   // already behind the character, so it must not erase knees or shins.
+   sofaGeometry(c,()=>rr(c,281,518,294,10,7,'#bca37c'));
+ }
  function drawPhone(c,S,t){
    rr(c,610,501,103,17,3,'#957961');rr(c,625,516,10,59,3,'#7c6254');rr(c,690,516,10,59,3,'#7c6254');
-   const calling=S.ringing,held=window.BFStageSync?.phoneHeld?.(S)||window.BFArt?.holdingPhone?.(S);
+   // Prefer the authored phone choreography. The older art fallback only
+   // knew "lifted after 25%" and kept the table empty until abrupt completion.
+   const calling=S.ringing,phonePose=window.BFStageSync?.phoneMotion?.(S);
+   const held=phonePose?!phonePose.table:!!window.BFArt?.holdingPhone?.(S);
    if(!held){c.save();c.translate(calling?Math.sin(t*35)*2:0,0);rr(c,651,485,28,13,3,'#343c47');rr(c,656,486,17,9,2,calling?'#97e3e0':'#a8bac0');c.restore();}
  }
  function drawBed(c,S){const col=S.flat?.look?.duvet||'#8396a0';
@@ -199,14 +221,35 @@
    for(const x of [260,1030]){line(c,x,80,x,574,'#65746f',11);light(c,x,100,110,'#f2edd1',.18);}
  }
  function roomFront(c,S){
-  drawSofaFront(c);
+  // A seated resident's lap goes behind the front cushion; a walker does not.
+  const mainSeated=S.sim?.pose==='sit'&&S.sim?.at==='sofa';
+  const seat=window.BFStageSync?.seatMotion?.(S);
+  const frontReady=(mainSeated&&(!seat||seat.progress>.12))||
+    (seat?.kind==='rise'&&seat.progress<.44);
+  const npcSeated=S.npc?.pose==='sit'&&S.npc?.at==='sofa';
+  if(frontReady||npcSeated)drawSofaLapMask(c);
   // Bottom floor reflection ties character's contact shadow to the ground.
   const g=c.createLinearGradient(0,557,0,640);g.addColorStop(0,'rgba(247,232,197,.06)');g.addColorStop(1,'rgba(47,53,45,.08)');box(c,0,558,SW,72,g);
  }
  function drawActor(c,x,y,o,drawFigure){
    c.save();
-   el(c,x,y+1,28,7,'rgba(35,47,41,.15)');
-   c.translate(x,y);c.scale(2.90,2.90);drawFigure(0,0,o);
+   // Restore the floor shoe baseline while the sofa's navigational contact
+   // anchor rises to the cushion. Knees and hips now move independently.
+   const seat=o?.bfMainActor?window.BFStageSync?.seatMotion?.(window.LW?.S):null;
+   const sitAmount=seat?.kind==='sit'?seat.progress:
+     seat?.kind==='rise'?1-seat.progress:o?.pose==='sit'?1:0;
+   const modeledSeat=!!window.BFRig?.canArticulateSeat?.(o);
+   const floorCorrection=modeledSeat?FLOOR-y:0;
+   if(sitAmount<.85)el(c,x,y+floorCorrection+1,28*(1-sitAmount*.5),7,'rgba(35,47,41,.15)');
+   c.translate(x,y+floorCorrection);
+   const figureScale=2.90*(modeledSeat?1:1-.15*sitAmount);
+   c.scale(figureScale,figureScale);
+   // The procedural fallback retains its existing pose behavior; modeled
+   // actors get a stable atlas torso and planted two-segment leg pose.
+   const displayPose=seat?.kind==='sit'&&sitAmount<.12?'stand':
+     seat?.kind==='rise'&&sitAmount>.56?'sit':o?.pose;
+   drawFigure(0,0,modeledSeat?{...o,bfSeatAmount:sitAmount,bfFloorCorrection:floorCorrection}:
+     displayPose===o?.pose?o:{...o,pose:displayPose});
    c.restore();
  }
  function render({ctx,VIEW,S,drawFigure,simOpts,npcOpts,simFoot}){
@@ -224,10 +267,16 @@
   if(isHome(S)){
     roomBack(ctx,S,t);drawMirror(ctx);drawShelf(ctx);drawSofa(ctx,S);drawPhone(ctx,S,t);drawBed(ctx,S);drawEasel(ctx,S);drawKitchen(ctx,S,t);drawDoor(ctx);
   } else drawStreet(ctx,t);
-  if(S.npc?.pose==='stand'){
-   const [nx,ny]=projection(S.npc.pos[0],S.npc.pos[1],0);drawActor(ctx,nx,ny,npcOpts(),drawFigure);
+  // The isometric fallback used to put other residents inside the sofa arm.
+  // Two sitters take separate cushions, without changing the authored story.
+  const mainSeated=S.sim?.pose==='sit'&&S.sim?.at==='sofa';
+  const npcSeated=S.npc?.pose==='sit'&&S.npc?.at==='sofa';
+  if(S.npc?.pose==='stand'||npcSeated){
+   const npcAt=npcSeated?(mainSeated?[390,516]:[455,516]):projection(S.npc.pos[0],S.npc.pos[1],0);
+   drawActor(ctx,npcAt[0],npcAt[1],npcOpts(),drawFigure);
   }
-  const sim=window.BFNavigation?.position?.(S)||simFoot();
+  const sim=window.BFNavigation?.position?.(S)||(mainSeated?(npcSeated?[516,516]:[455,516]):simFoot());
+  window.BFRig?.onStep?.(S.sim,sim);
   drawActor(ctx,sim[0],sim[1],simOpts(),drawFigure);
   window.BFStageSync?.paintActorProp?.(ctx,sim,S);
   window.BFNavigation?.debugDraw?.(ctx);
@@ -262,6 +311,12 @@
      if(active)b.setAttribute('aria-current','location');else b.removeAttribute('aria-current');
    }
    nav?.setAttribute('data-visible-room',visible);
+   // Keep visual emphasis tied to the same room selection as the ARIA tabs.
+   // Inactive pins remain interactive and become fully visible on hover/focus.
+   for(const pin of stage.querySelectorAll('.pin[data-obj]')){
+     const other=roomByObject[pin.dataset.obj]!==visible?'true':'false';
+     if(pin.dataset.bfOtherRoom!==other)pin.dataset.bfOtherRoom=other;
+   }
  }
  function approach(m){if(roomByObject[m?.obj]){selected=roomByObject[m.obj];manualUntil=0;syncNav();}}
  function mountNav(){

@@ -101,6 +101,18 @@ jobs:
       - name: Five viewport smoke tests
         run: python3 qa_smoke.py
 
+      - name: Character walking and sofa depth
+        run: python3 qa_character_motion.py
+
+      - name: Phone pickup, held pose and return
+        run: python3 qa_phone_motion.py
+
+      - name: Staged sofa, cooking and painting animation
+        run: python3 qa_physical_actions.py
+
+      - name: Articulated sofa legs and rise across devices
+        run: python3 qa_seated_rig.py
+
       - name: Route and menu tests
         run: python3 menu_check.py
 
