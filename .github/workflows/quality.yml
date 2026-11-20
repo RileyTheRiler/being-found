@@ -101,6 +101,9 @@ jobs:
       - name: Guided keyboard and reduced-motion accessibility regression
         run: python3 qa_access85.py
 
+      - name: Walt reduced-motion transcript and preserved silences
+        run: python3 qa_reduced_motion_walt.py
+
       - name: Title keyboard dialog focus and isolation
         run: python3 qa_title_focus.py
 
