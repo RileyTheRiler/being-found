@@ -20,8 +20,13 @@ def enter_walt(page, phone):
     page.get_by_role("button", name="Enter Noor’s room").click()
     page.wait_for_function("window.LWClass?.stage==='noor'")
     skip = page.locator('#clGuide .cl-guide-skip[data-cl="dele"]')
-    if phone and not skip.is_visible():
-        page.locator("#bf-guide-toggle").click()
+    if phone:
+        # The phone initially shows a collapsed Guide behind its top-bar toggle.
+        if not page.locator('#clGuide .cl-guide-fold').is_visible():
+            page.locator("#bf-guide-toggle").click()
+        expand = page.locator('#clGuide [data-cl="guideshow"]')
+        if expand.is_visible():
+            expand.click()
     skip.click()
     page.locator('#clOverlay [data-cl="deledo"]').click()
     page.wait_for_function("window.LWDele?.state?.stage==='door'")
