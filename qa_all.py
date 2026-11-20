@@ -37,6 +37,7 @@ CASES = (
     ("axe-core guided audit", (PY, "qa_axe.py")),
     ("heavy-input parity", (PY, "qa_heavy_access.py")),
     ("five viewport smoke", (PY, "qa_smoke.py")),
+    ("tablet Guide orientation and target sizes", (PY, "qa_tablet_guide.py")),
     ("character motion and sofa", (PY, "qa_character_motion.py")),
     ("phone pickup and return", (PY, "qa_phone_motion.py")),
     ("staged sofa and work animation", (PY, "qa_physical_actions.py")),
