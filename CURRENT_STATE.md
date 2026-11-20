@@ -1,5 +1,12 @@
 # Being Found — current state
 
+## 8.5.3 follow-up verification (2026-11-19 / 20 UTC)
+
+- The more recent [merged PR #12](https://github.com/RileyTheRiler/being-found/pull/12) supersedes the pre-merge status below. **Verified production main:** `728fad2c2e07f79686becf7118362aa4412508e9`. [Actions run 44681370289](https://github.com/RileyTheRiler/being-found/actions/runs/44681370289) succeeded, 42/42 quality steps. Vercel `dpl_7k6FrCMmUTyoB3hjmNKhyc4Jdn5b` READY in production, commit metadata matched exact main SHA. Tablet portrait Guide fixes are merged and automated-browser tested; physical iPad and screen-reader checks remain open.
+- **Current focused review branch:** `fix/8.5.3-reduced-motion-walt-dwell`: Walt presentation-only transcript waits under `prefers-reduced-motion` removed, with phone/desktop reduced-motion and ordinary-motion browser regression `qa_reduced_motion_walt.py`. This branch is **not production** until its PR, full CI and Vercel are separately verified.
+- **Classroom status:** preview only. Consent/exit, guided non-capability controls, title focus, axe, saving and Rooms must remain regression gates. Next independent tasks: seated/lying pose visual review and remaining touch/focus/orientation audit, with human-device/assistive-technology and compensated lived-experience review ahead of any classroom approval.
+
+
 Updated 2026-11-19. Read `HANDOFF.md` first. Source of truth: GitHub `main`, not a previous review hash.
 
 ## Release
