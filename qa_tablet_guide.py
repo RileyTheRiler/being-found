@@ -53,6 +53,7 @@ def check():
             page.wait_for_function("""() => { const g=document.querySelector('#clGuide');
               return !!g&&!g.hidden&&g.getBoundingClientRect().width>0&&g.getBoundingClientRect().height>0; }""")
             portrait=measure(page)
+            assert page.locator("#bf-guide-toggle").is_hidden(),"portrait has redundant phone Guide toggle"
             assert portrait["parent"]=="dock",("portrait Guide not in dock",portrait)
             assert portrait["position"]!="fixed",("portrait Guide floats over room",portrait)
             assert not portrait["sceneOverlap"],("portrait Guide obscures scene",portrait)
@@ -82,6 +83,7 @@ def check():
             page.wait_for_function("document.querySelector('#app')?.classList.contains('narrow')")
             page.wait_for_function("document.querySelector('#clGuide')?.parentElement===document.body")
             phone=measure(page)
+            assert page.locator("#bf-guide-toggle").is_visible(),"phone Guide toggle did not return"
             assert phone["parent"]!="dock",("phone Guide remained in tablet panel",phone)
             assert phone["overflow"]<=2,("phone horizontal overflow",phone)
             assert not errors,errors
