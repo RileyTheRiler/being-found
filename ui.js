@@ -8,10 +8,13 @@
  const menu = $('#viewMenu');
  const bubbles = $('#bubbles');
  const isSmall = () => innerWidth < 900 || (innerWidth <= 1100 && innerHeight > innerWidth) || (innerWidth < 1300 && innerWidth > innerHeight && innerHeight >= 520);
+ // Tablet portrait is a reading-column layout, not the phone's overlay toggle.
+ const guideInPortraitDock = () => innerWidth >= 700 && innerWidth < 900 && innerHeight >= innerWidth && app.classList.contains('tablet-portrait');
+ const needsGuideToggle = () => isSmall() && !guideInPortraitDock();
  const savedFocus = (() => {try{return sessionStorage.getItem('being-found.focus-view')==='1';}catch{return false;}})();
  let focus = savedFocus;
  let guideOpen = false;
- let lastNarrow = isSmall();
+ let lastNarrow = needsGuideToggle();
  const saveFocus = () => {try{sessionStorage.setItem('being-found.focus-view',focus?'1':'0');}catch{}};
  const applyFocus = () => {app.classList.toggle('bf-focus-mode',focus);const b=$('#bf-focus-toggle');if(b){b.setAttribute('aria-pressed',String(focus));b.textContent='Focus view: '+(focus?'On':'Off');}};
  function addViewToggle() {
@@ -33,8 +36,9 @@
  if(bar)bar.insertBefore(guideButton,bar.querySelector('#btnFlats'));
  function refreshGuide(){
    const visible=!!guide && !guide.hidden && document.body.classList.contains('cl-route');
-   document.body.classList.toggle('bf-guide-closed',isSmall() && visible && !guideOpen);
-   guideButton.hidden=!visible || !isSmall();
+   const compactGuide=needsGuideToggle();
+   document.body.classList.toggle('bf-guide-closed',compactGuide && visible && !guideOpen);
+   guideButton.hidden=!visible || !compactGuide;
    guideButton.setAttribute('aria-expanded',String(!!visible && guideOpen));
    guideButton.textContent=guideOpen?'Close guide':'Guide';
  }
@@ -42,7 +46,7 @@
    document.body.classList.toggle('bf-actions-open',!!bubbles?.classList.contains('on'));
  }
  function resized(){
-   const narrow=isSmall();if(narrow!==lastNarrow){lastNarrow=narrow;guideOpen=false;}
+   const narrow=needsGuideToggle();if(narrow!==lastNarrow){lastNarrow=narrow;guideOpen=false;}
    refreshGuide();refreshActions();
  }
  if (guide) new MutationObserver(refreshGuide).observe(guide,{attributes:true,attributeFilter:['hidden','style']});
@@ -52,7 +56,7 @@
  window.addEventListener('resize',resized,{passive:true});
  window.addEventListener('orientationchange',resized,{passive:true});
  document.addEventListener('keydown',e=>{
-   if(e.key==='Escape' && guideOpen && isSmall() && guide && !guide.hidden){guideOpen=false;refreshGuide();guideButton.focus({preventScroll:true});}
+   if(e.key==='Escape' && guideOpen && needsGuideToggle() && guide && !guide.hidden){guideOpen=false;refreshGuide();guideButton.focus({preventScroll:true});}
  });
  addViewToggle();applyFocus();refreshActions();refreshGuide();
  window.BFPresentation={version:'6.9',setFocus(value){focus=!!value;saveFocus();applyFocus();},get focus(){return focus;},showGuide(){guideOpen=true;refreshGuide();}};
