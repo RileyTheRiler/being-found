@@ -46,6 +46,7 @@ python3 qa_audio.py                 # soundtrack off by default, enable, volume 
 python3 qa_flats_stove.py           # kitchen actions in every flat; Dele's phone hint
 python3 qa_guided84.py              # guided narrative, Dele encounter, ending and reduced motion
 python3 qa_access85.py              # keyboard guide, focus and reduced-motion scroll
+python3 qa_reduced_motion_walt.py    # prompt Walt transcript under reduced motion; preserve consent and silence
 python3 qa_title_focus.py           # title modal Tab/Shift+Tab and exit focus handoff
 python3 qa_axe.py                   # nine guided states x phone/desktop, serious/critical gate
 python3 qa_heavy_access.py          # keyboard/pointer heavy-action parity with story checks off
