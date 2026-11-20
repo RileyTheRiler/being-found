@@ -39,6 +39,7 @@ In another terminal:
 
 ```sh
 python3 qa_smoke.py                 # five viewport smoke suite
+python3 qa_tablet_guide.py          # tablet-portrait Guide, rotation, focus and 44px controls
 python3 qa_save_resume.py           # save, sandbox, reload, continue
 python3 qa_focus.py                 # Reflect background isolation, keyboard focus and restoration
 python3 qa_audio.py                 # soundtrack off by default, enable, volume and mute
