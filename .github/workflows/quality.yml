@@ -31,6 +31,9 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: Install pinned accessibility auditor
+        run: npm ci
+
       - name: Build production game
         run: npm run build
 
@@ -97,6 +100,12 @@ jobs:
 
       - name: Guided keyboard and reduced-motion accessibility regression
         run: python3 qa_access85.py
+
+      - name: Title keyboard dialog focus and isolation
+        run: python3 qa_title_focus.py
+
+      - name: Axe-core accessibility (guided checkpoints)
+        run: python3 qa_axe.py
 
       - name: Heavy-action keyboard and pointer regression
         run: python3 qa_heavy_access.py

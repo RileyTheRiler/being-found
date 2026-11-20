@@ -1,5 +1,15 @@
 # Being Found — current handoff
 
+## 8.5.3 accessibility — focused PR #11 (2026-11-19)
+
+**Source branch:** `feat/8.5.3-title-focus-axe`, based on `main` at `9562ce84fd10cbcb41c496bcdbeca0dcd47e4402`. See [PR #11](https://github.com/RileyTheRiler/being-found/pull/11) and check its current head/checks before merging. This entry records the implementation scope and validation requirements; it is **not** proof of a production release.
+
+- The full-screen title is now a named modal with initial focus, background isolation, Tab/Shift+Tab containment, and focus release when opening Guided Story. Title behavior is separate from the consent mechanics.
+- Pinned `axe-core@4.14.1` is bundled for **test execution only** (`npm ci`), not sent to the browser. CI and `qa_all.py` audit nine actual guided stages at 390×844 and 1440×900; any serious/critical automated violation fails. Complete JSON findings, including moderate/incomplete cases, are stored under `qa-artifacts/axe-8.5.3.json`.
+- Axe-informed fixes: small-text contrast on title, chapter indicators, and Dele speaker labels; progress dots represented as labelled imagery; Show me / Head home accessible button name includes visible text.
+- Safety boundary: 8.5.2 guided/pilot dice prohibition, heavy-action parity, speed parity, Dele consent/exits, v1 save history, Rooms mechanics and preview notice are unchanged; full pre-merge regression must pass. Keyboard and axe checks **do not** substitute for physical device, screen-reader, switch access, lived-experience or classroom review.
+- Release gate: verify all GitHub quality steps for the exact PR head, the same SHA in Vercel preview metadata, merge with expected SHA only after review, then verify post-merge Actions and production Vercel commit/alias against the exact new `main` commit. The release-only production branch proposal remains unconfigured. Remaining 8.5.3 layout/pose/reduced-motion work is deferred to a separate reviewed change.
+
 ## 8.5.2 safety release — merged 2026-11-19
 
 **Authoritative main release commit:** `989e2ebcc60362b7a38a646343fdff41333878ad`; [PR #3](https://github.com/RileyTheRiler/being-found/pull/3) merged from `feat/8.5.2b-consent-route`. The [reviewed branch CI run 44581670898](https://github.com/RileyTheRiler/being-found/actions/runs/44581670898) passed all 38 quality steps, including real Chrome automated playthroughs and prior animation regressions. Initial 8.5.2 production Vercel deployment `dpl_TSRKwixNzhL8vMZ1wq9kdqzDDdnk` was READY with `being-found.vercel.app` assigned and commit metadata matching `989e2eb`. Verify any later deployment against its exact commit before citing current production state.

@@ -1,3 +1,9 @@
+## 8.5.3 accessibility implementation — PR #11 (2026-11-19)
+
+- Branch `feat/8.5.3-title-focus-axe` from main `9562ce84`; source files `title_access.js`, `a11y_853.css`, a two-anchor semantic fix in `src/index.html`, and build wiring. Separate title focus ownership preserves guided consent state and original Rooms route.
+- New gates `qa_title_focus.py` and `qa_axe.py` run on phone and desktop. Axe-core 4.14.1 is pinned in development dependencies and invoked at nine checkpoints per viewport; serious and critical failures block. Follow the current PR's Actions results; the initial iterations exposed Tab escape and five recurring axe issue groups before fixes. Do not treat the first failing runs as validation.
+- 8.5.2 policy, saving and story flow were intentionally untouched. Retain classroom preview limitations. No human AT review, real-device testing, pilot or lived-experience validation has been done. Full merge and deployment verification belong to the release gate in `HANDOFF.md`/`RELEASE_PROCEDURE.md`.
+
 ## Sofa rig — final visual review notes (2026-11-18 / PR #9)
 
 **Source of truth:** [PR #9](https://github.com/RileyTheRiler/being-found/pull/9), branch `feat/sofa-articulated-rig-20261118`, forked from verified `main` `7207a02`. Draft PR #3 (8.5.2B) remains isolated. Check the actual PR head and CI before merge; **do not infer production release from these notes**.

@@ -1,9 +1,12 @@
 {
   "name": "being-found",
-  "version": "8.5.2",
+  "version": "8.5.3",
   "private": true,
   "scripts": {
     "build": "node build.js && node postbuild.js",
     "qa": "npm run build && python3 qa_all.py"
+  },
+  "devDependencies": {
+    "axe-core": "4.14.1"
   }
 }

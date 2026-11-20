@@ -1,0 +1,5 @@
+/* 8.5.3: contrast adjustments from axe-core browser audit.
+ * Scope to identified small text without changing the authored story. */
+#mTitle .point b.who{color:#174a8b}
+#clOverlay .cl-step:not(.active){color:#44516a}
+#dele .dl-line label{color:#3c4c47}
