@@ -5077,10 +5077,11 @@ function syncGuide(){
  const dock=document.getElementById('dock'),app=document.getElementById('app');
  const available=!!dock?.getClientRects().length;
  const tabletDock=available&&innerWidth>=900&&innerWidth<1300&&app?.classList.contains('tablet-land');
+ const tabletPortraitDock=available&&innerWidth>=700&&innerWidth<900&&innerHeight>=innerWidth&&app?.classList.contains('tablet-portrait');
  const desktopDock=available&&innerWidth>=1300&&innerWidth>innerHeight&&app?.classList.contains('wide');
  const inRoom=run.active&&['noor','room'].includes(run.stage);
- if(inRoom&&(tabletDock||desktopDock)){
-   // Tablets retain the compact Guide above the story. Large desktop screens
+ if(inRoom&&(tabletDock||tabletPortraitDock||desktopDock)){
+   // Both tablet orientations keep Guide in the reading dock, not over the room. Large desktop screens
    // give the story priority and put the Guide underneath the narrative.
    if(guide.parentElement!==dock||desktopDock&&guide!==dock.lastElementChild){
      if(desktopDock)dock.appendChild(guide);else dock.prepend(guide);
