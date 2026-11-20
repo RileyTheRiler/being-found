@@ -1,3 +1,10 @@
+## 8.5.3 tablet Guide follow-up — branch QA pending (2026-11-19 / 20 UTC)
+
+- Source `main` release `2cedf2db031186aa04d37973ee957a893b44d314` (PR #11) verified: [main Actions 44678112076](https://github.com/RileyTheRiler/being-found/actions/runs/44678112076), 41/41 successful; Vercel READY `dpl_AZuqff3xLua16aH4TZCDXpNMUfib` assigned public alias and exact SHA. Classroom preview, not cleared for human pilot.
+- Branch `fix/8.5.3-tablet-guide-targets`: inspected current `syncGuide()` and found 820×1180 portrait missing from existing dock relocation while 1180×820 landscape and 1440×900 desktop were handled. In the same owner, add portrait routing to `#dock` and style it as a normal-flow card to prevent covering markers. Set 44px minimum Guide controls. No changes to authored state or 8.5.2 safety restrictions.
+- A regression exposed the prior `ui.js` phone-only hidden/toggle state at 820px, which hid the newly docked Guide. `ui.js` now exempts actual `tablet-portrait` from the phone toggle; CSS hides the redundant topbar control. The regression asserts that the Guide is rendered before geometry measurement, that portrait has no duplicate toggle and that phone retains its toggle after resize.
+- New `qa_tablet_guide.py` probes 820×1180, landscape resize and return, 390×844 return, Guide/story/scene geometry, focus retention and target dimensions; added to local manifest and Actions. This is code committed on a *review branch*, **not a confirmed pass or release** until exact-head Actions and preview pass. Human visual and assistive-technology tests remain outstanding.
+
 ## 8.5.3 accessibility implementation — PR #11 (2026-11-19)
 
 - Branch `feat/8.5.3-title-focus-axe` from main `9562ce84`; source files `title_access.js`, `a11y_853.css`, a two-anchor semantic fix in `src/index.html`, and build wiring. Separate title focus ownership preserves guided consent state and original Rooms route.

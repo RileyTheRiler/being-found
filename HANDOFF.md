@@ -1,5 +1,11 @@
 # Being Found — current handoff
 
+## 8.5.3 tablet Guide follow-up — focused branch (2026-11-19 / 20 UTC)
+
+**Latest verified released `main`:** `2cedf2db031186aa04d37973ee957a893b44d314`, PR #11 merged. [Main GitHub Actions 44678112076](https://github.com/RileyTheRiler/being-found/actions/runs/44678112076) **passed all 41 steps**. Vercel production deployment `dpl_AZuqff3xLua16aH4TZCDXpNMUfib` was READY and `being-found.vercel.app` assigned with the **same SHA**. Version remains 8.5.3 classroom preview, **not pilot-approved**.
+
+**Unreleased follow-up:** branch `fix/8.5.3-tablet-guide-targets` from that main commit; review in [PR #12](https://github.com/RileyTheRiler/being-found/pull/12) and inspect its current head before citing a subsequent deployment. Scope: `src/index.html` adds the omitted 700–899px tablet-portrait case to the *existing* `syncGuide()` owner, moving the active Guide into the reading dock rather than leaving it fixed over the illustration. `ui.js` now treats a docked portrait Guide as always visible rather than applying the phone-only closed/toggle state; `a11y_853.css` resets its position inside that dock, removes the redundant tablet toggle and enforces at least 44px button dimensions. The first new CI run exposed the previous hidden-Guide conflict; subsequent code now handles it rather than merely relaxing the check. New `qa_tablet_guide.py` validates portrait/landscape/phone resize, non-overlap, focus restoration and target size; wired into `qa_all.py` and GitHub Actions. No story, consent, audio, save, animation or dice logic changes. Automated browser testing is **pending** until the branch workflow passes. Do not merge a failing PR. Physical iPad/phone and screen-reader testing still required.
+
 ## 8.5.3 accessibility — focused PR #11 (2026-11-19)
 
 **Source branch:** `feat/8.5.3-title-focus-axe`, based on `main` at `9562ce84fd10cbcb41c496bcdbeca0dcd47e4402`. See [PR #11](https://github.com/RileyTheRiler/being-found/pull/11) and check its current head/checks before merging. This entry records the implementation scope and validation requirements; it is **not** proof of a production release.
