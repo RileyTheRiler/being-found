@@ -1,5 +1,13 @@
 ## 8.5.3 tablet Guide follow-up — branch QA pending (2026-11-19 / 20 UTC)
 
+## 8.5.3 Walt reduced-motion transcript dwell — review implementation (2026-11-19 / 20 UTC)
+
+- Baseline: main `728fad2c2e07f79686becf7118362aa4412508e9`, PR #12 merged; post-merge Actions `44681370289` successful (42/42 steps), production Vercel `dpl_7k6FrCMmUTyoB3hjmNKhyc4Jdn5b` READY and matched exact SHA.
+- Focused source fix on `fix/8.5.3-reduced-motion-walt-dwell`: `src/index.html` Walt `lines()` skips per-line transcript dwell under reduced motion. Only a display wait changes; `choice()`, `wordPause()`, their meaningful silences, consent and keyboard controls are unchanged. Normal reading pace remains. No authored text, route, save, dice, or character art changed.
+- New browser `qa_reduced_motion_walt.py`: guided route leaves Dele a note instead of entering his room; Walt's first word pause must arrive promptly on phone and desktop under reduced motion, preserve transcript, explicit skip and the live silence; normal desktop still paces narration. Added to `qa_all.py` and quality.yml.
+- Branch QA, Vercel preview, merge and exact-production verification **pending at writing**. Avoid treating branch commits as release confirmation. Human validation remains outstanding.
+
+
 - Source `main` release `2cedf2db031186aa04d37973ee957a893b44d314` (PR #11) verified: [main Actions 44678112076](https://github.com/RileyTheRiler/being-found/actions/runs/44678112076), 41/41 successful; Vercel READY `dpl_AZuqff3xLua16aH4TZCDXpNMUfib` assigned public alias and exact SHA. Classroom preview, not cleared for human pilot.
 - Branch `fix/8.5.3-tablet-guide-targets`: inspected current `syncGuide()` and found 820×1180 portrait missing from existing dock relocation while 1180×820 landscape and 1440×900 desktop were handled. In the same owner, add portrait routing to `#dock` and style it as a normal-flow card to prevent covering markers. Set 44px minimum Guide controls. No changes to authored state or 8.5.2 safety restrictions.
 - A regression exposed the prior `ui.js` phone-only hidden/toggle state at 820px, which hid the newly docked Guide. `ui.js` now exempts actual `tablet-portrait` from the phone toggle; CSS hides the redundant topbar control. The regression asserts that the Guide is rendered before geometry measurement, that portrait has no duplicate toggle and that phone retains its toggle after resize.
