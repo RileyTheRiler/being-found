@@ -48,6 +48,10 @@ def check():
             page.get_by_role("button",name="Enter Noor’s room").click(timeout=8000)
             page.wait_for_function("window.LWClass?.stage==='noor'")
             page.wait_for_function("document.querySelector('#clGuide')?.parentElement?.id==='dock'")
+            # The authored room stage is set before its Guide becomes visible;
+            # geometry is not meaningful while the [hidden] stylesheet applies.
+            page.wait_for_function("""() => { const g=document.querySelector('#clGuide');
+              return !!g&&!g.hidden&&g.getBoundingClientRect().width>0&&g.getBoundingClientRect().height>0; }""")
             portrait=measure(page)
             assert portrait["parent"]=="dock",("portrait Guide not in dock",portrait)
             assert portrait["position"]!="fixed",("portrait Guide floats over room",portrait)
