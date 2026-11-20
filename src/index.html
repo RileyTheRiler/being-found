@@ -4154,7 +4154,10 @@ const pace=()=>{ try{ return window.LW.pacing().text/.8; }catch(e){ return 1; } 
 const dwell=t=>clamp(650+t.length*40,1100,3800)*pace();
 const mk=k=>(t,p,x)=>Object.assign({k,t,p},x), W=mk('w'), D=mk('s'), Y=(t,x)=>Object.assign({k:'y',t},x), A=(t,x)=>Object.assign({k:'a',t},x), N=(t,x)=>Object.assign({k:'n',t},x);
 function showLine(L){ if(L.fx) props(L.fx); if(L.p) fig(L.p); if(L.told) L.told.forEach(x=>E.told.add(x)); logAdd(L.k,L.t); if(L.k==='w') talk(L.t); }
-async function lines(arr){ E.reading=true; try{ for(const L of arr){ if(!L) continue; showLine(L); await sleep(L.d!=null?L.d:dwell(L.t)); } } finally { E.reading=false; } }
+/* Walt's transcript reveal delay is presentation, not one of his authored
+ * communication pauses. Under reduced motion show the transcript promptly;
+ * choice() and wordPause() keep their explicit wait/skip semantics. */
+async function lines(arr){ E.reading=true; try{ for(const L of arr){ if(!L) continue; showLine(L); await sleep(calm()?0:(L.d!=null?L.d:dwell(L.t))); } } finally { E.reading=false; } }
 
 /* an open moment: several things you could do, and the option of doing nothing */
 function choice(opts,o){ o=o||{}; const tok=TOK, box=q('#encMoves'); E.fast=false;

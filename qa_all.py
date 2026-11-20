@@ -33,6 +33,7 @@ CASES = (
     ("Dele consent branches", (PY, "qa_consent_branches.py")),
     ("guided capability controls", (PY, "qa_route_no_capability.py")),
     ("guided keyboard", (PY, "qa_access85.py")),
+    ("Walt reduced-motion transcript and silence", (PY, "qa_reduced_motion_walt.py")),
     ("title keyboard focus", (PY, "qa_title_focus.py")),
     ("axe-core guided audit", (PY, "qa_axe.py")),
     ("heavy-input parity", (PY, "qa_heavy_access.py")),
