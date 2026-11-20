@@ -3,3 +3,20 @@
 #mTitle .point b.who{color:#174a8b}
 #clOverlay .cl-step:not(.active){color:#44516a}
 #dele .dl-line label{color:#3c4c47}
+
+/* 8.5.3 follow-up: tablet portrait Guide belongs to the reading dock,
+ * not a fixed overlay across the room's markers and resident. */
+body.cl-route #app.bf-shell-ready.tablet-portrait #dock #clGuide:not([hidden]){
+  position:relative!important;
+  inset:auto!important;
+  top:auto!important;right:auto!important;bottom:auto!important;left:auto!important;
+  width:100%!important;max-width:100%!important;min-width:0!important;
+  margin:0 0 10px!important;box-sizing:border-box!important;
+  z-index:auto!important;background:#fffefa!important;
+  border:1px solid #dce1ec!important;border-radius:16px!important;
+}
+/* Keyboard and touch users need usable controls even when Guide is compact. */
+#clGuide .cl-guide-head .cl-guide-fold,
+#clGuide .cl-guide-actions > button,
+#clGuide > .cl-guide-next{min-height:44px!important;min-width:44px!important}
+#clGuide .cl-guide-actions{flex-wrap:wrap!important}
