@@ -20,3 +20,7 @@ body.cl-route #app.bf-shell-ready.tablet-portrait #dock #clGuide:not([hidden]){
 #clGuide .cl-guide-actions > button,
 #clGuide > .cl-guide-next{min-height:44px!important;min-width:44px!important}
 #clGuide .cl-guide-actions{flex-wrap:wrap!important}
+
+/* The tablet Guide stays open in the reading column; do not leave a
+ * redundant phone Guide toggle in its top bar. */
+body.cl-route #app.bf-shell-ready.tablet-portrait #bf-guide-toggle{display:none!important}
