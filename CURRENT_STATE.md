@@ -4,7 +4,7 @@ Updated 2026-11-19. Read `HANDOFF.md` first. Source of truth: GitHub `main`, not
 
 ## Release
 
-- Source version: **8.5.3 classroom preview** on focused [PR #11](https://github.com/RileyTheRiler/being-found/pull/11); not classroom-approved. At this document revision the latest independently verified production source was 8.5.2. Verify the current `main` and Vercel metadata against each other before citing a later public release.
+- Source/production version: **8.5.3 classroom preview**, not classroom-approved. [PR #11](https://github.com/RileyTheRiler/being-found/pull/11) merged as `2cedf2db031186aa04d37973ee957a893b44d314`; [post-merge Actions 44678112076](https://github.com/RileyTheRiler/being-found/actions/runs/44678112076) passed 41/41 steps and Vercel deployment `dpl_AZuqff3xLua16aH4TZCDXpNMUfib` was READY with `being-found.vercel.app` assigned at that exact SHA. A separate tablet Guide follow-up is on branch `fix/8.5.3-tablet-guide-targets`, not yet verified or deployed.
 - Safety PR: [#3](https://github.com/RileyTheRiler/being-found/pull/3), merged to main as `989e2ebcc60362b7a38a646343fdff41333878ad`.
 - Branch validation: [GitHub Actions run 44581670898](https://github.com/RileyTheRiler/being-found/actions/runs/44581670898), **38/38 steps successful**.
 - Initial production verification: Vercel `dpl_TSRKwixNzhL8vMZ1wq9kdqzDDdnk`, target production, READY, exact merge SHA and alias `being-found.vercel.app`. This is a historical release verification, not a claim about any subsequent deployment.
@@ -26,7 +26,7 @@ Updated 2026-11-19. Read `HANDOFF.md` first. Source of truth: GitHub `main`, not
 | Version/commit stamp and preview notice | Fixed in build/code | Visible title metadata; Vercel deployment commit checked |
 | Release-only Vercel production branch | Partly fixed | Documented release procedure; account-level production branch switch not configured |
 | Title keyboard modal and axe-core serious/critical audit | Implemented on 8.5.3 PR #11, release gated | Title modal focus and 18 axe-core checkpoint audits (9 stages × 2 viewports); focus/contrast/ARIA/name corrections; verify PR/main CI and Vercel exact SHA; real assistive-tech and target-size review remain |
-| Tablet guide, lying/seated NPCs, reduced-motion waits | Open | 8.5.3 layout, pose, duration work |
+| Tablet guide, lying/seated NPCs, reduced-motion waits | Tablet portrait Guide fix in unverified review branch; others open | Regression for 820×1180 portrait, 1180×820 landscape, 390×844 return, target dimensions and Guide focus; no real-device/AT signoff |
 | Same-place educational comparison of changed possibilities | Open — design decision | Prefer testing a second authored Noor day; do not add a new branch before design approval |
 | Narrative accuracy and mandatory reading load | Open | 8.5.4 reproducible count, clinical and philosophical editorial pass |
 | Pilot deterministic contexts and instrument | Open | 8.5.5 controlled allocation and anonymous scoring |
@@ -37,4 +37,4 @@ The complete 21 original plus nine delta-review findings are **not exhaustively 
 
 ## Next action
 
-Complete the **8.5.3 accessibility gate** for [PR #11](https://github.com/RileyTheRiler/being-found/pull/11): require all existing 8.5.2 safety and browser regressions plus new title focus and axe-core checks at the exact PR head, then verify Vercel preview. Merge only after review; check post-merge `main` quality run and production deployment SHA/alias independently. Separate remaining target-size, tablet placement, lying/seated NPC and reduced-motion tasks into a reviewed follow-up. Keep the preview notice and consent restrictions. Do not start more character-animation work yet.
+Review and fully validate `fix/8.5.3-tablet-guide-targets`: new portrait-dock routing and Guide-target CSS, browser resize/geometry/focus test, prior 8.5.2 consent and all 8.5.3 regressions. Merge only after a green exact-head CI and verified Vercel preview. The production branch still tracks `main`, so after merge verify Actions, commit metadata and production alias again. Then address reduced-motion action waits and lying/seated NPC representation in separate changes. Real-device/screen-reader, paid lived-experience review and participant pilot remain mandatory before classroom approval.
