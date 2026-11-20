@@ -1,5 +1,14 @@
 # Being Found — current handoff
 
+## 8.5.3 reduced-motion Walt transcript — focused review branch (2026-11-19 / 20 UTC)
+
+**Verified source before this branch:** `main` at `728fad2c2e07f79686becf7118362aa4412508e9` (PR #12 merged). [Post-merge Actions 44681370289](https://github.com/RileyTheRiler/being-found/actions/runs/44681370289) succeeded with 42 quality steps. Vercel production `dpl_7k6FrCMmUTyoB3hjmNKhyc4Jdn5b` was READY at the same GitHub SHA and assigned to the Being Found project. The older handoff below predates PR #12 and is historical.
+
+**Unreleased review scope:** `fix/8.5.3-reduced-motion-walt-dwell` removes presentation-only line-by-line transcript dwell in Walt's encounter under `prefers-reduced-motion: reduce`. Existing user-controlled Walt communication pauses, choices, silence, voluntary skip, and non-reduced reading pace remain unchanged. The added `qa_reduced_motion_walt.py` tests a real Noor → Dele-leaves-note → Walt guided path at phone and desktop reduced motion, and ordinary desktop pacing, including absence of forced Dele-room entry. It runs in both `qa_all.py` and GitHub Actions. Do not infer that this branch has passed build/tests, merged or deployed until exact-head CI and preview verification. **All 8.5.2 safety and 8.5.3 focus/axe protections remain release gates.**
+
+Next: run and inspect the full PR Actions, verify exact-head Vercel preview, merge only when green, verify post-merge main Actions/production exact SHA; subsequently inspect seated/lying NPCs in a separate art-focused PR. Physical devices, VoiceOver/TalkBack, paid lived-experience review and participant pilot remain outstanding. Classroom status: **preview, not approved**.
+
+
 ## 8.5.3 tablet Guide follow-up — focused branch (2026-11-19 / 20 UTC)
 
 **Latest verified released `main`:** `2cedf2db031186aa04d37973ee957a893b44d314`, PR #11 merged. [Main GitHub Actions 44678112076](https://github.com/RileyTheRiler/being-found/actions/runs/44678112076) **passed all 41 steps**. Vercel production deployment `dpl_AZuqff3xLua16aH4TZCDXpNMUfib` was READY and `being-found.vercel.app` assigned with the **same SHA**. Version remains 8.5.3 classroom preview, **not pilot-approved**.
