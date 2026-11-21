@@ -4,7 +4,7 @@
 
 ## Architecture / boundary
 
-Leena is an optional, self-contained library encounter entered through Rooms. It is not inserted into the nine existing FLATS, five VISITS, saved flat indexes, four-client clinic, narrative previews, or the Noor → Dele → Walt guided route. No dice, diagnostic state, mood-dependent input cost, artificial episode switches, or treatment/medication decisions are used. Local story selections are in-memory and reset on replay/close.
+Leena is an optional, self-contained library encounter entered through Rooms. It is not inserted into the nine existing FLATS, VISITS, saved flat indexes, four-client clinic, narrative previews, or the Noor → Dele → Walt guided route. No dice, diagnostic state, mood-dependent input cost, artificial episode switches, or treatment/medication decisions are used. Local story selections are in-memory and reset on replay/close.
 
 The visitor chooses what to notice and which offers to make; Leena chooses whether to discuss her history and can refuse. The game never displays an independent truth about her feelings. Three observable objects recur in distinct, dated recollections disclosed as Leena's own fictional speech.
 
