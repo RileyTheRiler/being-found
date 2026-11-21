@@ -2836,7 +2836,12 @@ function startPhase(j){ exitQuiet(); walkReset(); const ph=S.flat.phases[j], pph
 function floater(label,cls){ const sb=$('#simBtn'); if(!sb) return; const d=document.createElement('div'); d.className='floater '+(cls||''); d.textContent=label;
   d.style.left=sb.style.left; d.style.top=(parseFloat(sb.style.top)-84*VIEW.s)+'px'; $('#pins').appendChild(d); setTimeout(()=>d.remove(),2100); }
 function toast(txt,ic){ const t=$('#toast'); t.innerHTML=icon(ic||'clock')+esc(txt); t.classList.add('on'); clearTimeout(toast._t); toast._t=setTimeout(()=>t.classList.remove('on'),3200); }
-function fade(h,p,mid,end){ exitQuiet(); dirStop(); const f=$('#fade'); $('#fadeH').textContent=h; $('#fadeP').textContent=p||''; f.classList.add('on');
+function fade(h,p,mid,end){ exitQuiet(); dirStop(); const f=$('#fade'); $('#fadeH').textContent=h; $('#fadeP').textContent=p||'';
+  // The overlay and its hold are presentation only. Under reduced motion,
+  // change the scene without a flash or timer. Story choices, meaningful
+  // silences, consent checks and interaction gates stay with their owners.
+  if(calm()){ f.classList.remove('on'); mid&&mid(); end&&end(); return; }
+  f.classList.add('on');
   const q=pacing().transition; setTimeout(()=>{ mid&&mid(); },900*q); setTimeout(()=>{ f.classList.remove('on'); end&&end(); },2300*q); }
 function nextPhase(){ if(S.mode==='visit'){ nextVisit(); return; } let nx=S.phase.next; const chz=S.choices[S.flat.id]; if(nx&&nx.fadeAlt&&nx.fadeAlt[chz]) nx=Object.assign({},nx,{fade:nx.fadeAlt[chz]}); if(!nx||S.busyNext||S.busyWalk) return; closeMenu(); S.busyNext=true; const done=()=>{ S.busyNext=false; };
   if(nx.end){ if(nx.fade) fade(nx.fade[0],nx.fade[1],null,()=>{ done(); showDebrief(); }); else { done(); showDebrief(); } }
