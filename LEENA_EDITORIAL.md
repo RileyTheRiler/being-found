@@ -12,6 +12,8 @@
 
 7. **Phone privacy (high):** Previously an object observation exposed Nia's private invitation as if a visitor could read Leena's screen without consent. The object now only describes a notification whose content is not visible. Leena may voluntarily disclose context in her reply or recollections. Browser QA guards against revealing Nia or the event before she speaks.
 
+8. **Mobile panel scroll position (high; screenshot verified):** On the previous branch head, the 390×844 early-leave screenshot opened midway through the debrief, hiding the new heading under the sticky topbar. `render()` now restores the dialog scroll position to the beginning before focusing the replacement heading. Automated 360/390/820/1180/1440 checks assert the heading is visibly below sticky chrome after transitions; inspect regenerated screenshots and exact-head CI before release.
+
 **Reviewer materials:** `reviews/LEENA_REVIEW_PACKET.md` inventories 21 branches and independent review questions. `reviews/leena_feedback_log.csv` is an empty decision log, not fabricated feedback. Physical TalkBack, VoiceOver, switch access, visual design scrutiny and human classroom pilot remain outstanding.
 
 # Leena optional narrative — issue #17 editorial record
