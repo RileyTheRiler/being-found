@@ -122,6 +122,9 @@ jobs:
       - name: Tablet portrait Guide, orientation and target-size regression
         run: python3 qa_tablet_guide.py
 
+      - name: Lying resident bed depth and position across devices
+        run: python3 qa_lying_bed.py
+
       - name: Character walking and sofa depth
         run: python3 qa_character_motion.py
 

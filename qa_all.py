@@ -40,6 +40,7 @@ CASES = (
     ("heavy-input parity", (PY, "qa_heavy_access.py")),
     ("five viewport smoke", (PY, "qa_smoke.py")),
     ("tablet Guide orientation and target sizes", (PY, "qa_tablet_guide.py")),
+    ("lying resident on bed: player and NPC", (PY, "qa_lying_bed.py")),
     ("character motion and sofa", (PY, "qa_character_motion.py")),
     ("phone pickup and return", (PY, "qa_phone_motion.py")),
     ("staged sofa and work animation", (PY, "qa_physical_actions.py")),

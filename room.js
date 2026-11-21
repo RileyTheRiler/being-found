@@ -163,8 +163,39 @@
    if(!held){c.save();c.translate(calling?Math.sin(t*35)*2:0,0);rr(c,651,485,28,13,3,'#343c47');rr(c,656,486,17,9,2,calling?'#97e3e0':'#a8bac0');c.restore();}
  }
  function drawBed(c,S){const col=S.flat?.look?.duvet||'#8396a0';
+   // Lying residents belong to the bed's depth layers, never the upright
+   // standing/seated figure pass. Reuse the established head rig.
+   const lying=(S.npc?.pose==='lie'&&S.npc?.at==='bed')?{char:S.flat.char}:
+     (S.sim?.pose==='lie'&&S.sim?.at==='bed')?{char:S.flat.char}:null;
    el(c,841,586,200,26,'rgba(25,27,32,.16)');rr(c,692,393,286,124,25,'#a89485');rr(c,703,438,279,101,21,'#e9e3d4');
-   rr(c,704,470,274,73,16,col);rr(c,724,436,99,38,15,'#faf8ea');rr(c,825,436,101,38,15,'#faf8ea');
+   rr(c,724,436,99,38,15,'#faf8ea');rr(c,825,436,101,38,15,'#faf8ea');
+   if(lying){
+     const head={...lying,face:'front',flip:1,lying:true};
+     const shirt=head.char?.shirt||'#4a978b',skin=head.char?.skin||'#c18d70';
+     // The shoulders and a short neck connect the pillow head to the body.
+     // The blanket then covers the lower torso in the same furniture pass.
+     rr(c,747,466,77,31,15,shirt);
+     rr(c,767,461,15,19,5,skin);
+     c.save();c.translate(774,452);c.scale(1.65,1.65);c.translate(-774,-452);
+     if(!window.BFArt?.drawHead?.(c,774,452,head,{S})){
+       const hair=head.char?.hair||'#423b36';
+       el(c,774,450,11,12,hair);el(c,774,454,8.7,9,skin);
+       line(c,767,454,771,454,'#4a4644',.8);line(c,777,454,781,454,'#4a4644',.8);
+     }
+     c.restore();
+   }
+   // More of the upper shoulders remains visible above the duvet, but feet
+   // and torso remain covered. Furniture geometry is stable for empty beds.
+   rr(c,704,lying?480:470,274,lying?63:73,16,col);
+   if(lying){
+     // A continuous quiet rise in the duvet runs from shoulders toward feet.
+     c.beginPath();c.moveTo(784,490);c.bezierCurveTo(815,474,851,474,880,483);
+     c.bezierCurveTo(899,489,929,490,952,495);
+     c.bezierCurveTo(932,507,907,510,874,507);
+     c.bezierCurveTo(841,504,816,506,784,513);c.closePath();
+     c.fillStyle='rgba(255,255,255,.065)';c.fill();
+     c.strokeStyle='rgba(30,39,45,.08)';c.lineWidth=1.1;c.stroke();
+   }
    rr(c,705,528,18,51,3,'#665d54');rr(c,953,528,18,51,3,'#665d54');
    for(let i=0;i<4;i++)line(c,706,506+i*6,968,506+i*6,'rgba(255,255,255,.09)',1.4);
  }
@@ -277,8 +308,11 @@
   }
   const sim=window.BFNavigation?.position?.(S)||(mainSeated?(npcSeated?[516,516]:[455,516]):simFoot());
   window.BFRig?.onStep?.(S.sim,sim);
-  drawActor(ctx,sim[0],sim[1],simOpts(),drawFigure);
-  window.BFStageSync?.paintActorProp?.(ctx,sim,S);
+  // The bed layer already painted this lying resident under the duvet.
+  if(!(S.sim?.pose==='lie'&&S.sim?.at==='bed')){
+    drawActor(ctx,sim[0],sim[1],simOpts(),drawFigure);
+    window.BFStageSync?.paintActorProp?.(ctx,sim,S);
+  }
   window.BFNavigation?.debugDraw?.(ctx);
   if(isHome(S))roomFront(ctx,S);
   if(S.vars?.attune==='depleted')box(ctx,0,0,SW,SH,'rgba(37,43,52,.055)');
