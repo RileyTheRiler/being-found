@@ -1,0 +1,47 @@
+name: Reduced-motion front-door audit
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  guided-fade:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      BF_TEST_URL: http://127.0.0.1:8770/index.html
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Build production source
+        run: |
+          npm ci
+          npm run build
+      - name: Install browser test runner
+        run: python3 -m pip install 'playwright==1.58.0'
+      - name: Find Chrome
+        shell: bash
+        run: |
+          CHROME=$(command -v google-chrome || command -v chromium || true)
+          test -n "$CHROME" || exit 1
+          echo "BF_CHROME=$CHROME" >> "$GITHUB_ENV"
+      - name: Serve built game
+        shell: bash
+        run: |
+          python3 -m http.server 8770 --directory dist > /tmp/being-found-http.log 2>&1 &
+          for i in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:8770/index.html > /dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/being-found-http.log
+          exit 1
+      - name: Guided route front-door reduced-motion timing
+        run: python3 qa_reduced_motion_fade.py

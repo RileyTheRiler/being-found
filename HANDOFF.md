@@ -1,5 +1,13 @@
 # Being Found — current handoff
 
+## 8.5.3 guided front-door reduced-motion fade — focused PR #15 (2026-11-21 UTC)
+
+- Baseline for this change is **merged PR #14**, GitHub `main` `e8731d255b0446e7c9fac7748ce1772ff2c7be2e` (lying-bed renderer and its eight viewport/role screenshots). Vercel production `dpl_2DcfKEwopkKWn6yiv6y8qtZsmoeS` READY and `being-found.vercel.app` alias verified for this SHA. Main [Actions 44866602780](https://github.com/RileyTheRiler/being-found/actions/runs/44866602780) was still completing at writing; post-merge receipt must record its eventual conclusion.
+- Draft [PR #15](https://github.com/RileyTheRiler/being-found/pull/15) independently reproduces a presentation-only `fade()` wait on the *real guided Noor front-door action* with browser reduced motion: initial red [Actions 44866142650](https://github.com/RileyTheRiler/being-found/actions/runs/44866142650) observed midpoint **0.755s** and completion **1.855s**.
+- Focused correction to `src/index.html`: when `calm()` indicates reduced motion, skip only the transitional overlay/timers and invoke the scene-change callbacks directly; ordinary motion retains the exact 900/2300 multiplied pacing timers. The actual browser check [Actions 44866286975](https://github.com/RileyTheRiler/being-found/actions/runs/44866286975) observed reduced midpoint **0.039s**, completion **0.046s**, and ordinary midpoint **0.836s**, completion **1.936s**. No dice/capability mechanic, mood-speed penalty, consent, silence, authored choice, save, or optional Rooms behavior changed.
+- `qa_reduced_motion_fade.py` checks the guided front-door path under reduced/normal motion and continued guided route; included in `qa_all.py`, `.github/workflows/quality.yml` and a dedicated audit workflow. **PR #15 is not production** pending final exact-head complete QA, Vercel preview, review, merge and post-merge production/Actions checks.
+- Full classroom pilot, physical iPad, independent assistive-technology testing and lived-experience validation remain outstanding. Classroom preview only.
+
 ## 8.5.3 bed/lying presentation — focused PR #14 (2026-11-20 / 21 UTC)
 
 **Verified production baseline:** `main` at `dfe124e6e525bd325f60c7a05eb6e62d5f6404ac` from merged PR #13. Exact post-merge [Actions 44689935919](https://github.com/RileyTheRiler/being-found/actions/runs/44689935919) passed 43/43 steps; Vercel production `dpl_KfVvQYwgHudy7BJuFpEzkgBVMQxv` was READY with that source SHA and `being-found.vercel.app` alias. PR #13's final release comment supersedes older "review pending" records below.

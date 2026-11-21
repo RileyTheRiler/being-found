@@ -104,6 +104,9 @@ jobs:
       - name: Walt reduced-motion transcript and preserved silences
         run: python3 qa_reduced_motion_walt.py
 
+      - name: Reduced-motion front-door transition and ordinary pacing
+        run: python3 qa_reduced_motion_fade.py
+
       - name: Title keyboard dialog focus and isolation
         run: python3 qa_title_focus.py
 
