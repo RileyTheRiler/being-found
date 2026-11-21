@@ -1,5 +1,13 @@
 # Being Found — current handoff
 
+## 8.5.3 bed/lying presentation — focused PR #14 (2026-11-20 / 21 UTC)
+
+**Verified production baseline:** `main` at `dfe124e6e525bd325f60c7a05eb6e62d5f6404ac` from merged PR #13. Exact post-merge [Actions 44689935919](https://github.com/RileyTheRiler/being-found/actions/runs/44689935919) passed 43/43 steps; Vercel production `dpl_KfVvQYwgHudy7BJuFpEzkgBVMQxv` was READY with that source SHA and `being-found.vercel.app` alias. PR #13's final release comment supersedes older "review pending" records below.
+
+**Current separate work:** [draft PR #14](https://github.com/RileyTheRiler/being-found/pull/14), branch `fix/8.5.3-lying-bed-presentation`. The new browser test `qa_lying_bed.py` first **failed** on uncorrected main-derived renderer ([Actions 44864860243](https://github.com/RileyTheRiler/being-found/actions/runs/44864860243)): the playable lying actor was drawn as an upright sprite and there was no pillow head. In `room.js`, the replacement renderer also excluded lying NPCs. The focused correction uses existing `BFArt.drawHead` with pillows/duvet depth ordering, and does not draw the lying playable resident a second time in the standing actor pass. Eight browser cases (player and NPC on phone, tablet portrait, tablet landscape, desktop) record screenshots and head/upright assertions. Existing sofa, walk, accessibility, save and guided consent tests remain required. **The branch is not production and must not merge until exact-head full Actions, visual image review and Vercel preview validation pass.**
+
+Reduced-motion generic `fade()` uses `900*pacing().transition` and `2300*pacing().transition`; its identified call sites belong to native phase changes, visits and street entries/exits. A guided-route delay is **not yet reproduced**, so no speculative global timing change was made. Audit independently in a dedicated reduced-motion PR if browser evidence establishes unwanted waits. Seated/NPC rise visual scrutiny and physical iPad/AT/lived-experience/pilot work remain outstanding. Classroom preview only.
+
 ## 8.5.3 reduced-motion Walt transcript — focused review branch (2026-11-19 / 20 UTC)
 
 **Verified source before this branch:** `main` at `728fad2c2e07f79686becf7118362aa4412508e9` (PR #12 merged). [Post-merge Actions 44681370289](https://github.com/RileyTheRiler/being-found/actions/runs/44681370289) succeeded with 42 quality steps. Vercel production `dpl_7k6FrCMmUTyoB3hjmNKhyc4Jdn5b` was READY at the same GitHub SHA and assigned to the Being Found project. The older handoff below predates PR #12 and is historical.
