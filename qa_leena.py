@@ -149,7 +149,7 @@ def test_evidence(browser,w,h):
 if __name__=="__main__":
   with sync_playwright() as p:
     b=p.chromium.launch(headless=True,executable_path=CHROME,args=["--no-sandbox"])
-    for w,h in [(390,844),(820,1180),(1180,820),(1440,900)]:test(b,w,h)
+    for w,h in [(360,640),(390,844),(820,1180),(1180,820),(1440,900)]:test(b,w,h)
     test(b,390,844,True)
     for w,h in [(390,844),(1440,900)]:test_evidence(b,w,h)
     b.close()
