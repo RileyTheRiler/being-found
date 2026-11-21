@@ -60,6 +60,17 @@ def check(browser, label, width, height, touch, kind):
                    for h in evidence["heads"]), (label,kind,"missing pillow-anchored head",evidence)
         assert not evidence["uprightLies"], (label,kind,"upright full-body lying actor",evidence)
         assert not errors, (label,kind,errors)
+        # A small JPEG from the actual rendered canvas enables visual inspection
+        # of the four distinct viewport/occupant cases via CI logs.
+        if (label,kind) in {("phone","player"),("tablet-portrait","npc"),
+                           ("tablet-landscape","player"),("desktop","npc")}:
+            snapshot=page.evaluate("""() => {
+                const src=document.querySelector('#cv'), out=document.createElement('canvas');
+                out.width=560;out.height=Math.max(1,Math.round(560*src.height/src.width));
+                out.getContext('2d').drawImage(src,0,0,out.width,out.height);
+                return out.toDataURL('image/jpeg',.68).split(',')[1];
+            }""")
+            print(f"BED_IMAGE {label} {kind} {snapshot}",flush=True)
         print(f"PASS: {label} {kind} lying head, depth, no upright pose",flush=True)
     finally:
         ctx.close()
