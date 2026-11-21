@@ -1,3 +1,7 @@
+## Issue #17 — optional Leena fictional story (2026-11-21 UTC)
+
+Feature branch from `d0d166ce280d72b8a2326fb6e7863632731b3bee`: new library scene, three observed objects with choice responses, consent-based dated recollections (2024/2025), response/refusal/early-leave endings, four-part debrief and replay. In-memory story only; no changes to FLATS/VISITS/save indexes or guided route. Browser regression added for four viewports and reduced motion. Full CI, screenshot review, exact-head preview and deployment verification are outstanding; so are paid bipolar lived-experience review and independent real-device accessibility tests.
+
 ## 8.5.3 guided front-door reduced-motion fade — focused PR #15 (2026-11-21 UTC)
 
 - Baseline for this change is **merged PR #14**, GitHub `main` `e8731d255b0446e7c9fac7748ce1772ff2c7be2e` (lying-bed renderer and its eight viewport/role screenshots). Vercel production `dpl_2DcfKEwopkKWn6yiv6y8qtZsmoeS` READY and `being-found.vercel.app` alias verified for this SHA. Main [Actions 44866602780](https://github.com/RileyTheRiler/being-found/actions/runs/44866602780) was still completing at writing; post-merge receipt must record its eventual conclusion.

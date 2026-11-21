@@ -29,6 +29,7 @@ CASES = (
     ("editorial guards", (PY, "qa_editorial.py")),
     ("Wren and Ilse", (PY, "qa_wren_ilse.py")),
     ("remaining residents", (PY, "qa_remaining_scenes.py")),
+    ("Leena optional story across devices", (PY, "qa_leena.py")),
     ("guided classroom", (PY, "qa_guided84.py")),
     ("Dele consent branches", (PY, "qa_consent_branches.py")),
     ("guided capability controls", (PY, "qa_route_no_capability.py")),

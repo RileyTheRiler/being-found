@@ -1,3 +1,7 @@
+## Issue #17 Leena — optional story review branch (unverified)
+
+Branch `feat/issue-17-leena-optional-story` starts from `main` at `d0d166ce280d72b8a2326fb6e7863632731b3bee` (merged PR #15). Dedicated `leena.js`/`leena.css` with build inclusion; `qa_leena.py` tests four viewports and reduced-motion, refusal, replay and focus. No FLATS/VISITS, save schema or Guided Story edits. This branch is **not verified, merged or deployed** until PR Actions, Vercel preview, review and exact-SHA main verification pass. Independent compensated bipolar lived-experience review and physical-device/assistive-technology review have not occurred; classroom preview only.
+
 # Being Found — current handoff
 
 ## 8.5.3 guided front-door reduced-motion fade — focused PR #15 (2026-11-21 UTC)
