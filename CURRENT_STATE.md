@@ -1,3 +1,7 @@
+## Issue #17 — Leena optional story, validation pending
+
+`feat/issue-17-leena-optional-story` branches from `main` `d0d166ce280d72b8a2326fb6e7863632731b3bee` after PR #15. Leena is a standalone Rooms entry, not a sixth flat, tenth FLATS slot or mandatory guided chapter. No save/version/consent-engine mutation. Regression includes devices, keyboard/modal focus, refusal, recollections and replay. Human lived-experience, independent accessibility and pilot validation remain outstanding. Do not describe the fictional account as validated or approved for classroom use.
+
 # Being Found — current state
 
 ## 8.5.3 guided front-door reduced-motion fade — focused PR #15 (2026-11-21 UTC)
