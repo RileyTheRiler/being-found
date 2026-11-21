@@ -37,6 +37,8 @@ def test(browser,w,h,reduced=False):
     for name in ["calendar","cart","phone"]:
       d.locator("[data-obj='"+name+"']").click()
       assert "Observed" in d.inner_text()
+      if name=="phone":
+        assert "Nia" not in d.inner_text() and "outdoor reading" not in d.inner_text(),"Private message exposed without permission"
       d.locator('[data-choice="0"]').click()
       assert name in p.evaluate("BFLeena.state.seen")
       assert p.evaluate("document.documentElement.scrollWidth-innerWidth")<=2
