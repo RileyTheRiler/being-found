@@ -1,3 +1,7 @@
+## 8.5.4 follow-up review in progress — actual baseline is merged PR #18
+
+`main` was confirmed at `8f0463ad9c383fb1aaf0ced7fd81e63ba7e1686a` with Vercel READY production deployment `dpl_52KPihnFb3Fnk6SUYeAtyUxnXP5A` and matching public alias. The older Issue #17 section below is historical, not a current merge status. Focused branch `fix/8.5.4-leena-evidence-debrief` corrects the debrief's unwitnessed-observation assertions, permits optional early conversation, and adds branch-matrix QA plus a *blank* independent review packet/log. Full branch Actions, preview and release verification are pending. Visual library fidelity, compensated bipolar lived-experience review, physical-device/AT testing and participant validation remain open. Classroom preview; no unreviewed narrative validation.
+
 ## Issue #17 — Leena optional story, validation pending
 
 `feat/issue-17-leena-optional-story` branches from `main` `d0d166ce280d72b8a2326fb6e7863632731b3bee` after PR #15. Leena is a standalone Rooms entry, not a sixth flat, tenth FLATS slot or mandatory guided chapter. No save/version/consent-engine mutation. Regression includes devices, keyboard/modal focus, refusal, recollections and replay. Human lived-experience, independent accessibility and pilot validation remain outstanding. Do not describe the fictional account as validated or approved for classroom use.
