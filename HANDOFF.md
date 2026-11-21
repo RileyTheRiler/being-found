@@ -1,3 +1,18 @@
+# 8.5.4 release receipt — Leena interaction integrity (2026-11-21 UTC)
+
+**Merged gameplay PR:** [#19](https://github.com/RileyTheRiler/being-found/pull/19), code merge `f0d0b888405faabfdf4f9f1f26f1cb339aa08496` (after PR #18 `8f0463ad9c383fb1aaf0ced7fd81e63ba7e1686a`). Source-checked `main` at exactly `f0d0b888405faabfdf4f9f1f26f1cb339aa08496` after merge.
+
+**PR head technical evidence:** `193ca71e29f9a7ba9b03596f3d33a32e8199ee74`; [full quality Actions #44883737707](https://github.com/RileyTheRiler/being-found/actions/runs/44883737707) **success 46/46 steps**, and [reduced-motion Actions #44883737627](https://github.com/RileyTheRiler/being-found/actions/runs/44883737627) **success**. Exact-head Vercel preview `dpl_ExsNhkiX1HuUkDX34gTtNdQFJJCJ` READY (preview, not production).
+
+**Post-merge evidence:** `main` [Actions #44884594628](https://github.com/RileyTheRiler/being-found/actions/runs/44884594628) **completed success 46/46**, exactly `f0d0b888405faabfdf4f9f1f26f1cb339aa08496`. Vercel production `dpl_3fhesYbJLJLRGqGAPuKihLXo4NYW` **READY**, `target=production`, `githubCommitSha=f0d0b888405faabfdf4f9f1f26f1cb339aa08496`; `being-found.vercel.app` alias points to that exact deployment, verified after Actions completed. These checks **do not** establish a subsequent docs-only deployment.
+
+**What shipped:** optional early dialogue with Leena; object inspection tracked separately from Leena's words; no inferred memories/diagnosis on leave; no unconsented private message reading; heading-first scroll restoration on phones; additional 360×640, phone/tablet/desktop branch QA and screenshots. No changes to FLATS/VISITS, mandatory Noor→Dele→Walt, save schema, input parity, consent or motion renderer. QA screenshot artifact `being-found-qa` ID `14699018942` reviewed; early-leave 390×844 heading is visible after fix. 
+**Open:** [issue #20](https://github.com/RileyTheRiler/being-found/issues/20) for coherent spatial library art/interaction, independent paid bipolar lived-experience editorial review, physical TalkBack/VoiceOver/switch-control and participant pilot. `reviews/LEENA_REVIEW_PACKET.md` plus `reviews/leena_feedback_log.csv` are prepared but **no human review recorded**. Release remains **fictional classroom preview, not validated nor pilot approved**.
+
+**Next development:** Inspect latest GitHub `main` again before editing; then address issue #20 in a separate testable PR only after reviewing PR #19 screenshots and the main 2.5D architecture. Do not mistake historical draft/pending sections below for live state.
+
+---
+
 **Screenshot finding / correction:** 390×844 early-exit evidence initially showed the new debrief scrolled under the sticky header; `leena.js` now resets dialog scroll on each screen transition and `qa_leena.py` asserts heading visibility on the full viewport matrix. Prior full quality [44882790240](https://github.com/RileyTheRiler/being-found/actions/runs/44882790240) and reduced-motion [44882790243](https://github.com/RileyTheRiler/being-found/actions/runs/44882790243) succeeded at earlier PR head `67a4d9f18be338a54751798d96778c3a42f5a61f`. **That success does not validate the subsequent mobile fix:** rerun and review exact latest head before merge.
 
 ## 8.5.4 Leena epistemic debrief + review packet — review branch (2026-11-21 UTC)
