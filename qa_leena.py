@@ -23,6 +23,7 @@ def test(browser,w,h,reduced=False):
     assert d.get_attribute("aria-labelledby")=="leena-heading"
     assert p.evaluate("document.activeElement.closest('#bf-leena-dialog')!==null")
     assert d.locator(".leena-prop").count()==3
+    assert "bipolar disorder" not in d.inner_text().lower(),"Unexpected pre-consent clinical disclosure"
     box=d.bounding_box()
     assert box and box["x"]>=-1 and box["y"]>=-1 and box["x"]+box["width"]<=w+2 and box["y"]+box["height"]<=h+2,box
     rects=d.locator(".leena-prop").evaluate_all("""els=>els.map(el=>{const r=el.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height};})""")
