@@ -18,7 +18,7 @@
       ['Offer to give her space','“Thanks. Nia knows I sometimes need time to answer,” Leena says.']
     ]}
   };
-  let dlg=null,entry=null,view='room',active=null,seen={},heard={},reply='',ending='',notice='';
+  let dlg=null,entry=null,view='room',active=null,seen={},heard={},disclosed=false,reply='',ending='',notice='';
   const dateCurrent='Friday · 20 November 2026';
   function b(label,act,more){return '<button type="button" class="leena-action" data-leena-act="'+act+'"'+(more||'')+'>'+label+'</button>';}
   function escapeHTML(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
@@ -29,7 +29,7 @@
     let content='';
     const completed=Object.keys(seen).length;
     if(view==='room'){
-      content=title('A different Saturday',dateCurrent+' · Community library · ordinary period between episodes')+
+      content=title('A different Saturday',dateCurrent+' · Community library · an ordinary workday')+
        '<p class="leena-lead">You are visiting Leena at the community library. She is deciding what to do this weekend. Notice what is visible before drawing conclusions.</p>'+
        '<section class="leena-scene" aria-label="Library room with three interactive objects">'+
        '<div class="leena-window" aria-hidden="true"><span></span></div><div class="leena-books" aria-hidden="true"></div><div class="leena-desk" aria-hidden="true"></div>'+
@@ -93,7 +93,7 @@
        '<dt>Communicated</dt><dd>'+(Object.keys(seen).length?escapeHTML(Object.values(seen).join(' ')):'She did not share a personal account before you left.')+(view==='ending'&&heard.expansive?' She chose to recount a period in April–May 2025.':'')+(heard.distant?' She chose to recount a period in October–November 2024.':'')+'</dd>'+
        '<dt>Inferred, not established</dt><dd>A pause cannot tell you her diagnosis, intentions, mood, ability to work, or how she experiences time.</dd>'+
        '<dt>Still unknown</dt><dd>What she will choose next, what she wants to share privately, and how she interprets these moments over her life.</dd></dl>'+
-       '<p class="leena-caution"><strong>Editorial status:</strong> Unvalidated fiction. Bipolar disorder does not explain every action. No subtype, symptom course, treatment choice, or lived experience can be established by this scene. Independent compensated lived-experience review and accessibility testing are still required.</p>'+
+       '<p class="leena-caution"><strong>Editorial status:</strong> Unvalidated fiction. '+(disclosed?'Bipolar disorder does not explain every action.':'No diagnosis or reason for Leena’s behavior has been established by this encounter.')+' No subtype, symptom course, treatment choice, or lived experience can be established by this scene. Independent compensated lived-experience review and accessibility testing are still required.</p>'+
        '<div class="leena-actions">'+b('Replay Leena’s story','replay')+b('Return to Rooms','exit')+'</div></div>';
     }
     dlg.innerHTML=top()+'<div class="leena-body">'+content+'</div>';
@@ -103,7 +103,7 @@
   function close(){
     if(dlg?.open)dlg.close();
   }
-  function reset(){view='room';active=null;seen={};heard={};reply='';ending='';notice='';}
+  function reset(){view='room';active=null;seen={};heard={};disclosed=false;reply='';ending='';notice='';}
   function open(trigger){
     entry=trigger||document.activeElement;
     if(!dlg){
@@ -131,7 +131,7 @@
         if(action==='object'){active=button.dataset.obj;view='object';}
         else if(action==='return'){view='room';notice='Leena decides what to do next; a visitor does not need to prompt her.';}
         else if(action==='choice'){const o=objects[active];seen[active]=o.choices[Number(button.dataset.choice)][1];notice=seen[active];view='room';}
-        else if(action==='continue'){view='conversation';}
+        else if(action==='continue'){disclosed=true;view='conversation';}
         else if(action==='permission'){view='recollections';}
         else if(action==='refusal'){end('refusal');return;}
         else if(action==='memory'){active=button.dataset.memory;heard[active]=true;view='memory';}
