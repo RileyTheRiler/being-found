@@ -36,7 +36,7 @@
        '<div class="leena-person" aria-hidden="true"><i></i></div>'+
        Object.entries(objects).map(([id,o])=>'<button type="button" class="leena-prop leena-'+id+'" data-leena-act="object" data-obj="'+id+'"><strong>'+o.name+'</strong><small>'+o.kind+(seen[id]?' · visited':'')+'</small></button>').join('')+
        '</section>'+
-       '<div class="leena-reading"><p class="leena-spoken" role="status">'+(notice?escapeHTML(notice):'Leena: “I’ve got the weekend to think about. The books can wait five minutes.”')+'</p><p>Choose an object, then respond to what Leena actually says. The three objects can be visited in any order.</p>'+
+       '<div class="leena-reading"><p class="leena-spoken" role="status">'+(notice?escapeHTML(notice):'Leena: “I’ve got the weekend to think about. The books can wait five minutes.”')+'</p><p>You may examine the three objects in any order, talk with Leena now, or leave. No interaction is required to continue.</p>'+
        '<p class="leena-progress" aria-label="'+completed+' of 3 ordinary interactions explored">'+completed+' / 3 interactions explored</p>'+
        '<div class="leena-actions">'+b('Talk with Leena','continue')+b('Respect her space and leave','leave')+'</div></div>';
     } else if(view==='object'){
