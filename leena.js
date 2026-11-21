@@ -34,7 +34,7 @@
        '<section class="leena-scene" aria-label="Library room with three interactive objects">'+
        '<div class="leena-window" aria-hidden="true"><span></span></div><div class="leena-books" aria-hidden="true"></div><div class="leena-desk" aria-hidden="true"></div>'+
        '<div class="leena-person" aria-hidden="true"><i></i></div>'+
-       Object.entries(objects).map(([id,o])=>'<button type="button" class="leena-prop leena-'+id+'" data-leena-act="object" data-obj="'+id+'" aria-label="Inspect '+o.name+': '+o.kind+'"><strong>'+o.name+'</strong><small>'+o.kind+(seen[id]?' · visited':'')+'</small></button>').join('')+
+       Object.entries(objects).map(([id,o])=>'<button type="button" class="leena-prop leena-'+id+'" data-leena-act="object" data-obj="'+id+'"><strong>'+o.name+'</strong><small>'+o.kind+(seen[id]?' · visited':'')+'</small></button>').join('')+
        '</section>'+
        '<div class="leena-reading"><p class="leena-spoken" role="status">'+(notice?escapeHTML(notice):'Leena: “I’ve got the weekend to think about. The books can wait five minutes.”')+'</p><p>Choose an object, then respond to what Leena actually says. The three objects can be visited in any order.</p>'+
        '<p class="leena-progress" aria-label="'+completed+' of 3 ordinary interactions explored">'+completed+' / 3 interactions explored</p>'+
