@@ -86,6 +86,9 @@ jobs:
       - name: Remaining-resident runtime editorial regression
         run: python3 qa_remaining_scenes.py
 
+      - name: Leena optional narrative — phone, tablets, desktop and branches
+        run: python3 qa_leena.py
+
       - name: Guided classroom 8.4 chapter and reflection regression
         run: python3 qa_guided84.py
 
