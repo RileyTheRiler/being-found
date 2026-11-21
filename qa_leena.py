@@ -56,7 +56,7 @@ def test(browser,w,h,reduced=False):
     d.get_by_role("button",name="Continue the conversation").click()
     d.get_by_role("button",name="Ask if she would rather stop talking").click()
     assert p.evaluate("BFLeena.state.ending")=="refusal"
-    d.get_by_role("button",name="Return to Rooms").click()
+    d.get_by_role("button",name="Return to Rooms",exact=True).click()
     assert not d.evaluate("(el)=>el.open")
     assert rooms.locator("[data-bf-leena]").evaluate("(el)=>document.activeElement===el")
     assert p.evaluate("LW.S.flatIx")==original
