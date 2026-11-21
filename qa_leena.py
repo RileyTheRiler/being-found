@@ -23,6 +23,15 @@ def test(browser,w,h,reduced=False):
     assert d.get_attribute("aria-labelledby")=="leena-heading"
     assert p.evaluate("document.activeElement.closest('#bf-leena-dialog')!==null")
     assert d.locator(".leena-prop").count()==3
+    box=d.bounding_box()
+    assert box and box["x"]>=-1 and box["y"]>=-1 and box["x"]+box["width"]<=w+2 and box["y"]+box["height"]<=h+2,box
+    rects=d.locator(".leena-prop").evaluate_all("""els=>els.map(el=>{const r=el.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height};})""")
+    for i,a in enumerate(rects):
+      for b in rects[i+1:]:
+        assert min(a["x"]+a["w"],b["x"]+b["w"])-max(a["x"],b["x"])<=0 or min(a["y"]+a["h"],b["y"]+b["h"])-max(a["y"],b["y"])<=0,(w,h,rects)
+    p.add_script_tag(path="node_modules/axe-core/axe.min.js")
+    violations=p.evaluate("""async()=>{const report=await axe.run(document.querySelector('#bf-leena-dialog'));return report.violations.filter(v=>['serious','critical'].includes(v.impact)).map(v=>({id:v.id,description:v.description,nodes:v.nodes.map(n=>n.target)}));}""")
+    assert not violations,violations
     for name in ["calendar","cart","phone"]:
       d.locator("[data-obj='"+name+"']").click()
       assert "Observed" in d.inner_text()
