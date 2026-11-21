@@ -33,6 +33,7 @@ def test(browser,w,h,reduced=False):
     p.add_script_tag(path="node_modules/axe-core/axe.min.js")
     violations=p.evaluate("""async()=>{const report=await axe.run(document.querySelector('#bf-leena-dialog'));return report.violations.filter(v=>['serious','critical'].includes(v.impact)).map(v=>({id:v.id,description:v.description,nodes:v.nodes.map(n=>n.target)}));}""")
     assert not violations,violations
+    p.screenshot(path=str(ART/f"leena_room_{w}x{h}.png"))
     for name in ["calendar","cart","phone"]:
       d.locator("[data-obj='"+name+"']").click()
       assert "Observed" in d.inner_text()
@@ -40,7 +41,7 @@ def test(browser,w,h,reduced=False):
       assert name in p.evaluate("BFLeena.state.seen")
       assert p.evaluate("document.documentElement.scrollWidth-innerWidth")<=2
     assert "3 / 3" in d.inner_text()
-    d.get_by_role("button",name="Continue the conversation").click()
+    d.get_by_role("button",name="Talk with Leena").click()
     assert "I live with bipolar disorder" in d.inner_text()
     d.get_by_role("button",name="Ask permission to hear about earlier periods").click()
     for key,date in [("expansive","April–May 2025"),("distant","October–November 2024")]:
@@ -63,7 +64,7 @@ def test(browser,w,h,reduced=False):
     d.get_by_role("button",name="Replay Leena’s story").click()
     for name in ["calendar","cart","phone"]:
       d.locator("[data-obj='"+name+"']").click();d.locator('[data-choice="1"]').click()
-    d.get_by_role("button",name="Continue the conversation").click()
+    d.get_by_role("button",name="Talk with Leena").click()
     d.get_by_role("button",name="Ask if she would rather stop talking").click()
     assert p.evaluate("BFLeena.state.ending")=="refusal"
     d.get_by_role("button",name="Return to Rooms",exact=True).click()
@@ -74,10 +75,80 @@ def test(browser,w,h,reduced=False):
     assert not errors,errors
     print(f"PASS Leena {w}x{h} reduced={reduced}",flush=True)
   finally:cx.close()
+def test_evidence(browser,w,h):
+  """An ending must never report facts the visitor did not witness or hear."""
+  mobile=w<700
+  cx=browser.new_context(viewport={"width":w,"height":h},has_touch=mobile,is_mobile=mobile)
+  p=cx.new_page();errors=[];p.on("pageerror",lambda e:errors.append(str(e)))
+  try:
+    p.goto(URL,wait_until="load")
+    p.wait_for_function("typeof window.LW?.startFlat==='function' && !!window.BFLeena")
+    p.evaluate("document.querySelector('#plSkip')?.click()")
+    p.locator('#mTitle .bf-dest [data-go="flats"]').click()
+    p.locator("#mFlats [data-bf-leena]").click()
+    d=p.locator("#bf-leena-dialog")
+    # Leave without examining any object: do not invent pauses or disclosures.
+    d.get_by_role("button",name="Respect her space and leave").click()
+    debrief=d.locator(".leena-debrief").inner_text()
+    assert "You did not examine their details." in debrief,debrief
+    assert "No further personal account was shared." in debrief,debrief
+    assert "pauses over Saturday" not in debrief and "October–November 2024" not in debrief,debrief
+    p.screenshot(path=str(ART/f"leena_early_exit_{w}x{h}.png"))
+    d.get_by_role("button",name="Replay Leena’s story").click()
+    # Examining is distinct from obtaining a reply.
+    d.locator("[data-obj='calendar']").click()
+    d.get_by_role("button",name="Return without asking").click()
+    d.get_by_role("button",name="Respect her space and leave").click()
+    debrief=d.locator(".leena-debrief").inner_text()
+    assert "pauses over Saturday" in debrief,debrief
+    assert "half sorted" not in debrief and "mystery novel" not in debrief,debrief
+    assert "No further personal account was shared." in debrief,debrief
+    d.get_by_role("button",name="Replay Leena’s story").click()
+    # Conversation is available without completing a prop checklist.
+    d.locator("[data-obj='cart']").click()
+    d.locator('[data-choice="1"]').click()
+    assert p.evaluate("BFLeena.state.inspected")==["cart"]
+    d.get_by_role("button",name="Talk with Leena").click()
+    assert "I live with bipolar disorder" in d.inner_text()
+    d.get_by_role("button",name="Leave without further questions").click()
+    debrief=d.locator(".leena-debrief").inner_text()
+    assert "mystery novel" in debrief and "like doing the labels" in debrief,debrief
+    assert "Leena chose to say she lives with bipolar disorder" in debrief,debrief
+    assert "October–November 2024" not in debrief and "April–May 2025" not in debrief,debrief
+    # Test each current response as an equally available, non-scored ending.
+    for answer in ["listen","support","uncertain","boundary"]:
+      d.get_by_role("button",name="Replay Leena’s story").click()
+      d.get_by_role("button",name="Talk with Leena").click()
+      d.get_by_role("button",name="Stay with what she wants today").click()
+      d.locator('[data-answer="'+answer+'"]').click()
+      assert p.evaluate("BFLeena.state.ending")==answer
+      assert d.locator(".leena-debrief").count()==1
+    # Only the memory voluntarily opened belongs in the recorded disclosure.
+    d.get_by_role("button",name="Replay Leena’s story").click()
+    d.get_by_role("button",name="Talk with Leena").click()
+    d.get_by_role("button",name="Ask permission to hear about earlier periods").click()
+    d.locator('[data-memory="expansive"]').click()
+    d.get_by_role("button",name="Return to the present").click()
+    d.get_by_role("button",name="Accept that she prefers to end here").click()
+    debrief=d.locator(".leena-debrief").inner_text()
+    assert "April–May 2025" in debrief and "October–November 2024" not in debrief,debrief
+    assert p.evaluate("BFLeena.state.heard")==["expansive"]
+    d.get_by_role("button",name="Replay Leena’s story").click()
+    d.get_by_role("button",name="Talk with Leena").click()
+    d.get_by_role("button",name="Ask if she would rather stop talking").click()
+    assert p.evaluate("BFLeena.state.ending")=="refusal"
+    assert "October–November 2024" not in d.locator(".leena-debrief").inner_text()
+    d.get_by_role("button",name="Return to Rooms",exact=True).click()
+    assert p.locator("#mFlats [data-bf-leena]").evaluate("(el)=>document.activeElement===el")
+    assert not errors,errors
+    print(f"PASS Leena witness-aware branches {w}x{h}",flush=True)
+  finally:cx.close()
+
 if __name__=="__main__":
   with sync_playwright() as p:
     b=p.chromium.launch(headless=True,executable_path=CHROME,args=["--no-sandbox"])
     for w,h in [(390,844),(820,1180),(1180,820),(1440,900)]:test(b,w,h)
     test(b,390,844,True)
+    for w,h in [(390,844),(1440,900)]:test_evidence(b,w,h)
     b.close()
   print("ALL LEENA OPTIONAL STORY REGRESSIONS PASSED",flush=True)
