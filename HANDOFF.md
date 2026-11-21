@@ -1,3 +1,5 @@
+**Screenshot finding / correction:** 390×844 early-exit evidence initially showed the new debrief scrolled under the sticky header; `leena.js` now resets dialog scroll on each screen transition and `qa_leena.py` asserts heading visibility on the full viewport matrix. Prior full quality [44882790240](https://github.com/RileyTheRiler/being-found/actions/runs/44882790240) and reduced-motion [44882790243](https://github.com/RileyTheRiler/being-found/actions/runs/44882790243) succeeded at earlier PR head `67a4d9f18be338a54751798d96778c3a42f5a61f`. **That success does not validate the subsequent mobile fix:** rerun and review exact latest head before merge.
+
 ## 8.5.4 Leena epistemic debrief + review packet — review branch (2026-11-21 UTC)
 
 **Verified pre-change main:** merged PR #18 at `8f0463ad9c383fb1aaf0ced7fd81e63ba7e1686a`; Vercel production `dpl_52KPihnFb3Fnk6SUYeAtyUxnXP5A` READY and aliased `being-found.vercel.app` at exact SHA. Main [Actions #44881588189](https://github.com/RileyTheRiler/being-found/actions/runs/44881588189) was in progress when initially checked; verify its final conclusion.
