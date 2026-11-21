@@ -54,6 +54,7 @@ python3 qa_editorial.py             # source + production narrative wording guar
 python3 qa_js_syntax.py            # parse source and generated JavaScript, catch early syntax errors
 python3 qa_wren_ilse.py            # Wren/Ilse runtime editorial assertions on phone and desktop
 python3 qa_remaining_scenes.py     # five other resident narratives, mobile and desktop
+python3 qa_leena.py                # optional authored Leena route, focus, refusal, replay and four viewports
 python3 menu_check.py               # title, rooms, routes, continue
 python3 e2e_sync.py 390x844 1024x1366
 python3 test_later.py 390x844
@@ -109,3 +110,8 @@ Read [DESIGN_GUARDRAILS.md](DESIGN_GUARDRAILS.md) before modifying the classroom
 ## 8.5.3 accessibility scope
 
 [PR #11](https://github.com/RileyTheRiler/being-found/pull/11) addresses title keyboard focus, modal semantics, a pinned axe-core quality gate and five recurring automated accessibility findings. The audit writes detailed results (including moderate/incomplete findings) to `qa-artifacts/axe-8.5.3.json` in CI. The release is **still a classroom preview** and is not validated for assistive technology, real devices or lived experience. Inspect `main`, GitHub Actions, and Vercel metadata before asserting deployment; a successful preview build is not a production deployment.
+
+
+## Leena — optional story (issue #17)
+
+Rooms offers a separate fictional library encounter with Leena. Three everyday interactions, two optional dated recollections, explicit refusal/leave, debrief and replay are contained in `leena.js` and `leena.css`. This does not alter existing FLATS, VISITS, saved game indexes or Guided Story. See `LEENA_EDITORIAL.md` for source grounding and required independent compensated lived-experience review. Not a diagnostic simulation, validated representation, or classroom-pilot approval.
