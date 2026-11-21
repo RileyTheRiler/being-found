@@ -24,3 +24,24 @@ const audit={version,releaseLabelsRemoved:removed,remainingExact:{
 },modules:['bf83.js','bf837.js','title_access.js','leena.js'],sourceStoryEngine:'unchanged'};
 fs.writeFileSync(p.join(dir,'qa','audit.js'),'window.__BF837_AUDIT='+JSON.stringify(audit)+';');
 console.log('Being Found '+version,JSON.stringify(audit));
+/* Installable iPad offline edition: precache every built static asset. */
+const offlineDir=p.join(__dirname,'offline');
+const iconPath=p.join(dir,'icon.svg');
+fs.copyFileSync(p.join(offlineDir,'icon.svg'),iconPath);
+fs.copyFileSync(p.join(offlineDir,'register.js'),p.join(dir,'offline-register.js'));
+const manifest={name:'Being Found',short_name:'Being Found',description:'A fictional narrative game about possibility',start_url:'/',scope:'/',display:'standalone',background_color:'#1b2333',theme_color:'#1b2333',icons:[{src:'/icon.svg',sizes:'any',type:'image/svg+xml',purpose:'any maskable'}]};
+fs.writeFileSync(p.join(dir,'manifest.webmanifest'),JSON.stringify(manifest));
+html=fs.readFileSync(file,'utf8').replace('</head>','<link rel="manifest" href="/manifest.webmanifest"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Being Found"><meta name="theme-color" content="#1b2333"><link rel="apple-touch-icon" href="/icon.svg"></head>').replace('</body>','<script defer src="/offline-register.js"></script></body>');
+fs.writeFileSync(file,html);
+function allFiles(base,prefix=''){
+ return fs.readdirSync(base,{withFileTypes:true}).flatMap(entry=>{
+   const rel=prefix+entry.name;
+   if(entry.isDirectory())return allFiles(p.join(base,entry.name),rel+'/');
+   return [rel];
+ });
+}
+const precache=allFiles(dir).filter(name=>!name.startsWith('qa/')&&!name.endsWith('.map')&&!name.endsWith('.glb')&&name!=='sw.js').map(name=>'/'+name);
+const buildStamp=String(process.env.VERCEL_GIT_COMMIT_SHA||process.env.GITHUB_SHA||'local').slice(0,12);
+const worker=fs.readFileSync(p.join(offlineDir,'sw.template.js'),'utf8').replace('__VERSION__',version).replace('__BUILD__',buildStamp).replace('__ASSETS__',JSON.stringify(precache));
+fs.writeFileSync(p.join(dir,'sw.js'),worker);
+console.log('Offline PWA precache assets:',precache.length);

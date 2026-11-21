@@ -119,6 +119,9 @@ jobs:
       - name: Heavy-action keyboard and pointer regression
         run: python3 qa_heavy_access.py
 
+      - name: Offline iPad web app precache and airplane-mode regression
+        run: python3 qa_offline.py
+
       - name: Five viewport smoke tests
         run: python3 qa_smoke.py
 
