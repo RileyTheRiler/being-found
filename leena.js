@@ -23,7 +23,7 @@
   function b(label,act,more){return '<button type="button" class="leena-action" data-leena-act="'+act+'"'+(more||'')+'>'+label+'</button>';}
   function escapeHTML(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
   function title(heading,sub){return '<header class="leena-heading"><div class="leena-eyebrow">Leena · fictional person · optional Rooms story</div><h2 id="leena-heading" tabindex="-1">'+heading+'</h2><p>'+sub+'</p></header>';}
-  function top(){return '<div class="leena-top"><span>Being Found / Optional story</span>'+b('Close and return to Rooms','exit','class="leena-close"')+'</div>';}
+  function top(){return '<div class="leena-top"><span>Being Found / Optional story</span><button type="button" class="leena-close" data-leena-act="exit">Close and return to Rooms</button></div>';}
   function render(){
     if(!dlg)return;
     let content='';
@@ -110,6 +110,16 @@
       dlg=document.createElement('dialog');dlg.id='bf-leena-dialog';dlg.className='leena-dialog';dlg.setAttribute('aria-labelledby','leena-heading');dlg.setAttribute('aria-label','Leena optional fictional story');
       document.body.append(dlg);
       dlg.addEventListener('cancel',e=>{e.preventDefault();close();});
+      // Browser-native modal containment varies at wraparound: keep focus inside.
+      dlg.addEventListener('keydown',e=>{
+        if(e.key!=='Tab'||!dlg.open)return;
+        const controls=[...dlg.querySelectorAll('button:not([disabled]),a[href],input:not([disabled]),[tabindex="0"]')]
+          .filter(el=>el.getClientRects().length&&!el.hidden);
+        if(!controls.length){e.preventDefault();dlg.focus();return;}
+        const index=controls.indexOf(document.activeElement);
+        const next=e.shiftKey?(index<0?controls.length-1:(index-1+controls.length)%controls.length):(index<0?0:(index+1)%controls.length);
+        e.preventDefault();controls[next].focus({preventScroll:true});
+      });
       dlg.addEventListener('close',()=>{if(entry?.isConnected)entry.focus({preventScroll:true});});
       dlg.addEventListener('click',e=>{
         if(e.target===dlg)return;
