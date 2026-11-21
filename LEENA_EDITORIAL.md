@@ -1,3 +1,21 @@
+## 8.5.4 interaction audit — 21 November 2026 (code review; no human validation)
+
+**Verified starting code:** PR #18 merge `8f0463ad9c383fb1aaf0ced7fd81e63ba7e1686a`. Focused follow-up branch: `fix/8.5.4-leena-evidence-debrief`. This is a source-based editorial/interaction appraisal, **not** a lived-experience review.
+
+### Critical findings and change decisions
+1. **False observation on early exit (critical):** Previous `ending` always said the visitor saw Leena pause at the calendar, cart and message even if no object was opened. Fix: track `inspected` separately from spoken `seen` replies. Debrief reports only inspected object observations and the exact replies/recollections the player heard. Leaving before exploration no longer creates a diagnostic or recollection claim.
+2. **Mandatory three-object gate (high):** The only way to reach conversation was to answer one prompt about all three props. This made Leena's interaction feel like a checklist and could imply personal disclosure was an earned reward. Fix: offer `Talk with Leena` immediately; object engagement remains optional and unscored.
+3. **Disclosure boundary (high):** Conversation about bipolar disorder happens only after choosing to speak with Leena; both dated recollections remain separately selectable after permission. A direct disclosure is attributed to Leena, not inferred from a movement, pause or prop.
+4. **Visual grounding (open):** The library is recognizable through a window, shelves, desk and three labeled prop buttons but is currently simple CSS illustration rather than the main 2.5D atlas/room art. Leena is an abstract figure with no distinct facial characterization; objects feel like floating interface markers. **Not fixed in this bounded PR.** Design a separate optional spatial-library slice with screenshot/assistive-technology comparisons, no renderer rewrite and no FLATS/VISITS insertion.
+5. **Everyday character depth (open):** Her work and friendship appear, but major choices live in text panels, her specific interests are thin and her agency has few environmental consequences. Obtain compensated review before adding new psychiatric detail or dramatic episode scenes. Do not interpret absence of symptoms in the present as a claim about bipolar disorder.
+6. **Reflection (partially addressed):** Distinguishing observed/communicated/inferred/unknown works pedagogically only if the content is branch-specific. New branch matrix tests immediate leave, inspect-without-reply, early conversation, selective recollections, refusal and four unscored endings. This does not validate the educational inference.
+
+7. **Phone privacy (high):** Previously an object observation exposed Nia's private invitation as if a visitor could read Leena's screen without consent. The object now only describes a notification whose content is not visible. Leena may voluntarily disclose context in her reply or recollections. Browser QA guards against revealing Nia or the event before she speaks.
+
+8. **Mobile panel scroll position (high; screenshot verified):** On the previous branch head, the 390×844 early-leave screenshot opened midway through the debrief, hiding the new heading under the sticky topbar. `render()` now restores the dialog scroll position to the beginning before focusing the replacement heading. Automated 360/390/820/1180/1440 checks assert the heading is visibly below sticky chrome after transitions; inspect regenerated screenshots and exact-head CI before release.
+
+**Reviewer materials:** `reviews/LEENA_REVIEW_PACKET.md` inventories 21 branches and independent review questions. `reviews/leena_feedback_log.csv` is an empty decision log, not fabricated feedback. Physical TalkBack, VoiceOver, switch access, visual design scrutiny and human classroom pilot remain outstanding.
+
 # Leena optional narrative — issue #17 editorial record
 
 **Status:** Authored fiction, subject to independent paid lived-experience review by people living with bipolar disorder. Not validated, not classroom-pilot approved. This record is not a substitute for that review.

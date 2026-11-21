@@ -13,12 +13,12 @@
       ['Offer to sort with her','“You can put the returns in alphabetical order. I’ll do the labels,” Leena says. She sets the order of the task.'],
       ['Ask whether she wants help','“Not right now, thanks. I actually like doing the labels,” she says, and picks up the novel.']
     ]},
-    phone:{name:'Message',kind:'Friendship',observation:'A message from Nia asks whether Leena wants to join an outdoor reading on Sunday. Leena looks at the notification but has not replied.',choices:[
+    phone:{name:'Message',kind:'Private notification',observation:'Leena glances at a notification on her phone and sets it beside the cart. You cannot read the message.',choices:[
       ['Ask if she wants to reply now','“I’d rather send a real answer later than say yes because the phone is here,” she says.'],
       ['Offer to give her space','“Thanks. Nia knows I sometimes need time to answer,” Leena says.']
     ]}
   };
-  let dlg=null,entry=null,view='room',active=null,seen={},heard={},disclosed=false,reply='',ending='',notice='';
+  let dlg=null,entry=null,view='room',active=null,seen={},inspected={},heard={},disclosed=false,ending='',notice='';
   const dateCurrent='Friday · 20 November 2026';
   function b(label,act,more){return '<button type="button" class="leena-action" data-leena-act="'+act+'"'+(more||'')+'>'+label+'</button>';}
   function escapeHTML(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
@@ -36,9 +36,9 @@
        '<div class="leena-person" aria-hidden="true"><i></i></div>'+
        Object.entries(objects).map(([id,o])=>'<button type="button" class="leena-prop leena-'+id+'" data-leena-act="object" data-obj="'+id+'"><strong>'+o.name+'</strong><small>'+o.kind+(seen[id]?' · visited':'')+'</small></button>').join('')+
        '</section>'+
-       '<div class="leena-reading"><p class="leena-spoken" role="status">'+(notice?escapeHTML(notice):'Leena: “I’ve got the weekend to think about. The books can wait five minutes.”')+'</p><p>Choose an object, then respond to what Leena actually says. The three objects can be visited in any order.</p>'+
+       '<div class="leena-reading"><p class="leena-spoken" role="status">'+(notice?escapeHTML(notice):'Leena: “I’ve got the weekend to think about. The books can wait five minutes.”')+'</p><p>You may examine the three objects in any order, talk with Leena now, or leave. No interaction is required to continue.</p>'+
        '<p class="leena-progress" aria-label="'+completed+' of 3 ordinary interactions explored">'+completed+' / 3 interactions explored</p>'+
-       '<div class="leena-actions">'+(completed===3?b('Continue the conversation','continue'):'')+b('Respect her space and leave','leave')+'</div></div>';
+       '<div class="leena-actions">'+b('Talk with Leena','continue')+b('Respect her space and leave','leave')+'</div></div>';
     } else if(view==='object'){
       const o=objects[active];
       content=title(o.name,dateCurrent+' · Something you can observe')+
@@ -86,24 +86,31 @@
         refusal:'Leena says, “Yes, I’d like to stop here.” You accept her boundary and leave without requesting a personal account.',
         leave:'You leave without asking more. Leena’s weekend and what she wants to disclose remain her own.'
       };
+      const observations=Object.keys(inspected).map(id=>objects[id].observation);
+      const communicated=Object.values(seen);
+      if(disclosed)communicated.push('Leena chose to say she lives with bipolar disorder and that it does not explain every ordinary decision.');
+      if(heard.expansive)communicated.push('Leena chose to describe her memories of April–May 2025.');
+      if(heard.distant)communicated.push('Leena chose to describe her memories of October–November 2024.');
       content=title('Leaving the library','End of this optional fictional encounter')+
        '<div class="leena-reading"><p class="leena-spoken">'+responses[ending]+'</p>'+
        '<h3>Reflect: what can you actually say?</h3>'+
-       '<dl class="leena-debrief"><dt>Observed</dt><dd>Leena paused at a calendar, a half-sorted cart, and a message from a friend.</dd>'+
-       '<dt>Communicated</dt><dd>'+(Object.keys(seen).length?escapeHTML(Object.values(seen).join(' ')):'She did not share a personal account before you left.')+(view==='ending'&&heard.expansive?' She chose to recount a period in April–May 2025.':'')+(heard.distant?' She chose to recount a period in October–November 2024.':'')+'</dd>'+
-       '<dt>Inferred, not established</dt><dd>A pause cannot tell you her diagnosis, intentions, mood, ability to work, or how she experiences time.</dd>'+
+       '<dl class="leena-debrief"><dt>Observed</dt><dd>'+(observations.length?escapeHTML(observations.join(' ')):'You saw Leena in the library, with three objects available to examine. You did not examine their details.')+'</dd>'+
+       '<dt>Communicated</dt><dd>Leena said she had the weekend to think about and the books could wait five minutes. '+(communicated.length?escapeHTML(communicated.join(' ')):'No further personal account was shared.')+'</dd>'+
+       '<dt>Inferred, not established</dt><dd>'+(disclosed?'Her disclosure does not establish why she made any particular decision or how she feels today.':'You cannot infer a diagnosis, intentions, mood or ability to work from the room or the decisions you witnessed.')+'</dd>'+
        '<dt>Still unknown</dt><dd>What she will choose next, what she wants to share privately, and how she interprets these moments over her life.</dd></dl>'+
        '<p class="leena-caution"><strong>Editorial status:</strong> Unvalidated fiction. '+(disclosed?'Bipolar disorder does not explain every action.':'No diagnosis or reason for Leena’s behavior has been established by this encounter.')+' No subtype, symptom course, treatment choice, or lived experience can be established by this scene. Independent compensated lived-experience review and accessibility testing are still required.</p>'+
        '<div class="leena-actions">'+b('Replay Leena’s story','replay')+b('Return to Rooms','exit')+'</div></div>';
     }
     dlg.innerHTML=top()+'<div class="leena-body">'+content+'</div>';
+    // Each story state is a new page. Do not strand mobile readers midway through it.
+    dlg.scrollTop=0;
     dlg.querySelector('#leena-heading')?.focus({preventScroll:true});
   }
   function end(reason){ending=reason;view='ending';render();}
   function close(){
     if(dlg?.open)dlg.close();
   }
-  function reset(){view='room';active=null;seen={};heard={};disclosed=false;reply='';ending='';notice='';}
+  function reset(){view='room';active=null;seen={};inspected={};heard={};disclosed=false;ending='';notice='';}
   function open(trigger){
     entry=trigger||document.activeElement;
     if(!dlg){
@@ -128,7 +135,7 @@
         if(action==='exit'){close();return;}
         if(action==='replay'){reset();render();return;}
         if(action==='leave'){end('leave');return;}
-        if(action==='object'){active=button.dataset.obj;view='object';}
+        if(action==='object'){active=button.dataset.obj;inspected[active]=true;view='object';}
         else if(action==='return'){view='room';notice='Leena decides what to do next; a visitor does not need to prompt her.';}
         else if(action==='choice'){const o=objects[active];seen[active]=o.choices[Number(button.dataset.choice)][1];notice=seen[active];view='room';}
         else if(action==='continue'){disclosed=true;view='conversation';}
@@ -159,5 +166,5 @@
   const rooms=qs('#mFlats');
   if(rooms)new MutationObserver(insertCard).observe(rooms,{childList:true,subtree:true});
   insertCard();
-  window.BFLeena={open,close,get active(){return !!dlg?.open;},get state(){return {view,seen:Object.keys(seen),heard:Object.keys(heard),ending};}};
+  window.BFLeena={open,close,get active(){return !!dlg?.open;},get state(){return {view,seen:Object.keys(seen),inspected:Object.keys(inspected),heard:Object.keys(heard),disclosed,ending};}};
 })();
