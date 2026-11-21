@@ -102,6 +102,8 @@
        '<div class="leena-actions">'+b('Replay Leena’s story','replay')+b('Return to Rooms','exit')+'</div></div>';
     }
     dlg.innerHTML=top()+'<div class="leena-body">'+content+'</div>';
+    // Each story state is a new page. Do not strand mobile readers midway through it.
+    dlg.scrollTop=0;
     dlg.querySelector('#leena-heading')?.focus({preventScroll:true});
   }
   function end(reason){ending=reason;view='ending';render();}
