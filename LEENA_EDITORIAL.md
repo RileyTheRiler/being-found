@@ -10,6 +10,8 @@
 5. **Everyday character depth (open):** Her work and friendship appear, but major choices live in text panels, her specific interests are thin and her agency has few environmental consequences. Obtain compensated review before adding new psychiatric detail or dramatic episode scenes. Do not interpret absence of symptoms in the present as a claim about bipolar disorder.
 6. **Reflection (partially addressed):** Distinguishing observed/communicated/inferred/unknown works pedagogically only if the content is branch-specific. New branch matrix tests immediate leave, inspect-without-reply, early conversation, selective recollections, refusal and four unscored endings. This does not validate the educational inference.
 
+7. **Phone privacy (high):** Previously an object observation exposed Nia's private invitation as if a visitor could read Leena's screen without consent. The object now only describes a notification whose content is not visible. Leena may voluntarily disclose context in her reply or recollections. Browser QA guards against revealing Nia or the event before she speaks.
+
 **Reviewer materials:** `reviews/LEENA_REVIEW_PACKET.md` inventories 21 branches and independent review questions. `reviews/leena_feedback_log.csv` is an empty decision log, not fabricated feedback. Physical TalkBack, VoiceOver, switch access, visual design scrutiny and human classroom pilot remain outstanding.
 
 # Leena optional narrative — issue #17 editorial record
