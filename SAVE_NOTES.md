@@ -1,3 +1,11 @@
+## 8.5.3 lying bed rendering — separate PR #14 (2026-11-21 UTC)
+
+- Production baseline remains merged PR #13: `main` `dfe124e6e525bd325f60c7a05eb6e62d5f6404ac`; post-merge [Actions 44689935919](https://github.com/RileyTheRiler/being-found/actions/runs/44689935919) passed 43 steps, Vercel production `dpl_KfVvQYwgHudy7BJuFpEzkgBVMQxv` READY and aliased at that exact SHA. See PR #13's final receipt, not the outdated pre-merge sections below.
+- Draft [PR #14](https://github.com/RileyTheRiler/being-found/pull/14) from that baseline. In `room.js`, the replacement renderer omitted `npc.pose='lie'` and used the regular upright drawing path for a lying playable resident. Browser regression first reproduced missing head and upright figure in `qa_lying_bed.py` ([red Actions 44864860243](https://github.com/RileyTheRiler/being-found/actions/runs/44864860243)).
+- Bounded replacement-room correction: draw bed pillows, the existing art head with the lying expression, and duvet foreground; suppress duplicate upright playable drawing. Preserve rig, scene controls, narrative/consent/save states, Rooms, axe/title/tablet Guide and Walt silences. `qa_lying_bed.py` now exercises both roles at four viewport sizes and stores eight screenshots, with log JPEGs for human review; registered in `qa_all.py` and `.github/workflows/quality.yml`.
+- **Review/merge/prod verification pending at writing.** Check latest exact PR head after this documentation commit, full GitHub quality and character-motion workflows, screenshots and exact-head Vercel preview before merging. Confirm post-merge main Actions and production alias/SHA. Do not count initial intentional red failure as a release.
+- Generic `fade()` timers source-audited, but no guided reduced-motion transition timing defect reproduced yet. Any change must be in a separate timing PR with real browser timing evidence. No pilot or independent device/AT/lived-experience assessment.
+
 ## 8.5.3 tablet Guide follow-up — branch QA pending (2026-11-19 / 20 UTC)
 
 ## 8.5.3 Walt reduced-motion transcript dwell — review implementation (2026-11-19 / 20 UTC)

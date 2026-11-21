@@ -1,5 +1,11 @@
 # Being Found — current state
 
+## 8.5.3 lying-pose review branch (2026-11-21 UTC)
+
+- **Current verified public production:** PR #13 merged to `main` `dfe124e6e525bd325f60c7a05eb6e62d5f6404ac`; main [Actions run 44689935919](https://github.com/RileyTheRiler/being-found/actions/runs/44689935919) passed 43/43; Vercel `dpl_KfVvQYwgHudy7BJuFpEzkgBVMQxv` READY, production alias `being-found.vercel.app` and Git source SHA matched. PR #13 final release receipt overrides older pending-status notes in this document.
+- **Unmerged draft [PR #14](https://github.com/RileyTheRiler/being-found/pull/14):** lying main resident and authored lying NPC shown under bed duvet with pillow-anchored existing rig head, no second upright sprite. New browser regression first failed in uncorrected build ([Actions 44864860243](https://github.com/RileyTheRiler/being-found/actions/runs/44864860243)); corrected branch is undergoing exact-head CI, multi-viewport screenshot review and preview verification. Do not claim merged or deployed from a PR preview.
+- **Next independent audit:** reproduction of remaining `fade()` reduced-motion transition waits on the actual guided path; source timers alone are insufficient evidence. Then seated/rising NPC visuals and touch/keyboard/overlay/orientation accessibility. Maintain all 8.5.2/8.5.3 protections. Physical devices, assistive technology, compensated lived-experience review and human pilot remain incomplete. **Classroom preview only.**
+
 ## 8.5.3 follow-up verification (2026-11-19 / 20 UTC)
 
 - The more recent [merged PR #12](https://github.com/RileyTheRiler/being-found/pull/12) supersedes the pre-merge status below. **Verified production main:** `728fad2c2e07f79686becf7118362aa4412508e9`. [Actions run 44681370289](https://github.com/RileyTheRiler/being-found/actions/runs/44681370289) succeeded, 42/42 quality steps. Vercel `dpl_7k6FrCMmUTyoB3hjmNKhyc4Jdn5b` READY in production, commit metadata matched exact main SHA. Tablet portrait Guide fixes are merged and automated-browser tested; physical iPad and screen-reader checks remain open.
