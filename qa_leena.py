@@ -5,6 +5,15 @@ from playwright.sync_api import sync_playwright
 URL=os.environ.get("BF_TEST_URL","http://127.0.0.1:8770/index.html")
 CHROME=os.environ.get("BF_CHROME") or shutil.which("google-chrome") or shutil.which("chromium")
 ART=Path(os.environ.get("BF_TEST_ARTIFACTS","qa-artifacts"));ART.mkdir(parents=True,exist_ok=True)
+def assert_panel_heading_visible(d):
+  """After every narrative transition, the new heading must be in view below sticky chrome."""
+  state=d.evaluate("""el=>{
+    const heading=el.querySelector('#leena-heading').getBoundingClientRect();
+    const chrome=el.querySelector('.leena-top').getBoundingClientRect();
+    const dialog=el.getBoundingClientRect();
+    return {headingTop:heading.top,chromeBottom:chrome.bottom,dialogBottom:dialog.bottom,scrollTop:el.scrollTop};
+  }""")
+  assert state["scrollTop"]<2 and state["headingTop"]>=state["chromeBottom"]-2 and state["headingTop"]<state["dialogBottom"]-36,state
 def test(browser,w,h,reduced=False):
   mobile=w<700
   cx=browser.new_context(viewport={"width":w,"height":h},has_touch=mobile,is_mobile=mobile,reduced_motion="reduce" if reduced else "no-preference")
@@ -23,6 +32,7 @@ def test(browser,w,h,reduced=False):
     assert d.get_attribute("aria-labelledby")=="leena-heading"
     assert p.evaluate("document.activeElement.closest('#bf-leena-dialog')!==null")
     assert d.locator(".leena-prop").count()==3
+    assert_panel_heading_visible(d)
     assert "bipolar disorder" not in d.inner_text().lower(),"Unexpected pre-consent clinical disclosure"
     box=d.bounding_box()
     assert box and box["x"]>=-1 and box["y"]>=-1 and box["x"]+box["width"]<=w+2 and box["y"]+box["height"]<=h+2,box
@@ -37,6 +47,7 @@ def test(browser,w,h,reduced=False):
     for name in ["calendar","cart","phone"]:
       d.locator("[data-obj='"+name+"']").click()
       assert "Observed" in d.inner_text()
+      assert_panel_heading_visible(d)
       if name=="phone":
         assert "Nia" not in d.inner_text() and "outdoor reading" not in d.inner_text(),"Private message exposed without permission"
       d.locator('[data-choice="0"]').click()
@@ -54,6 +65,7 @@ def test(browser,w,h,reduced=False):
     d.get_by_role("button",name="Say what you do not know").click()
     assert p.evaluate("BFLeena.state.ending")=="uncertain"
     assert "Still unknown" in d.inner_text()
+    assert_panel_heading_visible(d)
     assert p.evaluate("LW.S.flatIx")==original
     p.screenshot(path=str(ART/f"leena_{w}x{h}.png"))
     for _ in range(12):
@@ -93,10 +105,12 @@ def test_evidence(browser,w,h):
     d.get_by_role("button",name="Respect her space and leave").click()
     debrief=d.locator(".leena-debrief").inner_text()
     assert "You did not examine their details." in debrief,debrief
+    assert_panel_heading_visible(d)
     assert "No further personal account was shared." in debrief,debrief
     assert "pauses over Saturday" not in debrief and "October–November 2024" not in debrief,debrief
     p.screenshot(path=str(ART/f"leena_early_exit_{w}x{h}.png"))
     d.get_by_role("button",name="Replay Leena’s story").click()
+    assert_panel_heading_visible(d)
     # Examining is distinct from obtaining a reply.
     d.locator("[data-obj='calendar']").click()
     d.get_by_role("button",name="Return without asking").click()
