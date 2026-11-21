@@ -44,6 +44,17 @@ def check(browser, reduced):
         page.wait_for_function("!document.querySelector('#fade')?.classList.contains('on') && LW.S.busyWalk===false",timeout=7000)
         total=perf_counter()-t0
         assert page.evaluate("LWClass.stage==='noor' && LWClass.active"),"Classroom route was lost"
+        if reduced:
+            status=page.evaluate("""() => {
+                const t=document.querySelector('#toast');
+                return {text:t.textContent,role:t.getAttribute('role'),
+                        live:t.getAttribute('aria-live'),
+                        whiteSpace:getComputedStyle(t).whiteSpace,
+                        expanded:t.classList.contains('fade-caption')}
+            }""")
+            assert all(phrase in status["text"] for phrase in ("Outside","The street your window looks onto.")),status
+            assert status["role"]=="status" and status["live"]=="polite" and status["expanded"],status
+            assert status["whiteSpace"]=="normal",("Caption might be visually truncated",status)
         assert not errs,errs
         print(f"Measured guided Noor outside fade: reduced={reduced}, midway={mid:.3f}s, completed={total:.3f}s",flush=True)
         if reduced:
@@ -54,12 +65,30 @@ def check(browser, reduced):
         ctx.close()
 
 
+def check_authored_time_jump(browser):
+    # The reduced-motion status must preserve a real authored phase caption,
+    # such as Tomas's "Four months later — A Sunday morning."
+    ctx=browser.new_context(viewport={"width":1440,"height":900},reduced_motion="reduce")
+    page=ctx.new_page()
+    try:
+        page.goto(URL + ("&" if "?" in URL else "?") + "noopening=1",wait_until="load")
+        page.wait_for_function("typeof LW?.startFlat==='function'")
+        page.evaluate("() => { LWPrologue?.finish?.(); LW.closeModals(); LW.startFlat(1); LW.nextPhase(); }")
+        page.wait_for_function("LW.S.phaseIx===1")
+        caption=page.locator("#toast").inner_text()
+        assert "Four months later" in caption and "A Sunday morning" in caption,caption
+        assert not page.locator("#fade").evaluate("(el)=>el.classList.contains('on')")
+    finally:
+        ctx.close()
+
+
 if __name__=="__main__":
     with sync_playwright() as pw:
         browser=pw.chromium.launch(headless=True,executable_path=CHROME,args=["--no-sandbox"])
         try:
             check(browser,True)
             check(browser,False)
+            check_authored_time_jump(browser)
         finally:
             browser.close()
     print("GUIDED OUTSIDE FADE AUDIT PASSED")

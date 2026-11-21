@@ -80,6 +80,7 @@ p{line-height:1.5}
 .fade p{margin-top:8px;font-weight:600;opacity:.85}
 .toast{position:absolute;left:50%;top:10px;transform:translate(-50%,-140%);opacity:0;pointer-events:none;z-index:7;background:var(--ink);color:#fff;font-weight:800;font-size:13.5px;padding:8px 14px;border-radius:999px;transition:transform .4s cubic-bezier(.2,1.3,.4,1),opacity .3s;white-space:nowrap;max-width:calc(100% - 20px);overflow:hidden;text-overflow:ellipsis;display:flex;gap:8px;align-items:center}
 .toast.on{transform:translate(-50%,0);opacity:1}
+ .toast.fade-caption{max-width:min(520px,calc(100% - 20px));white-space:normal;overflow:visible;text-overflow:clip;border-radius:12px;line-height:1.4;font-weight:600;text-align:left}
 
 #noteFloat{position:absolute;left:8px;right:8px;bottom:8px;z-index:5;display:none;max-height:62%;overflow:auto;border-radius:14px;box-shadow:var(--shadow)}
 #noteFloat.on{display:block}
@@ -2835,12 +2836,21 @@ function startPhase(j){ exitQuiet(); walkReset(); const ph=S.flat.phases[j], pph
   if(pv) announce(pv,S.vars,pph.attName||ATT[pv.attune].name,ph.attName||ATT[S.vars.attune].name,pv.attune!==S.vars.attune||JSON.stringify(pph.body||0)!==JSON.stringify(ph.body||0),1700); }
 function floater(label,cls){ const sb=$('#simBtn'); if(!sb) return; const d=document.createElement('div'); d.className='floater '+(cls||''); d.textContent=label;
   d.style.left=sb.style.left; d.style.top=(parseFloat(sb.style.top)-84*VIEW.s)+'px'; $('#pins').appendChild(d); setTimeout(()=>d.remove(),2100); }
-function toast(txt,ic){ const t=$('#toast'); t.innerHTML=icon(ic||'clock')+esc(txt); t.classList.add('on'); clearTimeout(toast._t); toast._t=setTimeout(()=>t.classList.remove('on'),3200); }
+function toast(txt,ic){ const t=$('#toast'); t.classList.remove('fade-caption'); t.innerHTML=icon(ic||'clock')+esc(txt); t.classList.add('on'); clearTimeout(toast._t); toast._t=setTimeout(()=>t.classList.remove('on'),3200); }
 function fade(h,p,mid,end){ exitQuiet(); dirStop(); const f=$('#fade'); $('#fadeH').textContent=h; $('#fadeP').textContent=p||'';
   // The overlay and its hold are presentation only. Under reduced motion,
   // change the scene without a flash or timer. Story choices, meaningful
   // silences, consent checks and interaction gates stay with their owners.
-  if(calm()){ f.classList.remove('on'); mid&&mid(); end&&end(); return; }
+  if(calm()){
+    f.classList.remove('on'); mid&&mid(); end&&end();
+    // Fade captions sometimes include authored time jumps and outcomes.
+    // Keep their words in a non-modal aria-live status instead of dropping
+    // them or holding the whole scene inaccessible for a fixed delay.
+    const caption=[h,p].filter(Boolean).join(' — ');
+    if(caption){ const t=$('#toast'); toast(caption,'clock'); t.classList.add('fade-caption');
+      clearTimeout(toast._t); toast._t=setTimeout(()=>t.classList.remove('on','fade-caption'),Math.min(9000,Math.max(6000,caption.length*65))); }
+    return;
+  }
   f.classList.add('on');
   const q=pacing().transition; setTimeout(()=>{ mid&&mid(); },900*q); setTimeout(()=>{ f.classList.remove('on'); end&&end(); },2300*q); }
 function nextPhase(){ if(S.mode==='visit'){ nextVisit(); return; } let nx=S.phase.next; const chz=S.choices[S.flat.id]; if(nx&&nx.fadeAlt&&nx.fadeAlt[chz]) nx=Object.assign({},nx,{fade:nx.fadeAlt[chz]}); if(!nx||S.busyNext||S.busyWalk) return; closeMenu(); S.busyNext=true; const done=()=>{ S.busyNext=false; };
