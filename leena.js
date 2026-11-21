@@ -13,7 +13,7 @@
       ['Offer to sort with her','“You can put the returns in alphabetical order. I’ll do the labels,” Leena says. She sets the order of the task.'],
       ['Ask whether she wants help','“Not right now, thanks. I actually like doing the labels,” she says, and picks up the novel.']
     ]},
-    phone:{name:'Message',kind:'Friendship',observation:'A message from Nia asks whether Leena wants to join an outdoor reading on Sunday. Leena looks at the notification but has not replied.',choices:[
+    phone:{name:'Message',kind:'Private notification',observation:'Leena glances at a notification on her phone and sets it beside the cart. You cannot read the message.',choices:[
       ['Ask if she wants to reply now','“I’d rather send a real answer later than say yes because the phone is here,” she says.'],
       ['Offer to give her space','“Thanks. Nia knows I sometimes need time to answer,” Leena says.']
     ]}
