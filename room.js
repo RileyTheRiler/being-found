@@ -171,23 +171,30 @@
    rr(c,724,436,99,38,15,'#faf8ea');rr(c,825,436,101,38,15,'#faf8ea');
    if(lying){
      const head={...lying,face:'front',flip:1,lying:true};
+     const shirt=head.char?.shirt||'#4a978b',skin=head.char?.skin||'#c18d70';
+     // The shoulders and a short neck connect the pillow head to the body.
+     // The blanket then covers the lower torso in the same furniture pass.
+     rr(c,747,466,77,31,15,shirt);
+     rr(c,767,461,15,19,5,skin);
      c.save();c.translate(774,452);c.scale(1.65,1.65);c.translate(-774,-452);
      if(!window.BFArt?.drawHead?.(c,774,452,head,{S})){
-       const hair=head.char?.hair||'#423b36',skin=head.char?.skin||'#c18d70';
+       const hair=head.char?.hair||'#423b36';
        el(c,774,450,11,12,hair);el(c,774,454,8.7,9,skin);
        line(c,767,454,771,454,'#4a4644',.8);line(c,777,454,781,454,'#4a4644',.8);
      }
      c.restore();
    }
-   // Blanket covers the chin/shoulders, not the head or pillow.
-   rr(c,704,470,274,73,16,col);
+   // More of the upper shoulders remains visible above the duvet, but feet
+   // and torso remain covered. Furniture geometry is stable for empty beds.
+   rr(c,704,lying?480:470,274,lying?63:73,16,col);
    if(lying){
-     // Contour the bedding around a supine body, without a second sprite.
-     c.beginPath();c.moveTo(735,480);c.bezierCurveTo(748,468,793,468,809,482);
-     c.bezierCurveTo(816,492,817,506,813,520);c.lineTo(735,520);
-     c.bezierCurveTo(728,505,727,492,735,480);c.closePath();
-     c.fillStyle='rgba(255,255,255,.085)';c.fill();
-     c.strokeStyle='rgba(30,39,45,.09)';c.lineWidth=1.2;c.stroke();
+     // A continuous quiet rise in the duvet runs from shoulders toward feet.
+     c.beginPath();c.moveTo(784,490);c.bezierCurveTo(815,474,851,474,880,483);
+     c.bezierCurveTo(899,489,929,490,952,495);
+     c.bezierCurveTo(932,507,907,510,874,507);
+     c.bezierCurveTo(841,504,816,506,784,513);c.closePath();
+     c.fillStyle='rgba(255,255,255,.065)';c.fill();
+     c.strokeStyle='rgba(30,39,45,.08)';c.lineWidth=1.1;c.stroke();
    }
    rr(c,705,528,18,51,3,'#665d54');rr(c,953,528,18,51,3,'#665d54');
    for(let i=0;i<4;i++)line(c,706,506+i*6,968,506+i*6,'rgba(255,255,255,.09)',1.4);
