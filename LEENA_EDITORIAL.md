@@ -1,3 +1,9 @@
+# Issue #20 visual appraisal and pending independent review
+
+PR #19 baseline screenshot artifact `14699018942` shows a faceless CSS silhouette and detached controls over a flat bookshelf/window/desk. Decision: do **not** extend the global 2.5D renderer or hard-coded FLATS/VISITS for this optional vertical slice. Build a separate deterministic illustrated wide/mobile library source with recognizable facial features, clearly drawn cart/calendar/phone, anchored prop controls and an equally available nonspatial object list. Visual changes must be audited with real screenshots; passing programmatic overlap assertions alone is insufficient. Object details remain externally observable only; private phone content, psychiatric inference and the two dated voluntary recollections are unchanged. The independent paid bipolar lived-experience review and physical assistive-technology review are **still outstanding**. The prepared packet and CSV are not evidence of reviewer consent or results.
+
+---
+
 # Post-merge Leena editorial status — 8.5.4 (2026-11-21 UTC)
 
 **Merged gameplay PR:** [#19](https://github.com/RileyTheRiler/being-found/pull/19), code merge `f0d0b888405faabfdf4f9f1f26f1cb339aa08496` (after PR #18 `8f0463ad9c383fb1aaf0ced7fd81e63ba7e1686a`). Source-checked `main` at exactly `f0d0b888405faabfdf4f9f1f26f1cb339aa08496` after merge.
