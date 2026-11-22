@@ -32,6 +32,15 @@ def test(browser,w,h,reduced=False):
     assert d.get_attribute("aria-labelledby")=="leena-heading"
     assert p.evaluate("document.activeElement.closest('#bf-leena-dialog')!==null")
     assert d.locator(".leena-prop").count()==3
+    assert d.locator(".leena-index-action").count()==3
+    # Both illustrations are real generated SVG assets; no desktop crop on phones.
+    p.wait_for_function("""() => {
+      const im=document.querySelector('#bf-leena-dialog .leena-scene-picture img');
+      return !!im && im.complete && im.naturalWidth>0 && im.naturalHeight>0;
+    }""")
+    image_source=d.locator(".leena-scene-picture img").evaluate("(im)=>im.currentSrc")
+    assert image_source.endswith("leena_library_mobile.svg" if w<=600 else "leena_library_wide.svg"),image_source
+    d.locator(".leena-scene").screenshot(path=str(ART/f"leena_scene_{w}x{h}.png"))
     assert_panel_heading_visible(d)
     assert "bipolar disorder" not in d.inner_text().lower(),"Unexpected pre-consent clinical disclosure"
     box=d.bounding_box()
@@ -47,11 +56,13 @@ def test(browser,w,h,reduced=False):
     for name in ["calendar","cart","phone"]:
       d.locator("[data-obj='"+name+"']").click()
       assert "Observed" in d.inner_text()
+      assert d.locator(".leena-object-art svg").count()==1
       assert_panel_heading_visible(d)
       if name=="phone":
         assert "Nia" not in d.inner_text() and "outdoor reading" not in d.inner_text(),"Private message exposed without permission"
       d.locator('[data-choice="0"]').click()
       assert name in p.evaluate("BFLeena.state.seen")
+      assert d.locator(".leena-prop.is-inspected").count()>=1
       assert p.evaluate("document.documentElement.scrollWidth-innerWidth")<=2
     assert "3 / 3" in d.inner_text()
     d.get_by_role("button",name="Talk with Leena").click()
@@ -73,6 +84,14 @@ def test(browser,w,h,reduced=False):
       assert p.evaluate("document.activeElement.closest('#bf-leena-dialog')!==null"),"Modal Tab escaped"
     d.get_by_role("button",name="Replay Leena’s story").click()
     assert p.evaluate("BFLeena.state.seen.length")==0
+    # Equivalent direct keyboard route without spatial aim.
+    accessible=d.locator('[data-thing="calendar"]')
+    accessible.focus()
+    p.keyboard.press("Enter")
+    assert d.locator("#leena-heading").inner_text()=="Calendar"
+    assert p.evaluate("BFLeena.state.inspected")==["calendar"]
+    assert d.locator(".leena-object-art").count()==1
+    d.get_by_role("button",name="Return without asking").click()
     d.get_by_role("button",name="Respect her space and leave").click()
     assert p.evaluate("BFLeena.state.ending")=="leave"
     d.get_by_role("button",name="Replay Leena’s story").click()
