@@ -40,7 +40,9 @@ def test(browser,w,h,reduced=False):
     }""")
     image_source=d.locator(".leena-scene-picture img").evaluate("(im)=>im.currentSrc")
     assert image_source.endswith("leena_library_mobile.svg" if w<=600 else "leena_library_wide.svg"),image_source
+    assert_panel_heading_visible(d)  # Initial transition, before screenshot scrolls into view.
     d.locator(".leena-scene").screenshot(path=str(ART/f"leena_scene_{w}x{h}.png"))
+    d.evaluate("(el)=>{el.scrollTop=0}")  # Screenshot capture scrolls tall phone dialogs.
     assert_panel_heading_visible(d)
     assert "bipolar disorder" not in d.inner_text().lower(),"Unexpected pre-consent clinical disclosure"
     box=d.bounding_box()
