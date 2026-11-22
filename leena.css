@@ -34,9 +34,9 @@
 .leena-index-action{border:1px solid #91aca6;background:#f2f5ec;color:#294c51;border-radius:999px;min-height:44px;padding:8px 13px;font-size:13px;font-weight:700}
 .leena-index-action:hover{background:#d9e9e1}
 .leena-object-art{max-width:420px;margin:3px 0 18px;padding:10px;border:1px solid #a2bdb3;border-radius:13px;background:#e3eee7;text-align:center}
-.leena-object-art svg{display:block;width:100%;max-height:170px}
-.leena-object-art figcaption{margin-top:5px;color:#365e61;font-size:12px;font-weight:700}
-.leena-object-art .leena-art-motion{transform-origin:50% 50%;animation:leena-object-settle .45s ease-out both}
+.leena-object-art picture,.leena-object-art img{display:block;width:100%}
+.leena-object-art img{aspect-ratio:640/380;object-fit:cover;border-radius:8px;animation:leena-object-settle .35s ease-out both}
+.leena-object-art figcaption{margin-top:7px;color:#365e61;font-size:12px;font-weight:700}
 @keyframes leena-object-settle{from{opacity:.65;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
 .leena-reading{background:#fffefa;border:1px solid #d1dcd6;border-radius:16px;padding:clamp(15px,2.8vw,24px);font-size:16px;line-height:1.6}
 .leena-reading p{margin:0 0 14px}
