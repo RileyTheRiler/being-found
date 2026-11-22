@@ -58,8 +58,16 @@ def test(browser,w,h,reduced=False):
     for name in ["calendar","cart","phone"]:
       d.locator("[data-obj='"+name+"']").click()
       assert "Observed" in d.inner_text()
-      assert d.locator(".leena-object-art svg").count()==1
+      assert d.locator(".leena-object-art img").count()==1
+      p.wait_for_function("""() => {
+        const im=document.querySelector('#bf-leena-dialog .leena-object-art img');
+        return !!im && im.complete && im.naturalWidth===640 && im.naturalHeight===380;
+      }""")
+      focus_source=d.locator(".leena-object-art img").evaluate("(im)=>im.currentSrc")
+      assert focus_source.endswith("leena_focus_"+name+("_mobile.svg" if w<=600 else "_wide.svg")),focus_source
+      assert "Closer view of the visible" in d.locator(".leena-object-art figcaption").inner_text()
       assert_panel_heading_visible(d)
+      d.locator(".leena-object-art").screenshot(path=str(ART/f"leena_object_{name}_{w}x{h}.png"))
       if name=="phone":
         assert "Nia" not in d.inner_text() and "outdoor reading" not in d.inner_text(),"Private message exposed without permission"
       d.locator('[data-choice="0"]').click()
@@ -92,7 +100,7 @@ def test(browser,w,h,reduced=False):
     p.keyboard.press("Enter")
     assert d.locator("#leena-heading").inner_text()=="Calendar"
     assert p.evaluate("BFLeena.state.inspected")==["calendar"]
-    assert d.locator(".leena-object-art").count()==1
+    assert d.locator(".leena-object-art img").count()==1
     d.get_by_role("button",name="Return without asking").click()
     d.get_by_role("button",name="Respect her space and leave").click()
     assert p.evaluate("BFLeena.state.ending")=="leave"
