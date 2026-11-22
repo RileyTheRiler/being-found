@@ -20,5 +20,35 @@ function scene(mobile){
  const signage=`<g><rect x="${mobile?18:40}" y="${mobile?12:15}" width="${mobile?192:272}" height="28" rx="14" fill="#3e6768"/><text x="${mobile?114:176}" y="${mobile?31:34}" fill="#f4f1e4" text-anchor="middle" font-size="${mobile?12:15}" font-family="sans-serif" font-weight="700" letter-spacing="1.2">COMMUNITY LIBRARY</text></g>`;
  return `<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="Illustrated community library with Leena, a wall calendar, return cart, and private phone"><title>Leena at the community library</title>${back}${signage}${positions.join("")}</svg>`;
 }
-function generate(dir){const fs=require("node:fs"),path=require("node:path");fs.writeFileSync(path.join(dir,"leena_library_wide.svg"),scene(false),"utf8");fs.writeFileSync(path.join(dir,"leena_library_mobile.svg"),scene(true),"utf8");}
+// Crops retain the actual library composition rather than introducing detached prop art.
+// The outline marks the visitor's focus only; it does not change the object or Leena.
+function focusScene(mobile,id){
+ const frames=mobile?{
+  calendar:{box:[0,36,304,181],outline:[16,61,198,167]},
+  cart:{box:[4,341,314,187],outline:[37,362,161,167]},
+  phone:{box:[290,385,188,112],outline:[372,421,56,77]}
+ }:{
+  calendar:{box:[57,81,338,201],outline:[97,101,196,164]},
+  cart:{box:[638,267,354,210],outline:[701,286,160,182]},
+  phone:{box:[811,339,182,108],outline:[883,359,50,75]}
+ };
+ const focus=frames[id];if(!focus)throw Error('Unknown library focus object '+id);
+ const [x,y,w,h]=focus.box,[rx,ry,rw,rh]=focus.outline;
+ const W=mobile?480:1000,H=mobile?580:500;
+ return scene(mobile)
+  .replace(`width="${W}" height="${H}" viewBox="0 0 ${W} ${H}"`,
+    `width="640" height="380" viewBox="${x} ${y} ${w} ${h}"`)
+  .replace('<title>Leena at the community library</title>',
+    '<title>Closer view of the selected library object</title>')
+  .replace('</svg>',`<rect x="${rx}" y="${ry}" width="${rw}" height="${rh}" rx="12" fill="none" stroke="#fffaf0" stroke-width="7" opacity=".92"/><rect x="${rx}" y="${ry}" width="${rw}" height="${rh}" rx="12" fill="none" stroke="#276977" stroke-width="3"/></svg>`);
+}
+function generate(dir){
+ const fs=require("node:fs"),path=require("node:path");
+ for(const mobile of [false,true]){
+  const suffix=mobile?'mobile':'wide';
+  fs.writeFileSync(path.join(dir,`leena_library_${suffix}.svg`),scene(mobile),"utf8");
+  for(const id of ['calendar','cart','phone'])
+   fs.writeFileSync(path.join(dir,`leena_focus_${id}_${suffix}.svg`),focusScene(mobile,id),"utf8");
+ }
+}
 module.exports=generate;
