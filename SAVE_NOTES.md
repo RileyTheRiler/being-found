@@ -1,3 +1,9 @@
+## Issue #20 — Leena library visual vertical slice (pending review)
+
+- Separate branch `feat/issue-20-leena-illustrated-library` from `c42386eb7d632dcf3106e81e33879e29e92d679b`. Source: `leena_library_art.js` (deterministic wide/mobile illustrative SVGs emitted by `postbuild.js`), isolated `leena.js` and `leena.css`, expanded `qa_leena.py`.
+- Physical calendar/cart/phone artwork and illustrated Leena with visible face and proportional body. Ordinary observation/response only; nonspatial keyboard controls remain equivalent to hotspots. No new psychiatric claims, disclosure conditions, FLATS/VISITS or save mutation.
+- Pending: full exact-head Actions, 5-viewport screenshot comparison with PR #19, preview SHA and production merge gates. Human compensated bipolar lived-experience, TalkBack, VoiceOver, switch access and formative pilot still unperformed.
+
 # 8.5.4 production receipt — merged PR #19 (2026-11-21 UTC)
 
 **Merged gameplay PR:** [#19](https://github.com/RileyTheRiler/being-found/pull/19), code merge `f0d0b888405faabfdf4f9f1f26f1cb339aa08496` (after PR #18 `8f0463ad9c383fb1aaf0ced7fd81e63ba7e1686a`). Source-checked `main` at exactly `f0d0b888405faabfdf4f9f1f26f1cb339aa08496` after merge.

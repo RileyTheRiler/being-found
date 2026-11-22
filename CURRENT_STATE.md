@@ -1,3 +1,9 @@
+# Issue #20 implementation branch — not yet released
+
+Focused `feat/issue-20-leena-illustrated-library` branch, based on verified `main` `c42386eb7d632dcf3106e81e33879e29e92d679b`, replaces the optional Leena CSS silhouette with editable generated SVG art in two responsive compositions. Adds a list of ordinary object controls alongside anchored visual hotspots, small prop inspection illustrations and browser assertions. This is **not** evidence of technical QA, lived-experience validation, a merge or production release. Verify PR head Actions and visual artifacts before promotion. No changes to main renderer, FLATS/VISITS, guided protections, or saves.
+
+---
+
 # Current verified release — 8.5.4 Leena interaction integrity (2026-11-21 UTC)
 
 **Merged gameplay PR:** [#19](https://github.com/RileyTheRiler/being-found/pull/19), code merge `f0d0b888405faabfdf4f9f1f26f1cb339aa08496` (after PR #18 `8f0463ad9c383fb1aaf0ced7fd81e63ba7e1686a`). Source-checked `main` at exactly `f0d0b888405faabfdf4f9f1f26f1cb339aa08496` after merge.

@@ -24,6 +24,15 @@
   function escapeHTML(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
   function title(heading,sub){return '<header class="leena-heading"><div class="leena-eyebrow">Leena · fictional person · optional Rooms story</div><h2 id="leena-heading" tabindex="-1">'+heading+'</h2><p>'+sub+'</p></header>';}
   function top(){return '<div class="leena-top"><span>Being Found / Optional story</span><button type="button" class="leena-close" data-leena-act="exit">Close and return to Rooms</button></div>';}
+  // Decorative object detail: no image implies access to Leena's private thoughts or messages.
+  function objectArt(id){
+    const details={
+      calendar:'<rect x="95" y="16" width="130" height="135" rx="8" fill="#faf5e6" stroke="#547470" stroke-width="6"/><path d="M97 45H223" stroke="#c48a75" stroke-width="28"/><text x="160" y="47" text-anchor="middle" font-size="14" font-weight="bold" fill="#263e42">NOV 2026</text><path d="M108 72H212M108 94H212M108 116H212M135 57V142M163 57V142M191 57V142" fill="none" stroke="#a9b8aa" stroke-width="2"/><path class="leena-art-motion" d="M202 141l12-12v12Z" fill="#ebe5d3" stroke="#a9b8aa" stroke-width="2"/>',
+      cart:'<path d="M89 32H229V143H89Z" fill="#6f918b" stroke="#416164" stroke-width="8"/><path d="M82 40H235M84 88H234M86 143H233" stroke="#395d61" stroke-width="10"/><circle cx="93" cy="169" r="12" fill="#344951"/><circle cx="227" cy="169" r="12" fill="#344951"/><g class="leena-art-motion"><rect x="108" y="47" width="18" height="34" fill="#c99e85"/><rect x="133" y="42" width="16" height="39" fill="#e6d6b1"/><rect x="155" y="49" width="17" height="32" fill="#ab7670"/><rect x="181" y="44" width="16" height="37" fill="#578783"/><rect x="205" y="48" width="16" height="33" fill="#dfbb8b"/></g><path d="M105 104H215" stroke="#e3d5b1" stroke-width="13" stroke-dasharray="14 5"/>',
+      phone:'<ellipse cx="160" cy="177" rx="63" ry="10" fill="#44636a" opacity=".17"/><g class="leena-art-motion"><rect x="122" y="15" width="76" height="150" rx="16" fill="#293f4b" stroke="#20353c" stroke-width="6"/><rect x="130" y="28" width="60" height="110" rx="6" fill="#9ab9b1"/><circle cx="160" cy="81" r="20" fill="#d5e6d0"/><path d="M145 111H175" stroke="#688b84" stroke-width="6" stroke-linecap="round"/><circle cx="160" cy="152" r="4" fill="#e9ede1"/></g>'
+    };
+    return '<figure class="leena-object-art" aria-label="Illustration of the visible '+objects[id].name.toLowerCase()+'"><svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 190"><rect width="320" height="190" rx="12" fill="#d9e7dc"/><path d="M0 160H320V190H0Z" fill="#d3b79d"/>'+details[id]+'</svg><figcaption>Visible object · Leena decides what to share</figcaption></figure>';
+  }
   function render(){
     if(!dlg)return;
     let content='';
@@ -31,18 +40,18 @@
     if(view==='room'){
       content=title('A different Saturday',dateCurrent+' · Community library · an ordinary workday')+
        '<p class="leena-lead">You are visiting Leena at the community library. She is deciding what to do this weekend. Notice what is visible before drawing conclusions.</p>'+
-       '<section class="leena-scene" aria-label="Library room with three interactive objects">'+
-       '<div class="leena-window" aria-hidden="true"><span></span></div><div class="leena-books" aria-hidden="true"></div><div class="leena-desk" aria-hidden="true"></div>'+
-       '<div class="leena-person" aria-hidden="true"><i></i></div>'+
-       Object.entries(objects).map(([id,o])=>'<button type="button" class="leena-prop leena-'+id+'" data-leena-act="object" data-obj="'+id+'"><strong>'+o.name+'</strong><small>'+o.kind+(seen[id]?' · visited':'')+'</small></button>').join('')+
+       '<section class="leena-scene" aria-label="Illustrated library scene with object buttons; an equivalent list follows">'+
+       '<picture class="leena-scene-picture" aria-hidden="true"><source media="(max-width:600px)" srcset="leena_library_mobile.svg"><img src="leena_library_wide.svg" alt="" decoding="async"></picture>'+
+       Object.entries(objects).map(([id,o])=>'<button type="button" class="leena-prop leena-'+id+(inspected[id]?' is-inspected':'')+'" data-leena-act="object" data-obj="'+id+'"><strong>'+o.name+'</strong><small>'+(inspected[id]?'Inspected':'Inspect')+'</small></button>').join('')+
        '</section>'+
+       '<nav class="leena-object-index" aria-label="Nonspatial library object controls"><span>Object list</span>'+Object.entries(objects).map(([id,o])=>'<button type="button" class="leena-index-action" data-leena-act="object-list" data-thing="'+id+'">'+o.name+(inspected[id]?' · inspected':'')+'</button>').join('')+'</nav>'+
        '<div class="leena-reading"><p class="leena-spoken" role="status">'+(notice?escapeHTML(notice):'Leena: “I’ve got the weekend to think about. The books can wait five minutes.”')+'</p><p>You may examine the three objects in any order, talk with Leena now, or leave. No interaction is required to continue.</p>'+
        '<p class="leena-progress" aria-label="'+completed+' of 3 ordinary interactions explored">'+completed+' / 3 interactions explored</p>'+
        '<div class="leena-actions">'+b('Talk with Leena','continue')+b('Respect her space and leave','leave')+'</div></div>';
     } else if(view==='object'){
       const o=objects[active];
       content=title(o.name,dateCurrent+' · Something you can observe')+
-       '<div class="leena-reading"><h3>Observed</h3><p>'+escapeHTML(o.observation)+'</p><h3>Choose how to respond</h3><div class="leena-actions">'+
+       objectArt(active)+'<div class="leena-reading"><h3>Observed</h3><p>'+escapeHTML(o.observation)+'</p><h3>Choose how to respond</h3><div class="leena-actions">'+
        o.choices.map((c,i)=>b(escapeHTML(c[0]),'choice','data-choice="'+i+'"')).join('')+
        b('Return without asking','return')+'</div></div>';
     } else if(view==='conversation'){
@@ -135,7 +144,7 @@
         if(action==='exit'){close();return;}
         if(action==='replay'){reset();render();return;}
         if(action==='leave'){end('leave');return;}
-        if(action==='object'){active=button.dataset.obj;inspected[active]=true;view='object';}
+        if(action==='object'||action==='object-list'){active=button.dataset.obj||button.dataset.thing;inspected[active]=true;view='object';}
         else if(action==='return'){view='room';notice='Leena decides what to do next; a visitor does not need to prompt her.';}
         else if(action==='choice'){const o=objects[active];seen[active]=o.choices[Number(button.dataset.choice)][1];notice=seen[active];view='room';}
         else if(action==='continue'){disclosed=true;view='conversation';}
