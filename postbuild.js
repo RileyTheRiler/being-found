@@ -13,6 +13,7 @@ for(const [name,regex] of labels){
 for(const [src,dst] of [
  ['shell.js','bf83.js'],['shell.css','bf83.css'],['phase2.css','bf835.css'],
  ['phase3.js','bf837.js'],['phase3.css','bf837.css'],['title_access.js','title_access.js'],['a11y_853.css','a11y_853.css'],['leena.js','leena.js'],['leena.css','leena.css']])fs.copyFileSync(p.join(__dirname,src),p.join(dir,dst));
+require('./leena_library_art.js')(dir);
 const version=require('./package.json').version;
 const extra=['bf83','bf835','bf837','a11y_853','leena'].map(n=>`<link rel="stylesheet" href="${n}.css?v=${version}">`).join('')+['bf83','bf837','title_access','leena'].map(n=>`<script defer src="${n}.js?v=${version}"></script>`).join('');
 const at=html.toLowerCase().indexOf('</head>');html=at>=0?html.slice(0,at)+extra+html.slice(at):extra+html;
