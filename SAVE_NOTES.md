@@ -1,3 +1,21 @@
+# Being Found 8.5.4C — Leena scene-linked inspection (2026-11-22 UTC)
+
+**Gameplay PR:** [#25](https://github.com/RileyTheRiler/being-found/pull/25) merged at `f3e2bd924f6c6176ed989d6591abb27b1b3237b7` from exact reviewed PR head `aa809be96d5b85278d86e942468709453cf82abf` (baseline main `1e4bea1d2bb619c84c3808de0db2d26e359c2c8c`). A four-file change in `leena.js`, `leena.css`, `leena_library_art.js`, `qa_leena.py`; no narrative or global game engine changes.
+
+**Exact PR-head QA:** [quality Actions #45054232402](https://github.com/RileyTheRiler/being-found/actions/runs/45054232402) **completed success, 46/46 steps**; [reduced-motion #45054232374](https://github.com/RileyTheRiler/being-found/actions/runs/45054232374) **success**. Preview Vercel `dpl_4f1r7ciiEP94pqQeyE5ytzfBheM1` READY at identical head SHA.
+
+**Visual evidence:** [QA artifact #14766672396](https://github.com/RileyTheRiler/being-found/actions/runs/45054232402/artifacts/14766672396): five viewport room screenshots (360×640, 390×844, 820×1180, 1180×820, 1440×900) and 15 object detail screenshots examined. Calendar, cart and private phone now use crops from the actual generated illustrated library, with an outline marking visual focus. No new obstructing overlay; normal phone dialog scrolling remains necessary. The phone still exposes no private message text. These are **illustrated close views**, not a walkable 3D scene.
+
+**Post-merge deployment:** Vercel production `dpl_84iAyn7zGknaGBwe2s98Ci5moLqW` READY, target production, exact `githubCommitSha=f3e2bd924f6c6176ed989d6591abb27b1b3237b7`; a fresh alias lookup confirmed `being-found.vercel.app` points to this deployment. **Main quality:** Pending: post-merge main quality Actions #45055319374 was still running when this receipt was prepared. Do not label final release verified until it concludes successfully.
+
+**Regressions and boundaries:** Leena controls support the same 44px nonspatial object list and visual targets, keyboard/focus, mobile heading, reduced motion, voluntary talk/refusal, independent dated recollections, replay, privacy and witness-aware debrief. The complete exact-head quality suite passed the Noor→Dele→Walt route, equal input effort, consent, saves, flats/visits, character animations, axe and other checks. No psychiatric narrative, clinical assumption, score or save schema was changed.
+
+**Human evidence limits:** Fictional classroom **preview only**; independent compensated bipolar lived-experience review, physical TalkBack/VoiceOver/switch-access and formative participant testing have **not** occurred. `reviews/LEENA_REVIEW_PACKET.md` and empty `reviews/leena_feedback_log.csv` are preparation, not human findings. No validation or pilot approval claim.
+
+**Next:** Finish and record the post-merge main Actions conclusion, then verify any subsequent documentation-only merge/production independently. Subsequent development should prioritize compensated independent review and real assistive-technology/formative testing before claiming classroom suitability.
+
+---
+
 # 8.5.4B Leena illustrated-library technical release receipt — 2026-11-22 UTC
 
 **Gameplay merge:** [PR #23](https://github.com/RileyTheRiler/being-found/pull/23) merged to `main` at `50fb98c5114e7e0341a4d2bf844d33a6c03a77d3` from exact reviewed PR head `74239ff5ec6d46d38a9ed8e4d1a2f073d6793a02` (starting main `c42386eb7d632dcf3106e81e33879e29e92d679b`).
