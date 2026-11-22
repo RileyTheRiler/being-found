@@ -1,3 +1,9 @@
+# Issue #20 — illustrated Leena library PR (verification pending)
+
+**Branch:** `feat/issue-20-leena-illustrated-library`, based on `main` `c42386eb7d632dcf3106e81e33879e29e92d679b`. A separately authored wide and mobile SVG library, distinct faced character, calendar/cart/phone artwork, small object responses and equivalent keyboard-accessible object list are implemented in `leena_library_art.js`, `postbuild.js`, `leena.js` and `leena.css`. `qa_leena.py` checks generated artwork, five viewport screenshot captures, nonspatial keyboard entry, replay and existing witness-aware branches. This is a **review branch only** until exact-head full quality Actions, screenshot scrutiny, Vercel preview and post-merge verification succeed. No main renderer, FLATS/VISITS, save or guided path changes. All independent review and physical assistive-technology testing remain outstanding; classroom preview only.
+
+---
+
 # 8.5.4 release receipt — Leena interaction integrity (2026-11-21 UTC)
 
 **Merged gameplay PR:** [#19](https://github.com/RileyTheRiler/being-found/pull/19), code merge `f0d0b888405faabfdf4f9f1f26f1cb339aa08496` (after PR #18 `8f0463ad9c383fb1aaf0ced7fd81e63ba7e1686a`). Source-checked `main` at exactly `f0d0b888405faabfdf4f9f1f26f1cb339aa08496` after merge.
