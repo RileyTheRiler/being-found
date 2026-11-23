@@ -39,7 +39,7 @@ def test(browser,w,h,reduced=False):
       d.locator('[data-thing="'+name+'"]').focus()
       assert d.locator(".leena-scene").get_attribute("data-preview")==name
       # Labels should sit beside the object artwork rather than hide the object.
-      overlap=d.evaluate("""(name)=>{
+      overlap=d.evaluate("""(dialog,name)=>{
         const a=document.querySelector('.leena-prop.leena-'+name).getBoundingClientRect();
         const b=document.querySelector('.leena-outline-'+name).getBoundingClientRect();
         const x=Math.max(0,Math.min(a.right,b.right)-Math.max(a.left,b.left));
