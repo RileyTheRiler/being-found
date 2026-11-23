@@ -33,6 +33,24 @@ def test(browser,w,h,reduced=False):
     assert p.evaluate("document.activeElement.closest('#bf-leena-dialog')!==null")
     assert d.locator(".leena-prop").count()==3
     assert d.locator(".leena-index-action").count()==3
+    assert d.locator(".leena-scene-outline").count()==3
+    # A focusable list control previews the same physical artwork as its hotspot.
+    for name in ["calendar","cart","phone"]:
+      d.locator('[data-thing="'+name+'"]').focus()
+      assert d.locator(".leena-scene").get_attribute("data-preview")==name
+      # Labels should sit beside the object artwork rather than hide the object.
+      overlap=d.evaluate("""(dialog,name)=>{
+        const a=document.querySelector('.leena-prop.leena-'+name).getBoundingClientRect();
+        const b=document.querySelector('.leena-outline-'+name).getBoundingClientRect();
+        const x=Math.max(0,Math.min(a.right,b.right)-Math.max(a.left,b.left));
+        const y=Math.max(0,Math.min(a.bottom,b.bottom)-Math.max(a.top,b.top));
+        return x*y;
+      }""",name)
+      assert overlap<1,(w,h,name,overlap)
+    d.locator("#leena-heading").focus()
+    assert d.locator(".leena-scene").get_attribute("data-preview")==""
+    if reduced:
+      assert d.locator(".leena-outline-calendar").evaluate("(el)=>getComputedStyle(el).transitionDuration")=="0s"
     # Both illustrations are real generated SVG assets; no desktop crop on phones.
     p.wait_for_function("""() => {
       const im=document.querySelector('#bf-leena-dialog .leena-scene-picture img');
@@ -73,8 +91,12 @@ def test(browser,w,h,reduced=False):
       d.locator('[data-choice="0"]').click()
       assert name in p.evaluate("BFLeena.state.seen")
       assert d.locator(".leena-prop.is-inspected").count()>=1
+      assert d.locator(".leena-outline-"+name+".is-inspected").count()==1
+      assert "inspected" in d.locator('[data-thing="'+name+'"]').inner_text().lower()
       assert p.evaluate("document.documentElement.scrollWidth-innerWidth")<=2
     assert "3 / 3" in d.inner_text()
+    d.locator(".leena-scene").screenshot(path=str(ART/f"leena_scene_feedback_{w}x{h}.png"))
+    d.evaluate("(el)=>{el.scrollTop=0}")
     d.get_by_role("button",name="Talk with Leena").click()
     assert "I live with bipolar disorder" in d.inner_text()
     d.get_by_role("button",name="Ask permission to hear about earlier periods").click()
@@ -94,6 +116,7 @@ def test(browser,w,h,reduced=False):
       assert p.evaluate("document.activeElement.closest('#bf-leena-dialog')!==null"),"Modal Tab escaped"
     d.get_by_role("button",name="Replay Leena’s story").click()
     assert p.evaluate("BFLeena.state.seen.length")==0
+    assert d.locator(".leena-scene-outline.is-inspected").count()==0
     # Equivalent direct keyboard route without spatial aim.
     accessible=d.locator('[data-thing="calendar"]')
     accessible.focus()

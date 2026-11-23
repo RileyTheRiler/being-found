@@ -43,6 +43,7 @@
        '<p class="leena-lead">You are visiting Leena at the community library. She is deciding what to do this weekend. Notice what is visible before drawing conclusions.</p>'+
        '<section class="leena-scene" aria-label="Illustrated library scene with object buttons; an equivalent list follows">'+
        '<picture class="leena-scene-picture" aria-hidden="true"><source media="(max-width:600px)" srcset="leena_library_mobile.svg"><img src="leena_library_wide.svg" alt="" decoding="async"></picture>'+
+       Object.keys(objects).map(id=>'<span class="leena-scene-outline leena-outline-'+id+(inspected[id]?' is-inspected':'')+'" aria-hidden="true"></span>').join('')+
        Object.entries(objects).map(([id,o])=>'<button type="button" class="leena-prop leena-'+id+(inspected[id]?' is-inspected':'')+'" data-leena-act="object" data-obj="'+id+'"><strong>'+o.name+'</strong><small>'+(inspected[id]?'Inspected':'Inspect')+'</small></button>').join('')+
        '</section>'+
        '<nav class="leena-object-index" aria-label="Nonspatial library object controls"><span>Object list</span>'+Object.entries(objects).map(([id,o])=>'<button type="button" class="leena-index-action" data-leena-act="object-list" data-thing="'+id+'">'+o.name+(inspected[id]?' · inspected':'')+'</button>').join('')+'</nav>'+
@@ -138,6 +139,19 @@
         e.preventDefault();controls[next].focus({preventScroll:true});
       });
       dlg.addEventListener('close',()=>{if(entry?.isConnected)entry.focus({preventScroll:true});});
+      // Spatial targets and nonspatial list preview the same visible object.
+      // This is a visual locator only: no new observation, choice or disclosure.
+      function preview(el){
+        const control=el?.closest?.('button[data-leena-act="object"],button[data-leena-act="object-list"]');
+        const scene=dlg.querySelector('.leena-scene');
+        if(scene)scene.dataset.preview=control?.dataset.obj||control?.dataset.thing||'';
+      }
+      dlg.addEventListener('focusin',e=>preview(e.target));
+      dlg.addEventListener('mouseover',e=>preview(e.target));
+      dlg.addEventListener('mouseout',e=>{
+        if(!e.relatedTarget?.closest?.('button[data-leena-act="object"],button[data-leena-act="object-list"]'))
+          preview(document.activeElement);
+      });
       dlg.addEventListener('click',e=>{
         if(e.target===dlg)return;
         const button=e.target.closest('button[data-leena-act]');if(!button||!dlg.contains(button))return;
