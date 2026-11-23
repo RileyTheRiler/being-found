@@ -142,7 +142,11 @@
       // Spatial targets and nonspatial list preview the same visible object.
       // This is a visual locator only: no new observation, choice or disclosure.
       function preview(el){
-        const control=el?.closest?.('button[data-leena-act="object"],button[data-leena-act="object-list"]');
+        const selector='button[data-leena-act="object"],button[data-leena-act="object-list"]';
+        // A keyboard/switch-selected object takes precedence over incidental hover
+        // caused by layout scroll under the stationary mouse pointer.
+        const focused=document.activeElement?.closest?.(selector);
+        const control=focused||el?.closest?.(selector);
         const scene=dlg.querySelector('.leena-scene');
         if(scene)scene.dataset.preview=control?.dataset.obj||control?.dataset.thing||'';
       }
