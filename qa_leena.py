@@ -37,7 +37,12 @@ def test(browser,w,h,reduced=False):
     # A focusable list control previews the same physical artwork as its hotspot.
     for name in ["calendar","cart","phone"]:
       d.locator('[data-thing="'+name+'"]').focus()
-      assert d.locator(".leena-scene").get_attribute("data-preview")==name
+      actual=d.locator(".leena-scene").get_attribute("data-preview")
+      assert actual==name,(w,h,name,actual)
+      # Pointer hover must not overrule a focused nonspatial control.
+      other="cart" if name=="calendar" else "calendar"
+      d.locator('[data-obj="'+other+'"]').dispatch_event("mouseover")
+      assert d.locator(".leena-scene").get_attribute("data-preview")==name,(w,h,name,other)
       # Labels should sit beside the object artwork rather than hide the object.
       overlap=d.evaluate("""(dialog,name)=>{
         const a=document.querySelector('.leena-prop.leena-'+name).getBoundingClientRect();
