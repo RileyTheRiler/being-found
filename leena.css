@@ -21,14 +21,23 @@
 .leena-scene{position:relative;isolation:isolate;width:100%;aspect-ratio:2/1;overflow:hidden;border:1px solid #9ab2ac;border-radius:18px;margin:16px 0 8px;background:#c9dbd1;box-shadow:0 5px 18px #294b4930}
 .leena-scene-picture,.leena-scene-picture img{display:block;position:absolute;inset:0;width:100%;height:100%}
 .leena-scene-picture img{object-fit:fill}
+/* Outlines track the illustrated objects, not the floating button labels. */
+.leena-scene-outline{position:absolute;z-index:1;pointer-events:none;border:3px solid transparent;border-radius:10px;transition:border-color .16s ease,box-shadow .16s ease}
+.leena-scene-outline.is-inspected{border-color:#377569a8;box-shadow:0 0 0 2px #fff8e4b5}
+.leena-scene[data-preview="calendar"] .leena-outline-calendar,
+.leena-scene[data-preview="cart"] .leena-outline-cart,
+.leena-scene[data-preview="phone"] .leena-outline-phone{border-color:#1b5b68;box-shadow:0 0 0 3px #fff9df,0 0 0 6px #36777d}
+.leena-outline-calendar{left:9.8%;top:20.4%;width:19.5%;height:32.6%}
+.leena-outline-cart{left:69.2%;top:57.6%;width:16.5%;height:34.3%}
+.leena-outline-phone{left:88.1%;top:71.4%;width:5.8%;height:16%}
 .leena-prop{position:absolute;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;text-align:center;background:#fffef4f2;border:2px solid #3c686c;border-radius:12px;box-shadow:0 3px 9px #18363847;color:#203e43;padding:7px 9px;min-height:52px;min-width:110px;max-width:34%;line-height:1.15;transition:background-color .16s ease,transform .16s ease}
 .leena-prop:hover{background:#ecf4ea;transform:translateY(-2px)}
 .leena-prop.is-inspected{background:#e0efe7;border-color:#327568}
 .leena-prop strong{font-size:14px;font-weight:800}
 .leena-prop small{font-size:11px}
-.leena-calendar{left:9%;top:42%}
-.leena-cart{right:13%;top:61%}
-.leena-phone{right:2%;bottom:8%}
+.leena-calendar{left:9%;top:56%}
+.leena-cart{right:16%;top:43%}
+.leena-phone{right:2%;top:55%}
 .leena-object-index{display:flex;align-items:center;flex-wrap:wrap;gap:7px;margin:0 0 14px;font-size:13px;color:#3b6060}
 .leena-object-index>span{font-weight:800;margin-right:3px}
 .leena-index-action{border:1px solid #91aca6;background:#f2f5ec;color:#294c51;border-radius:999px;min-height:44px;padding:8px 13px;font-size:13px;font-weight:700}
@@ -63,9 +72,12 @@
  .leena-prop{min-width:100px;min-height:48px;max-width:43%;padding:5px 7px}
  .leena-prop strong{font-size:13px}
  .leena-prop small{font-size:10px}
- .leena-calendar{left:3%;top:24%}
- .leena-cart{left:2%;right:auto;top:auto;bottom:12%}
- .leena-phone{right:2%;bottom:10%}
+ .leena-outline-calendar{left:3.8%;top:10.7%;width:40.8%;height:28%}
+ .leena-outline-cart{left:7.9%;top:62%;width:35%;height:30%}
+ .leena-outline-phone{left:78.2%;top:72.6%;width:11.1%;height:15.2%}
+ .leena-calendar{left:45%;top:19%}
+ .leena-cart{left:2%;right:auto;top:43%;bottom:auto}
+ .leena-phone{right:2%;top:55%;bottom:auto}
  .leena-object-index{gap:6px;font-size:12px}
  .leena-object-index>span{width:100%}
  .leena-index-action{flex:1 1 28%;padding:8px 6px;font-size:12px}
