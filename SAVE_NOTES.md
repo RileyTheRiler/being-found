@@ -1,3 +1,13 @@
+# 8.5.4E — Leena object inspection feedback (review branch, 2026-11-24)
+
+**Baseline:** `main` `c8b2840d167fa6fd2d6f879b867033ad887be950` (merged PR #29), Vercel production `dpl_CrEm9gmiZTy6ueAawQjxFsmm764X` READY at that exact SHA; alias `being-found.vercel.app` points to it. The 8.5.4C (#25) and 8.5.4D (#28/#29) spatial close-views, object-linked affordances and keyboard-hover precedence already shipped, superseding the earlier 8.5.4B-only baseline.
+
+**Focused branch:** `fix/8.5.4e-leena-inspection-feedback`. Correct the displayed `Objects inspected` count to reflect actual examination of the calendar/cart/phone, rather than only items for which the visitor chose a conversational reply. This fixes the misleading zero-count after inspecting and returning without asking; the line states that the interaction is optional. Existing inspected visual outlines and nonspatial object controls remain unchanged. Extend five-viewport `qa_leena.py` assertions for initial, each inspected, replay, keyboard-only without reply, and early leave without reply. No story text, consent, recollections, privacy, saved-state schema, mandatory Noor → Dele → Walt route, other flats/visits, main renderer, or animation change.
+
+**Verification status:** Review branch only. Full production build, exact-head quality/reduced-motion Actions, five-viewport screenshots, axe, keyboard/focus, preview SHA, code review, fixed-head merge and post-merge production verification remain gates; do not treat commits alone as completion. Independent compensated bipolar lived-experience review, physical TalkBack/VoiceOver/switch access and formative participant testing remain pending. Classroom preview, not approved for a participant pilot.
+
+---
+
 # 8.5.4B Leena illustrated-library technical release receipt — 2026-11-22 UTC
 
 **Gameplay merge:** [PR #23](https://github.com/RileyTheRiler/being-found/pull/23) merged to `main` at `50fb98c5114e7e0341a4d2bf844d33a6c03a77d3` from exact reviewed PR head `74239ff5ec6d46d38a9ed8e4d1a2f073d6793a02` (starting main `c42386eb7d632dcf3106e81e33879e29e92d679b`).
