@@ -1,3 +1,16 @@
+## 8.5.4E post-merge verification and facilitator handoff
+
+GitHub’s repository Actions listing filtered to `event=push` and `branch=main` confirms both quality runs completed successfully. Each browser-regression job passed all 46 steps, including reduced-motion checks.
+
+| Merge | Exact push commit | Quality run |
+| --- | --- | --- |
+| Gameplay PR #30 | `a622e0f749768f11c6df21f9779f16dcdd79426f` | [45465950191](https://github.com/RileyTheRiler/being-found/actions/runs/45465950191) |
+| Documentation PR #31 | `89d075ae50306bc6b99a216b42bed953c802732d` | [45468207520](https://github.com/RileyTheRiler/being-found/actions/runs/45468207520) |
+
+At verification, production deployment `dpl_CbJHaLcRYiPLkKTRFYj7cnn9n9oH` was READY at the PR #31 merge. The alias record assigned it `being-found.vercel.app`. These receipts apply to the commits above.
+
+The facilitator sheet, pilot protocol and device checklist now follow the guided consent exits and single-activation rules. Use a private copy of the observation template. Next work requires compensated bipolar lived-experience feedback, physical TalkBack/VoiceOver/switch observations and first-time learner sessions. The feedback log and observation sheet contain zero sessions. Keep the fictional classroom preview designation.
+
 # 8.5.4E Leena inspection-feedback technical release receipt — 2026-11-24 UTC
 
 **Gameplay PR:** [#30](https://github.com/RileyTheRiler/being-found/pull/30) merged after code and screenshot review. Fixed-head gameplay merge `a622e0f749768f11c6df21f9779f16dcdd79426f` from reviewed branch head `043a3ed87388018940e78f67fb2fea2c67a3293b`, based on prior main `c8b2840d167fa6fd2d6f879b867033ad887be950`.
