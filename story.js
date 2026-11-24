@@ -213,9 +213,10 @@
             // Preserve this extra narrative time when the browser resumes.
             try{
               if(S.cur?.clock!==undefined)S.cur.clock=S.clock;
-              const raw=JSON.parse(localStorage.getItem('lifeworld.v1')||'null');
+              const storage=window.LW.roomSaveStorage();
+              const raw=JSON.parse(storage.getItem('lifeworld.v1')||'null');
               if(raw?.cur?.flatIx===S.flatIx && raw.cur.phaseIx===S.phaseIx){
-                raw.cur.clock=S.clock;localStorage.setItem('lifeworld.v1',JSON.stringify(raw));
+                raw.cur.clock=S.clock;storage.setItem('lifeworld.v1',JSON.stringify(raw));
               }
             }catch(_){}
           }

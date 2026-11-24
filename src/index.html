@@ -2462,10 +2462,18 @@ const fill=s=>String(s).replace(/\{P\}/g,S.flat.P).replace(/\{F\}/g,S.flat.F).re
 const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
 const copy=o=>JSON.parse(JSON.stringify(o));
 const inStory=()=>S.mode==='play'||S.mode==='visit';
-function load(){ S.sess={}; S.saved=null; S.choices={}; try{ const d=JSON.parse(localStorage.getItem('lifeworld.v1')||'{}'); S.done=d.done||{}; S.terms=!!d.terms; S.sess=d.sess||{}; S.choices=d.choices||{}; S.saved=d.cur||null; }catch(e){} }
+function load(){ S.sess={}; S.saved=null; S.choices={}; try{ const d=JSON.parse(localStorage.getItem('lifeworld.v1')||sessionStorage.getItem('lifeworld.v1')||'{}'); S.done=d.done||{}; S.terms=!!d.terms; S.sess=d.sess||{}; S.choices=d.choices||{}; S.cur=S.saved=d.cur||null; }catch(e){} }
 function saveCur(){ if(!S.booted||S.preview) return; S.cur=(S.mode==='play'&&S.flat&&S.flat.id!=='sandbox')?{flatIx:S.flatIx,phaseIx:S.phaseIx,done:S.goals.filter(g=>g.done).map(g=>g.id),clock:S.clock,vars:S.vars,ringing:S.ringing}:null; S.saved=S.cur||S.saved; save(); }
 function resume(){ const c=S.saved; if(!c||!FLATS[c.flatIx]) return; closeModals(); startFlat(c.flatIx); if(c.phaseIx&&FLATS[c.flatIx].phases[c.phaseIx]) startPhase(c.phaseIx); S.goals.forEach(g=>{ if(c.done.indexOf(g.id)>=0) g.done=true; }); S.storyPrevGoal=(S.goals.filter(g=>g.done).slice(-1)[0]||{}).id||null; if(c.vars){ S.vars=copy(c.vars); S.clock=c.clock; S.ringing=!!c.ringing; computeTarget(); } unlockGoals(); S.preview=false; saveCur(); renderAll(); dirOpen(0); }
-function save(){ try{ localStorage.setItem('lifeworld.v1',JSON.stringify({v:2,done:S.done,terms:S.terms,sess:S.sess,choices:S.choices,cur:(S.booted&&!S.preview)?S.cur:S.saved})); }catch(e){} }
+function roomSaveStorage(){ return window.LWClass?.active?sessionStorage:localStorage; }
+function save(){
+ try{
+  const data=JSON.stringify({v:2,done:S.done,terms:S.terms,sess:S.sess,choices:S.choices,cur:(S.booted&&!S.preview)?S.cur:S.saved});
+  const storage=roomSaveStorage();
+  storage.setItem('lifeworld.v1',data);
+  if(storage===localStorage)sessionStorage.removeItem('lifeworld.v1');
+ }catch(e){}
+}
 
 
 /* Explanations are accessible from the words themselves, without entering study mode. */
@@ -3717,7 +3725,7 @@ function frame(now){ if(document.hidden||window.LW_PAUSE){ _last=now; requestAni
 
 load(); app.dataset.terms=S.terms?'on':'off'; $('#btnTerms').setAttribute('aria-pressed',S.terms);
 buildPins(); startFlat(0); applyLayout(); showTitle(); S.booted=true; requestAnimationFrame(frame);
-window.LW={S,startFlat,startSandbox,startVisit,showIntro,choose,menuFor,nextPhase,openMenu,chooseBody,showFinal,showFlats,showVisitIntro,closeModals,enterQuiet,exitQuiet,pacing};
+window.LW={S,roomSaveStorage,startFlat,startSandbox,startVisit,showIntro,choose,menuFor,nextPhase,openMenu,chooseBody,showFinal,showFlats,showVisitIntro,closeModals,enterQuiet,exitQuiet,pacing};
 
 /* ===================== ORIGINAL ADAPTIVE SYNTH SCORE =====================
    No samples, network calls, or prerecorded music. Every sound is synthesized.
@@ -4677,7 +4685,11 @@ function showEnd(){ E.ended=true; E.running=false; store.n=(store.n||0)+1; store
     '<div class="enc-notice">June’s statement that he “has stopped trying” is a caregiver report. It is not a conclusion about Walt’s motivation.</div>'+
     '<div class="btnrow enc-sticky"><button class="cta" type="button" data-encgo="note">Write a session note</button><button class="cta ghost" type="button" data-encgo="again">Visit on another day</button></div>'); }
 
-function askLeave(){ if(!E.running||E.ended){ close(); return; } E.paused=true; E.leaving=true;
+function leaveVisit(){
+ if(window.LWClass?.isStage('walt')) window.LWClass.leaveWalt();
+ else close();
+}
+function askLeave(){ if(!E.running||E.ended){ leaveVisit(); return; } E.paused=true; E.leaving=true;
   card('<h2>Leave the visit?</h2><p class="lede">Walt’s day may be a different one next time.</p><div class="btnrow"><button class="cta" type="button" data-encgo="stay">Stay</button><button class="cta ghost" type="button" data-encgo="leave">Leave</button></div>'); }
 function stay(){ E.leaving=false; uncard(); E.paused=false; }
 
@@ -4707,7 +4719,7 @@ root.addEventListener('click',e=>{ e.stopPropagation(); const b=e.target.closest
   const d=b.dataset;
   if(d.note){ E.note=E.note||{}; E.note[d.note]=d.value; root.querySelectorAll('[data-note="'+d.note+'"]').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.value===d.value)));return; }
   if(d.room){const data=roomData();q('#encRoomExcerpt').textContent=data.known[d.room]?data.known[d.room][0]:data.A[d.room][1];return;}
-  if(d.encgo==='knock'||d.encgo==='again') begin(); else if(d.encgo==='leave') close(); else if(d.encgo==='stay') stay();
+  if(d.encgo==='knock'||d.encgo==='again') begin(); else if(d.encgo==='leave') leaveVisit(); else if(d.encgo==='stay') stay();
   else if(d.encgo==='note') showNote(); else if(d.encgo==='reviewnote') showNoteReview(); else if(d.encgo==='room') roomPreview(); else if(d.encgo==='classFinal'&&window.LWClass?.isStage?.('walt')) window.LWClass.toFinal();
   else if(d.encgo==='copy'){let t=noteText();const status=q('#encCopied');try{if(navigator.clipboard?.writeText){navigator.clipboard.writeText(t).then(()=>{if(status)status.textContent='Copied';}).catch(()=>{if(status)status.textContent='Copy unavailable in this browser.';});}else{const el=document.createElement('textarea');el.value=t;root.appendChild(el);el.select();const ok=document.execCommand('copy');el.remove();if(status)status.textContent=ok?'Copied':'Copy unavailable in this browser.';}}catch(e){if(status)status.textContent='Copy unavailable in this browser.';}return;}
   else if(d.encpace){ store.pace=d.encpace; saveStore(); root.querySelectorAll('[data-encpace]').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.encpace===store.pace))); const h=q('#encPaceHint'); if(h) h.textContent=PACE[store.pace][1]; } });
@@ -5106,7 +5118,7 @@ function syncGuide(){
    }
  }else if(guide.parentElement!==document.body)document.body.appendChild(guide);
 }
-const run={active:false,stage:'idle',noor:new Set(),dele:new Set(),pre:{},post:{},dVisit:null,wVisit:null,seen:0,previousSave:null,guideCollapsed:false,paceStarted:null,paceMarks:[]};
+const run={active:false,stage:'idle',noor:new Set(),dele:new Set(),pre:{},post:{},dVisit:null,wVisit:null,seen:0,guideCollapsed:false,paceStarted:null,paceMarks:[]};
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 /* Local-only playtest timing. No server calls, storage, countdown, or scoring. */
 function paceMark(stage){
@@ -5150,7 +5162,7 @@ function questionInputs(phase){const prompt=phase==='pre'?[
  'What might you be assuming?', 'What do you not know yet?', 'What would you ask or do first?'
 ]:['What did you observe, without deciding what the person feels?', 'What might you infer, and what remains unknown?', 'What could you ask or offer while respecting the person’s communication and choices?'];return '<div class="cl-questions">'+prompt.map((p,i)=>'<label>'+esc(p)+'<textarea data-clanswer="'+phase+'" data-i="'+i+'" rows="1" placeholder="Optional, in your own words">'+esc(run[phase][i]||'')+'</textarea></label>').join('')+'</div><p class="cl-muted cl-privacy">Your answers stay in this browser session. Nothing is graded or transmitted.</p>';}
 function preserveInput(){panel.querySelectorAll('textarea[data-clanswer]').forEach(x=>{run[x.dataset.clanswer][x.dataset.i]=x.value;});}
-function begin(){if(run.active){resume();return;}run.active=true;run.stage='intro';run.noor.clear();run.dele.clear();run.pre={};run.post={};run.dVisit=null;run.wVisit=null;run.deleOutcome=null;run.guideCollapsed=false;run.paceStarted=performance.now();run.paceMarks=[{stage:'intro',at:0}];try{run.previousSave=localStorage.getItem('lifeworld.v1');}catch(e){run.previousSave=null;}document.body.classList.add('cl-route');
+function begin(){if(run.active){resume();return;}run.active=true;run.stage='intro';run.noor.clear();run.dele.clear();run.pre={};run.post={};run.dVisit=null;run.wVisit=null;run.deleOutcome=null;run.guideCollapsed=false;run.paceStarted=performance.now();run.paceMarks=[{stage:'intro',at:0}];document.body.classList.add('cl-route');
  try{window.LW.closeModals();}catch(e){};
  modal('<div class="cl-kicker">Noor’s flat · A story in three encounters</div><h2>One window is still lit.</h2><p class="cl-opening-line">Behind it, Noor is beginning an ordinary morning. Start with what the room offers her, not with a label or an explanation.</p><div class="cl-steps" aria-label="Three story chapters"><div class="cl-step active"><strong>1</strong>Noor’s room</div><div class="cl-step"><strong>2</strong>Dele’s door</div><div class="cl-step"><strong>3</strong>Walt’s session</div></div><details class="cl-journal"><summary><span>Open field notes</span><small>Optional reflection</small></summary><div class="cl-journal-paper"><p>A client has missed three therapy groups. Their partner says they seem “unmotivated.” You have not heard from the client. What can you actually know?</p>'+questionInputs('pre')+'</div></details><div class="cl-actions cl-intro-actions"><button data-cl="noor">Enter Noor’s room</button><button class="secondary" data-cl="end">Exit</button></div><p class="cl-muted cl-footnote">Fictional perspectives, not assessments. You can return to the notes later.</p>');}
 function renderGuide(){const focusAction=guide.contains(document.activeElement)?document.activeElement?.dataset?.cl:null;if(!run.active||!['noor','room'].includes(run.stage)){guide.hidden=true;return;}
@@ -5245,7 +5257,16 @@ function debrief(){
 function copy(){preserveInput();let fmt=(group,qs)=>qs.map((q,i)=>q+'\n'+(run[group][i]||'[not answered]')).join('\n\n');let t='BEING FOUND 8.5: CLASSROOM REFLECTION (fictional vignettes; no score)\n\nBEFORE: missed group visits\n\n'+fmt('pre',['Assumption','Unknown','First step'])+'\n\nAFTER: reduced speaking in group\n\n'+fmt('post',['Observed without inference','Possible inference and unknown','Consent-based first step'])+'\n\nPLAYTEST TIMING (local only, includes idle time)\n'+paceReport()+'\n\nNot a validated assessment. The two vignettes differ and these responses cannot establish a gain in empathy.';
  const status=panel.querySelector('#clStatus');const result=x=>{if(status)status.textContent=x;};try{if(navigator.clipboard?.writeText)navigator.clipboard.writeText(t).then(()=>result('Copied to clipboard.')).catch(()=>fallback(t,result));else fallback(t,result);}catch(e){fallback(t,result);}}
 function fallback(t,cb){const el=document.createElement('textarea');el.value=t;el.style.position='fixed';el.style.top='0';el.style.left='0';document.body.appendChild(el);el.focus();el.select();let ok=false;try{ok=document.execCommand('copy');}catch(e){}el.remove();cb(ok?'Copied to clipboard.':'Copy unavailable. Select and copy the text from your reflection fields.');}
-function end(){run.active=false;run.stage='idle';hideModal();guide.hidden=true;syncGuide();document.body.classList.remove('cl-route');try{if(window.LWDele&&!document.getElementById('dele').hidden)window.LWDele.close(true);}catch(e){}try{if(window.LWEncounter&&!document.getElementById('enc').hidden)window.LWEncounter.close();}catch(e){};try{if(run.previousSave===null)localStorage.removeItem('lifeworld.v1');else localStorage.setItem('lifeworld.v1',run.previousSave);if(typeof load==='function')load();}catch(e){}try{window.LW.closeModals();window.LW.showFlats?.();}catch(e){}}
+function end(toTitle=false){
+ run.active=false;run.stage='idle';hideModal();guide.hidden=true;syncGuide();
+ document.body.classList.remove('cl-route');
+ if(window.LWDele&&!document.getElementById('dele').hidden)window.LWDele.close(true);
+ if(window.LWEncounter&&!document.getElementById('enc').hidden)window.LWEncounter.close();
+ try{sessionStorage.removeItem('lifeworld.v1');}catch(e){}
+ load();
+ window.LW.closeModals();
+ if(toTitle)showTitle();else window.LW.showFlats();
+}
 function resume(){if(!run.active){begin();return;}if(run.stage==='noor'||run.stage==='room'){hideModal();renderGuide();}else if(run.stage==='complete')finale();else if(run.stage==='intro'){panel.hidden=false;}else modal('<h2>Continue your pathway</h2><p>Return to the next encounter.</p><div class="cl-actions"><button data-cl="'+(run.stage==='dele'?'deledo':run.stage==='walt'?'walt':run.stage==='between'?'deledo':'waltbridge')+'">Continue</button></div>');}
 function onRoomAction(ev){if(!run.active||ev?.type!=='act')return;if(window.matchMedia('(max-width:650px)').matches)run.guideCollapsed=true;if(isStage('noor')&&window.LW?.S?.flat?.id==='rooted'){if(ev.kind==='practical'||ev.kind==='entice')run.noor.add(ev.kind);renderGuide();}else if(isStage('room')&&window.LW?.S?.flat?.id==='depression'){if(ev.state==='heavy'||ev.state==='sealed')run.dele.add(ev.state);renderGuide();}}
 const actions={open:begin,noor:stageNoor,dele:beforeDele,deledo:stageDele,roomgo:stageRoom,waltbridge:beforeWalt,walt:stageWalt,final:finale,debrief,copy,end};
@@ -5253,7 +5274,7 @@ const actions={open:begin,noor:stageNoor,dele:beforeDele,deledo:stageDele,roomgo
 document.addEventListener('click',e=>{const b=e.target.closest?.('button');if(!b)return;const action=b.dataset.cl||b.dataset.class;if(action){e.preventDefault();e.stopPropagation();if(action==='guidehide'){run.guideCollapsed=true;renderGuide();return;}if(action==='guideshow'){run.guideCollapsed=false;renderGuide();return;}if(action==='noor'&&run.stage==='intro')preserveInput();actions[action]?.();}},true);
 panel.addEventListener('input',e=>{if(e.target.matches('textarea[data-clanswer]')){const el=e.target;run[el.dataset.clanswer][el.dataset.i]=el.value;el.style.height='auto';el.style.height=Math.min(112,Math.max(42,el.scrollHeight+2))+'px';}});
 panel.addEventListener('focusin',e=>{if(e.target.matches('textarea[data-clanswer]')){const field=e.target;setTimeout(()=>{if(!panel.hidden&&document.activeElement===field){try{field.scrollIntoView({block:'nearest',behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});}catch(err){}}},120);}});
-window.LWClass={open:begin,start:begin,toDeleRoom,toFinal,onRoomAction,isStage,syncGuide,get active(){return run.active},get stage(){return run.stage},get state(){return run},dev:{stageNoor,stageDele,stageRoom,stageWalt,finale}};
+window.LWClass={open:begin,start:begin,leaveWalt:()=>end(true),toDeleRoom,toFinal,onRoomAction,isStage,syncGuide,get active(){return run.active},get stage(){return run.stage},get state(){return run},dev:{stageNoor,stageDele,stageRoom,stageWalt,finale}};
 })();
 </script>
 <script>

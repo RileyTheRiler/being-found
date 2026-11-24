@@ -36,7 +36,7 @@
 .leena-prop strong{font-size:14px;font-weight:800}
 .leena-prop small{font-size:11px}
 .leena-calendar{left:9%;top:56%}
-.leena-cart{right:19%;top:43%}
+.leena-cart{right:19%;bottom:44%;top:auto}
 .leena-phone{right:2%;top:55%}
 .leena-object-index{display:flex;align-items:center;flex-wrap:wrap;gap:7px;margin:0 0 14px;font-size:13px;color:#3b6060}
 .leena-object-index>span{font-weight:800;margin-right:3px}
