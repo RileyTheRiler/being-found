@@ -34,6 +34,7 @@ def test(browser,w,h,reduced=False):
     assert d.locator(".leena-prop").count()==3
     assert d.locator(".leena-index-action").count()==3
     assert d.locator(".leena-scene-outline").count()==3
+    assert d.locator(".leena-progress").inner_text()=="Objects inspected: 0 of 3 (optional)"
     # A focusable list control previews the same physical artwork as its hotspot.
     for name in ["calendar","cart","phone"]:
       d.locator('[data-thing="'+name+'"]').focus()
@@ -78,7 +79,7 @@ def test(browser,w,h,reduced=False):
     violations=p.evaluate("""async()=>{const report=await axe.run(document.querySelector('#bf-leena-dialog'));return report.violations.filter(v=>['serious','critical'].includes(v.impact)).map(v=>({id:v.id,description:v.description,nodes:v.nodes.map(n=>n.target)}));}""")
     assert not violations,violations
     p.screenshot(path=str(ART/f"leena_room_{w}x{h}.png"))
-    for name in ["calendar","cart","phone"]:
+    for index,name in enumerate(["calendar","cart","phone"],start=1):
       d.locator("[data-obj='"+name+"']").click()
       assert "Observed" in d.inner_text()
       assert d.locator(".leena-object-art img").count()==1
@@ -98,8 +99,9 @@ def test(browser,w,h,reduced=False):
       assert d.locator(".leena-prop.is-inspected").count()>=1
       assert d.locator(".leena-outline-"+name+".is-inspected").count()==1
       assert "inspected" in d.locator('[data-thing="'+name+'"]').inner_text().lower()
+      assert d.locator(".leena-progress").inner_text()==f"Objects inspected: {index} of 3 (optional)",(w,h,name)
       assert p.evaluate("document.documentElement.scrollWidth-innerWidth")<=2
-    assert "3 / 3" in d.inner_text()
+    assert "Objects inspected: 3 of 3 (optional)" in d.inner_text()
     d.locator(".leena-scene").screenshot(path=str(ART/f"leena_scene_feedback_{w}x{h}.png"))
     d.evaluate("(el)=>{el.scrollTop=0}")
     d.get_by_role("button",name="Talk with Leena").click()
@@ -122,6 +124,7 @@ def test(browser,w,h,reduced=False):
     d.get_by_role("button",name="Replay Leena’s story").click()
     assert p.evaluate("BFLeena.state.seen.length")==0
     assert d.locator(".leena-scene-outline.is-inspected").count()==0
+    assert d.locator(".leena-progress").inner_text()=="Objects inspected: 0 of 3 (optional)"
     # Equivalent direct keyboard route without spatial aim.
     accessible=d.locator('[data-thing="calendar"]')
     accessible.focus()
@@ -130,6 +133,8 @@ def test(browser,w,h,reduced=False):
     assert p.evaluate("BFLeena.state.inspected")==["calendar"]
     assert d.locator(".leena-object-art img").count()==1
     d.get_by_role("button",name="Return without asking").click()
+    assert d.locator(".leena-progress").inner_text()=="Objects inspected: 1 of 3 (optional)"
+    assert p.evaluate("BFLeena.state.seen")==[], "Inspection alone must not count as a reply"
     d.get_by_role("button",name="Respect her space and leave").click()
     assert p.evaluate("BFLeena.state.ending")=="leave"
     d.get_by_role("button",name="Replay Leena’s story").click()
@@ -171,6 +176,8 @@ def test_evidence(browser,w,h):
     # Examining is distinct from obtaining a reply.
     d.locator("[data-obj='calendar']").click()
     d.get_by_role("button",name="Return without asking").click()
+    assert d.locator(".leena-progress").inner_text()=="Objects inspected: 1 of 3 (optional)"
+    assert p.evaluate("BFLeena.state.seen")==[], "Early exit should not invent a conversation"
     d.get_by_role("button",name="Respect her space and leave").click()
     debrief=d.locator(".leena-debrief").inner_text()
     assert "pauses over Saturday" in debrief,debrief
