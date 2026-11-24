@@ -78,6 +78,14 @@ def check(browser, width, height, reduced, phone=False):
             page.locator("#encLog").click()  # Existing user-controlled narration advance.
             page.wait_for_function("!!window.LWEncounter?.state?.P", timeout=3000)
             assert page.locator("#encSkip").is_visible()
+        page.locator('#encLeave').click()
+        page.locator('#encCard [data-encgo="leave"]').click()
+        assert page.locator('#mTitle').is_visible()
+        assert page.evaluate("!LWClass.active && !BFFlags.guided && BFFlags.dice")
+        enter_walt(page, phone)
+        page.locator('#encCard [data-encgo="leave"]').click()
+        assert page.locator('#mTitle').is_visible()
+        assert page.evaluate("!LWClass.active && !BFFlags.guided")
         assert not errors, errors
         print(f"PASS: {width}x{height} reduced_motion={reduced}, Walt transcript and consent-safe route", flush=True)
     finally:

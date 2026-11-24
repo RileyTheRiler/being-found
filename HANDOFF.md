@@ -1,3 +1,9 @@
+## Independent review corrections · 24 November 2026
+
+Review baseline: `bcff395487157d5057ed3246a5e836439331e67a`. Guided room checkpoints now use tab storage. On reload an existing persistent Rooms record takes precedence. Leaving Walt ends the classroom controller. Leena’s recap retains each distinct reply and separates speech from observed actions. The wide cart label is anchored above its outline. The pilot rubric accepts accurate attribution on the actual route, including leaving a note without a resident account.
+
+Regression evidence and final release receipt belong to the implementing pull request. Verify the current main push run and production commit before using a build for review. Next milestone: compensated editorial review, physical screen-reader and switch sessions, and first-time learner observations. Keep participant records private. Classroom preview.
+
 ## 8.5.4E post-merge verification and facilitator handoff
 
 GitHub’s repository Actions listing filtered to `event=push` and `branch=main` confirms both quality runs completed successfully. Each browser-regression job passed all 46 steps, including reduced-motion checks.

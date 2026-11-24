@@ -6,19 +6,19 @@
   const qs=s=>document.querySelector(s);
   const objects={
     calendar:{name:'Calendar',kind:'Saturday plan',observation:'Leena opens the library calendar and pauses over Saturday. There is an invitation written in the margin.',choices:[
-      ['Ask what she wants to do','“I like having a plan. I also want room to change it,” she says. She writes a question mark, not a decision.'],
-      ['Let her consider it','Leena leaves Saturday blank. “I can answer Nia tomorrow,” she says.']
+      ['Ask what she wants to do','“I like having a plan. I also want room to change it.”','She writes a question mark, not a decision.'],
+      ['Let her consider it','“I can answer Nia tomorrow.”','Leena leaves Saturday blank.']
     ]},
     cart:{name:'Book cart',kind:'Unfinished task',observation:'The returns cart is half sorted. A label maker and a mystery novel sit beside it.',choices:[
-      ['Offer to sort with her','“You can put the returns in alphabetical order. I’ll do the labels,” Leena says. She sets the order of the task.'],
-      ['Ask whether she wants help','“Not right now, thanks. I actually like doing the labels,” she says, and picks up the novel.']
+      ['Offer to sort with her','“You can put the returns in alphabetical order. I’ll do the labels.”'],
+      ['Ask whether she wants help','“Not right now, thanks. I actually like doing the labels.”','She picks up the novel.']
     ]},
     phone:{name:'Message',kind:'Private notification',observation:'Leena glances at a notification on her phone and sets it beside the cart. You cannot read the message.',choices:[
-      ['Ask if she wants to reply now','“I’d rather send a real answer later than say yes because the phone is here,” she says.'],
-      ['Offer to give her space','“Thanks. Nia knows I sometimes need time to answer,” Leena says.']
+      ['Ask if she wants to reply now','“I’d rather send a real answer later than say yes because the phone is here.”'],
+      ['Offer to give her space','“Thanks. Nia knows I sometimes need time to answer.”']
     ]}
   };
-  let dlg=null,entry=null,view='room',active=null,seen={},inspected={},heard={},disclosed=false,ending='',notice='';
+  let dlg=null,entry=null,view='room',active=null,replies=new Set(),inspected={},heard={},disclosed=false,ending='',notice='';
   const dateCurrent='Friday · 20 November 2026';
   function b(label,act,more){return '<button type="button" class="leena-action" data-leena-act="'+act+'"'+(more||'')+'>'+label+'</button>';}
   function escapeHTML(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
@@ -98,7 +98,11 @@
         leave:'You leave without asking more. Leena’s weekend and what she wants to disclose remain her own.'
       };
       const observations=Object.keys(inspected).map(id=>objects[id].observation);
-      const communicated=Object.values(seen);
+      const communicated=[];
+      for(const [,speech,action] of replies){
+        communicated.push(speech);
+        if(action)observations.push(action);
+      }
       if(disclosed)communicated.push('Leena chose to say she lives with bipolar disorder and that it does not explain every ordinary decision.');
       if(heard.expansive)communicated.push('Leena chose to describe her memories of April–May 2025.');
       if(heard.distant)communicated.push('Leena chose to describe her memories of October–November 2024.');
@@ -121,7 +125,7 @@
   function close(){
     if(dlg?.open)dlg.close();
   }
-  function reset(){view='room';active=null;seen={};inspected={};heard={};disclosed=false;ending='';notice='';}
+  function reset(){view='room';active=null;replies.clear();inspected={};heard={};disclosed=false;ending='';notice='';}
   function open(trigger){
     entry=trigger||document.activeElement;
     if(!dlg){
@@ -165,7 +169,12 @@
         if(action==='leave'){end('leave');return;}
         if(action==='object'||action==='object-list'){active=button.dataset.obj||button.dataset.thing;inspected[active]=true;view='object';}
         else if(action==='return'){view='room';notice='Leena decides what to do next; a visitor does not need to prompt her.';}
-        else if(action==='choice'){const o=objects[active];seen[active]=o.choices[Number(button.dataset.choice)][1];notice=seen[active];view='room';}
+        else if(action==='choice'){
+          const reply=objects[active].choices[Number(button.dataset.choice)];
+          replies.add(reply);
+          notice=reply.slice(1).join(' ');
+          view='room';
+        }
         else if(action==='continue'){disclosed=true;view='conversation';}
         else if(action==='permission'){view='recollections';}
         else if(action==='refusal'){end('refusal');return;}
@@ -194,5 +203,5 @@
   const rooms=qs('#mFlats');
   if(rooms)new MutationObserver(insertCard).observe(rooms,{childList:true,subtree:true});
   insertCard();
-  window.BFLeena={open,close,get active(){return !!dlg?.open;},get state(){return {view,seen:Object.keys(seen),inspected:Object.keys(inspected),heard:Object.keys(heard),disclosed,ending};}};
+  window.BFLeena={open,close,get active(){return !!dlg?.open;},get state(){return {view,seen:Object.keys(objects).filter(id=>objects[id].choices.some(reply=>replies.has(reply))),inspected:Object.keys(inspected),heard:Object.keys(heard),disclosed,ending};}};
 })();

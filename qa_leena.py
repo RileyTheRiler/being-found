@@ -195,6 +195,16 @@ def test_evidence(browser,w,h):
     assert "mystery novel" in debrief and "like doing the labels" in debrief,debrief
     assert "Leena chose to say she lives with bipolar disorder" in debrief,debrief
     assert "October–November 2024" not in debrief and "April–May 2025" not in debrief,debrief
+    d.get_by_role("button",name="Replay Leena’s story").click()
+    for choice in ["0","1","0"]:
+      d.locator('[data-thing="calendar"]').click()
+      d.locator('[data-choice="'+choice+'"]').click()
+    d.get_by_role("button",name="Respect her space and leave").click()
+    observed=d.locator(".leena-debrief dd").nth(0).inner_text()
+    spoken=d.locator(".leena-debrief dd").nth(1).inner_text()
+    assert spoken.count("I like having a plan")==1 and spoken.count("I can answer Nia tomorrow")==1
+    assert "question mark" in observed and "leaves Saturday blank" in observed
+    assert "question mark" not in spoken and "leaves Saturday blank" not in spoken
     # Test each current response as an equally available, non-scored ending.
     for answer in ["listen","support","uncertain","boundary"]:
       d.get_by_role("button",name="Replay Leena’s story").click()
