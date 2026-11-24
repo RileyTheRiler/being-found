@@ -37,7 +37,7 @@
   function render(){
     if(!dlg)return;
     let content='';
-    const completed=Object.keys(seen).length;
+    const inspectedCount=Object.keys(inspected).length;
     if(view==='room'){
       content=title('A different Saturday',dateCurrent+' · Community library · an ordinary workday')+
        '<p class="leena-lead">You are visiting Leena at the community library. She is deciding what to do this weekend. Notice what is visible before drawing conclusions.</p>'+
@@ -48,7 +48,7 @@
        '</section>'+
        '<nav class="leena-object-index" aria-label="Nonspatial library object controls"><span>Object list</span>'+Object.entries(objects).map(([id,o])=>'<button type="button" class="leena-index-action" data-leena-act="object-list" data-thing="'+id+'">'+o.name+(inspected[id]?' · inspected':'')+'</button>').join('')+'</nav>'+
        '<div class="leena-reading"><p class="leena-spoken" role="status">'+(notice?escapeHTML(notice):'Leena: “I’ve got the weekend to think about. The books can wait five minutes.”')+'</p><p>You may examine the three objects in any order, talk with Leena now, or leave. No interaction is required to continue.</p>'+
-       '<p class="leena-progress" aria-label="'+completed+' of 3 ordinary interactions explored">'+completed+' / 3 interactions explored</p>'+
+       '<p class="leena-progress">Objects inspected: '+inspectedCount+' of 3 (optional)</p>'+
        '<div class="leena-actions">'+b('Talk with Leena','continue')+b('Respect her space and leave','leave')+'</div></div>';
     } else if(view==='object'){
       const o=objects[active];
