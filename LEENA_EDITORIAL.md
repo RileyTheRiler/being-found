@@ -1,3 +1,17 @@
+# 8.5.4E Leena inspection-feedback technical release receipt — 2026-11-24 UTC
+
+**Gameplay PR:** [#30](https://github.com/RileyTheRiler/being-found/pull/30) merged after code and screenshot review. Fixed-head gameplay merge `a622e0f749768f11c6df21f9779f16dcdd79426f` from reviewed branch head `043a3ed87388018940e78f67fb2fea2c67a3293b`, based on prior main `c8b2840d167fa6fd2d6f879b867033ad887be950`.
+
+**Exact-head technical checks:** [quality Actions #45464083512](https://github.com/RileyTheRiler/being-found/actions/runs/45464083512) completed **success, 46/46 steps**; [reduced-motion Actions #45464083649](https://github.com/RileyTheRiler/being-found/actions/runs/45464083649) completed **success** at the same head. Five-viewport [QA screenshots #14955227070](https://github.com/RileyTheRiler/being-found/actions/runs/45464083512/artifacts/14955227070) were downloaded and visually inspected at 360×640, 390×844, 820×1180, 1180×820 and 1440×900; compared to 8.5.4B #14742465897 and 8.5.4D #14845979615. No new blocking overlap or hidden character face found; normal small-phone scrolling remains necessary. Vercel preview `dpl_3bvPSFHJt27272CsKWDuw2WhZrX2` READY at the exact reviewed head.
+
+**Production verification:** GitHub `main` independently read as `a622e0f749768f11c6df21f9779f16dcdd79426f`; Vercel production deployment `dpl_Hi1QTwY6GijJoLuiZKkf1jXA4EkC` READY with `githubCommitSha` matching main. Vercel alias record verified `being-found.vercel.app` attached to the deployment. **Postmerge main GitHub Actions are not independently confirmed in this receipt**: the available commit-workflow query only returns PR-triggered runs, not push-triggered main runs. Do not infer success from the PR or Vercel statuses alone. Verify a postmerge main Actions run by ID when obtainable.
+
+**Scope:** The progress line now counts physically examined library objects from `inspected`, not optional conversational responses recorded in `seen`; it says `Objects inspected: N of 3 (optional)`. Five-viewport Chrome QA covers initial/each/replay counts, keyboard-only inspection without response and early departure. Leena's original visual props, outlines, nonspatial controls, witness-aware debrief, consent, private-phone boundary, dated recollections, save schema, Guided Noor → Dele → Walt route, flats/visits, character animation and main renderer are unchanged.
+
+**Limits:** This is a technical fictional classroom preview, **not compensated bipolar lived-experience validated or classroom-pilot approved**. Physical TalkBack, VoiceOver, switch access, formative participants and independent compensated bipolar review remain unperformed. `reviews/LEENA_REVIEW_PACKET.md` and `reviews/leena_feedback_log.csv` remain templates until genuine review. Documentation-only follow-up commit requires its own commit/CI/production verification.
+
+---
+
 # 8.5.4B Leena illustrated-library technical release receipt — 2026-11-22 UTC
 
 **Gameplay merge:** [PR #23](https://github.com/RileyTheRiler/being-found/pull/23) merged to `main` at `50fb98c5114e7e0341a4d2bf844d33a6c03a77d3` from exact reviewed PR head `74239ff5ec6d46d38a9ed8e4d1a2f073d6793a02` (starting main `c42386eb7d632dcf3106e81e33879e29e92d679b`).
