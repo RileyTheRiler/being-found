@@ -1,4 +1,4 @@
-# Being Found — classroom pacing and comprehension pilot (8.4.4)
+# Being Found — classroom pacing and comprehension pilot (8.5.4E)
 
 **Protocol, not results.** The 10–15 minute classroom target has **not** been measured with first-time players. Automated Playwright runs test transitions at machine speed and do not supply a human completion-time estimate.
 
@@ -27,7 +27,7 @@ Tell participants: “Play the Guided Story as you would on your own. We are ass
 ## After playing: ask without coaching
 
 1. What did you **see or hear** Dele communicate directly? Which details came only from Mara?
-2. Which part of the authored room did you find yourself treating as fact about Dele?
+2. What, if anything, did you infer about Dele? What remains unknown? Ask about a fictional room account only if the learner encountered one.
 3. What is different between “can physically do something” and “the action feels available or meaningful”?
 4. In Walt's encounter, how would you ask about a change in participation without assuming what it means?
 5. What slowed you down, felt implausible, or made you feel pushed toward one “right” answer?
@@ -42,7 +42,7 @@ Tell participants: “Play the Guided Story as you would on your own. We are ass
 
 **Important:** The in-app timing shows elapsed wall time from the in-tab session clock and includes idle periods. Do not interpret it as focused reading time, reading speed, or demonstrated learning.
 
-## Ready-to-run 8.4.4 packet
+## Materials for formative sessions
 
 - [Facilitator sheet](pilot/FACILITATOR_SHEET.md): recruiting, voluntary participation, neutral script, observation and independent debrief.
 - [Scoring guide](pilot/SCORING_GUIDE.md): non-graded 0–2 descriptions for four concepts, plus explicit fictional-fact confusion.
@@ -54,14 +54,8 @@ The CSV template records **zero** sessions. Its summary must never be represente
 
 Five learners are appropriate for finding early usability failures, but cannot establish a typical completion time, an intervention effect or a psychometric measure. See https://www.nngroup.com/articles/5-test-users-qual-quant/ for the distinction between formative and quantitative evidence.
 
-## 8.5.0 pre-pilot regression scope (not field results)
+## Guided route preflight for 8.5.4E
 
-Browser QA tests now cover keyboard focus when the classroom Guide expands or collapses, leaving a modal, and reduced-motion scrolling to a focused reflection field. A real keyboard-only playthrough must still test every action, including repeated-input 'heavy' choices, and separate screen-reader and switch/alternative-input checks remain mandatory. During pilot observation, explicitly ask whether hold/three-tap suggested motor impairment or distracted from the distinction between ability and experienced possibility. No participants have been tested.
+On the physical device and preferred input, try a Noor room action, leave Dele’s encounter, and continue to Walt. Record a blocker if Guided Story requests a die roll, hold or repeated activation to complete an action. Record the exit the learner actually encountered. A decision to leave or a resident ending the visit is a valid route outcome. Keep optional Rooms and Leena exploration outside the guided completion clock.
 
-## 8.5.1 manual input parity check
-
-Before a classroom session, attempt a heavy room action using (1) three keyboard Enter or Space activations, (2) three ordinary pointer taps and (3) a pointer hold, and confirm that the same authored action results. Try the preferred alternative input method separately. Do not infer accessibility from the automated desktop/phone Chrome regression alone. Observe whether the extra input confuses the philosophical distinction; record an issue rather than treating the player as failing a skill test.
-
-## 8.5.1 automated preflight outcome
-
-The 8.5.1 implementation passed 30/30 automated GitHub Actions steps in [run 44269157774](https://github.com/RileyTheRiler/being-found/actions/runs/44269157774) at `c97946c35495f58fbd26e1bbf0dabce485831118`. This includes keyboard and pointer triple-activation behavior with optional Story attempts disabled and guided reduced-motion/focus regressions. **This does not replace the real-device checklist, independent first-time classroom pilot, or compensated lived-experience consultation.** The observation template remains blank; do not report pilot outcomes until sessions occur.
+Use the [manual accessibility checklist](pilot/ACCESSIBILITY_CHECKLIST.md) for device observations and the [Leena review packet](reviews/LEENA_REVIEW_PACKET.md) for compensated editorial review. Keep completed observations in a private working copy. The repository CSV is a blank template.

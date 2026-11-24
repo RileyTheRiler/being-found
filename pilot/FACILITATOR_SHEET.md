@@ -1,6 +1,6 @@
-# Classroom pilot — facilitator session sheet (8.4.4)
+# Classroom pilot — facilitator session sheet (8.5.4E)
 
-This is a **formative evaluation of a fictional teaching game**, not a clinical test of participants. It is ready for recruitment and observation; **no sessions have been run**.
+This is a **formative evaluation of a fictional teaching game**, not a clinical test of participants. This sheet prepares a session. Independent review, device testing and participant sessions are pending. Confirm arrangements with the project lead before inviting learners.
 
 ## Before each participant
 
@@ -27,15 +27,15 @@ Do not explain the intended philosophical distinction or show the scoring guide 
 ## After play — independent questions
 
 - What is the difference between being **able** to perform an action and having it **feel possible or meaningful**?
-- What did you directly see or hear Dele communicate, and what did you only infer or read in the separately authored room?
+- What did you directly see or hear at Dele’s door? What did someone else tell you? What did you infer, and what remains unknown?
 - What would you ask Walt about his preferred communication support before intervening?
 - Could any one of these fictional accounts establish what everybody with the same condition experiences? Why or why not?
-- Did you treat anything from the fictional room as an observed fact about Dele? What blocked or confused you?
+- What blocked or confused you? Only if the learner encountered a separately authored account, ask what they could establish about Dele from it. Leave the fiction-as-fact field blank when that question was inapplicable.
 
 Offer oral, written or AAC responses. The facilitator records rubric categories, **not personal quotations** unless separate consent is given. Use `pilot/SCORING_GUIDE.md` only after the independent questions.
 
 ## After all sessions
 
-Enter anonymous data in `pilot/observations.csv`, then run `python3 pilot_summary.py pilot/observations.csv`. The command outputs descriptive totals, completion-time median/range, target counts, blockers and rubric frequencies. It does **not** send anything online or calculate an empathy score.
+Enter anonymous data in a private copy of `pilot/observations.csv`, then run `python3 pilot_summary.py /path/to/private/observations.csv`. The command outputs descriptive totals, completion-time median/range, target counts, blockers and rubric frequencies. It does **not** send anything online or calculate an empathy score.
 
 Prioritize recurring interface failures and the inference that the authored room reveals Dele’s actual experience. Do not conclude that five users establish an educational effect or typical duration. If disseminating findings as human-subjects research, confirm instructor/IRB requirements before collecting research data.
