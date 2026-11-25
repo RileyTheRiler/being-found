@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Being Found</title>
+<link rel="icon" href="data:,">
+<meta name="description" content="A narrative game about neighbours on one street, and the different worlds they live in.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&display=swap" rel="stylesheet">
+<style>/*CSS*/</style>
+</head>
+<body>
+<div id="app">
+  <canvas id="stage" aria-label="The scene"></canvas>
+  <div id="hotspots" aria-label="Things you can interact with"></div>
+  <div id="hud" class="hidden">
+    <div class="hud-where"><span id="hudWho"></span><span id="hudTime"></span></div>
+    <div class="hud-btns">
+      <button type="button" class="icon" id="btnLook" aria-label="Show what you can interact with" title="Look around (Q)"></button>
+      <button type="button" class="icon" id="btnNotebook" aria-label="Notebook" title="Notebook (N)"></button>
+      <button type="button" class="icon" id="btnPause" aria-label="Pause" title="Pause (Esc)"></button>
+    </div>
+  </div>
+  <div id="prompt" aria-hidden="true"></div>
+  <div id="actions" role="menu" aria-hidden="true"></div>
+  <div id="caption" role="status"></div>
+  <div id="sndcap" aria-hidden="true"></div>
+  <div id="dialogue" role="dialog" aria-label="Conversation" aria-hidden="true">
+    <canvas id="portrait" width="136" height="136" aria-hidden="true"></canvas>
+    <div id="dlgName"></div>
+    <div id="dlgText" class="dlg-text"></div>
+    <div id="dlgChoices" hidden></div>
+    <button type="button" id="dlgNext" aria-label="Continue" hidden></button>
+  </div>
+  <div id="phone"></div>
+  <div id="toast" role="status"></div>
+  <div id="bars"></div>
+  <div id="card" role="status"></div>
+  <div id="screen" aria-hidden="true"></div>
+  <div id="fade"></div>
+  <div id="live" class="vh" aria-live="polite"></div>
+</div>
+<script>/*JS*/</script>
+</body>
+</html>

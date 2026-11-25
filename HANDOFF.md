@@ -1,3 +1,7 @@
+## Story Edition (standalone): `editions/story/`, branch `feat/story-edition-standalone`
+
+A separate narrative game with its own engine and saves; it does not use or patch `src/index.html`. Read `editions/story/README.md` before editing it. Build is wired through `postbuild.js` into `dist/story/`. Smoke test: `python3 editions/story/test/qa_story.py`. Lived-experience, device and screen-reader review are still outstanding.
+
 ## Independent review corrections · 24 November 2026
 
 Review baseline: `bcff395487157d5057ed3246a5e836439331e67a`. Guided room checkpoints now use tab storage. On reload an existing persistent Rooms record takes precedence. Leaving Walt ends the classroom controller. Leena’s recap retains each distinct reply and separates speech from observed actions. The wide cart label is anchored above its outline. The pilot rubric accepts accurate attribution on the actual route, including leaving a note without a resident account.

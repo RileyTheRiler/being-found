@@ -25,3 +25,5 @@ const audit={version,releaseLabelsRemoved:removed,remainingExact:{
 },modules:['bf83.js','bf837.js','title_access.js','leena.js'],sourceStoryEngine:'unchanged'};
 fs.writeFileSync(p.join(dir,'qa','audit.js'),'window.__BF837_AUDIT='+JSON.stringify(audit)+';');
 console.log('Being Found '+version,JSON.stringify(audit));
+// The standalone Story Edition (editions/story) is built separately and served at /story/.
+require('./editions/story/build.js')(p.join(dir,'story'));

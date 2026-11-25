@@ -1,3 +1,11 @@
+## Story Edition 1.0, standalone, on branch `feat/story-edition-standalone` (25 Nov 2026)
+
+Adds `editions/story/`: an independent narrative game built from the immersive master plan (full campaign, new unified illustrated art, interlinked cast). Prologue + six chapters: Noor’s morning; Noor at Dele’s door (let in, “not today”, note, or no knock, all valid); Leena’s library shift with optional dated recollections; Dele’s evening as a labelled authored perspective, unconditional and never unlocked by choices; Mara’s home visit with Walt (supported conversation, his own toast goal); epilogue a week later. Choices carry forward. Optional Notebook pages cite Ratcliffe with page references. No scores, meters, dice, diagnosis labels or effort penalties; equal movement speed for everyone.
+
+Build: one line appended to `postbuild.js` builds the edition into `dist/story/index.html`. No other classroom file changes. CI: new step `python3 editions/story/test/qa_story.py` (each chapter at desktop, two at phone size, random play, fails on any page error).
+
+Local evidence (headless Chrome, before push): six full-campaign random playthroughs and scripted branch runs with zero script errors; keyboard (Tab hotspots, E, WASD/arrows, Esc pause, menu focus), save and continue, Notebook and settings; 390×844 and desktop layouts. Not done: lived-experience review (depression, bipolar disorder, aphasia), real devices, screen readers, first-time players. Supersedes the PR #35 generator approach; PR #35 can be closed once this is reviewed.
+
 ## Independent review corrections · 24 November 2026
 
 Review baseline: `bcff395487157d5057ed3246a5e836439331e67a`. Guided room checkpoints now use tab storage. On reload an existing persistent Rooms record takes precedence. Leaving Walt ends the classroom controller. Leena’s recap retains each distinct reply and separates speech from observed actions. The wide cart label is anchored above its outline. The pilot rubric accepts accurate attribution on the actual route, including leaving a note without a resident account.
