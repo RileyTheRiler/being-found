@@ -1,3 +1,7 @@
+## Story Edition — experimental review branch
+
+Branch `feat/story-edition`, based on verified main `3eb04a7896e3979a0b20cab2111cc68cff2e51a0`. The postbuild creates a separate `story.html` using the same engine: immediate Noor entry, narrative interludes, no required worksheets or progress goals, direct consent-safe Dele exit, Walt's optional conversation recap, narrative ending, and optional Leena with recap behind a disclosure control. The original classroom page and modules remain intact. Story save and encounter history keys are separate. Story route retains the guided safety flags. The generator's anchors and compiled scripts were checked using an in-memory simulated build; real npm build, browser playthrough, screenshots, exact-head CI and preview remain release gates. The story controller is tab-only and restarts on reload; no persistent story checkpoint yet. Real-device, lived-experience and learner evidence remain outstanding. Do not merge or promote until verified.
+
 ## Independent review corrections · 24 November 2026
 
 Review baseline: `bcff395487157d5057ed3246a5e836439331e67a`. Guided room checkpoints now use tab storage. On reload an existing persistent Rooms record takes precedence. Leaving Walt ends the classroom controller. Leena’s recap retains each distinct reply and separates speech from observed actions. The wide cart label is anchored above its outline. The pilot rubric accepts accurate attribution on the actual route, including leaving a note without a resident account.
