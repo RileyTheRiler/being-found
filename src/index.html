@@ -4970,7 +4970,7 @@ body.cl-route #app.narrow #btnTerms,body.cl-route #app.narrow #btnFlats{display:
 #clOverlay .cl-intro-actions button:first-child{flex:1;background:#2a6fdb}
 #clOverlay .cl-intro-actions button{min-height:45px}
 #clOverlay .cl-final-actions{flex-wrap:wrap}
-#clOverlay .cl-final-actions button[data-cl="copy"]{flex:1 0 100%}
+#clOverlay .cl-final-actions button[data-cl="end"]{flex:1 0 100%}
 #clOverlay .cl-final-actions button.secondary{flex:1;min-width:0}
 #clOverlay .cl-before{background:#fbf7ef;border:1px solid #e5dac5;padding:10px 12px;border-radius:13px;display:flex;flex-direction:column;gap:5px}
 #clOverlay .cl-before h3{font:800 14px var(--font-body)}
@@ -5228,7 +5228,9 @@ function stageWalt(){
  catch(e){console.error(e);modal('<h2>Walt’s encounter could not open</h2><button data-cl="waltbridge">Try again</button>');}
 }
 function toFinal(){if(!isStage('walt'))return;snapWalt();try{window.LWEncounter.close();window.LW.closeModals();}catch(e){}run.stage='complete';finale();}
-function beforeAnswers(){const labels=['Assumption','Unknown','First step'];return '<section class="cl-before" aria-label="Your starting reflections"><h3>Your starting notes</h3><p class="cl-muted">These are your own words from before Noor, Dele, and Walt. Compare them with what you think now.</p>'+labels.map((label,i)=>'<div class="cl-before-line"><b>'+label+'</b><span>'+esc(run.pre[i]?.trim()||'Not answered')+'</span></div>').join('')+'</section>';}
+function beforeAnswers(){
+ if(!Object.values(run.pre).some(answer=>answer?.trim()))return '<p class="cl-muted">No starting notes entered.</p>';
+ const labels=['Assumption','Unknown','First step'];return '<section class="cl-before" aria-label="Your starting reflections"><h3>Your starting notes</h3><p class="cl-muted">These are your own words from before Noor, Dele, and Walt. Compare them with what you think now.</p>'+labels.map((label,i)=>'<div class="cl-before-line"><b>'+label+'</b><span>'+esc(run.pre[i]?.trim()||'Not answered')+'</span></div>').join('')+'</section>';}
 function finale(){
  preserveInput();run.stage='complete';paceMark('complete');
  modal('<div class="cl-kicker">Afterward · Final reflection</div><h2>What can you know from the outside?</h2>'+
@@ -5240,7 +5242,7 @@ function finale(){
  '<p><b>Ratcliffe’s distinction:</b> An existential feeling is a background sense of how the surroundings, other people, and future actions are available or possible, not simply a named emotion. The same object can be present without presenting the same possibilities.</p>'+
  '<p><b>Limit:</b> Noor and Dele are fictional perspectives. Dele’s encounter did not verify the authored day. Walt’s language access does not establish his motivation. Listen for the person’s account and remain open to alternatives.</p>'+
  '<p><a href="https://doi.org/10.1093/med/9780199206469.003.0002" target="_blank" rel="noopener noreferrer">Ratcliffe (2008), existential feelings</a></p></details>'+
- '<div class="cl-actions cl-intro-actions cl-final-actions"><button data-cl="copy">Copy before and after</button><button class="secondary" data-cl="debrief">Facilitator questions</button><button class="secondary" data-cl="end">Finish</button></div>'+
+ '<div class="cl-actions cl-intro-actions cl-final-actions"><button data-cl="end">Finish</button><button class="secondary" data-cl="copy">Copy before and after</button><button class="secondary" data-cl="debrief">Facilitator questions</button></div>'+
  '<p id="clStatus" role="status" class="cl-muted">No score. These different vignettes do not measure a change in empathy.</p>');
 }
 function debrief(){
