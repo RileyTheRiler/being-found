@@ -5,6 +5,10 @@
 
 Editable source for Being Found. This line continues from the 8.3.7 preview.
 
+## Story Edition (standalone)
+
+`editions/story/` holds a separate, narrative-first game with no classroom framing: six chapters plus a prologue on one street, an illustrated isometric world, procedural sound, and an optional Notebook on Ratcliffe’s ideas. `npm run build` builds it into `dist/story/index.html` (served at `/story/`). It changes nothing in the classroom edition. See [editions/story/README.md](editions/story/README.md).
+
 ## Build
 
 1. Install Node.js 20 or newer.
