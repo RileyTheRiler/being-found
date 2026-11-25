@@ -18,7 +18,7 @@ const version=require('./package.json').version;
 const extra=['bf83','bf835','bf837','a11y_853','leena'].map(n=>`<link rel="stylesheet" href="${n}.css?v=${version}">`).join('')+['bf83','bf837','title_access','leena'].map(n=>`<script defer src="${n}.js?v=${version}"></script>`).join('');
 const at=html.toLowerCase().indexOf('</head>');html=at>=0?html.slice(0,at)+extra+html.slice(at):extra+html;
 html=html.replace(/<title>[^<]*<\/title>/i,`<title>Being Found ${version}</title>`);
-fs.writeFileSync(file,html,'utf8');fs.mkdirSync(p.join(dir,'qa'),{recursive:true});
+fs.writeFileSync(file,html,'utf8');require('./story_edition.js')(dir,html);fs.mkdirSync(p.join(dir,'qa'),{recursive:true});
 const audit={version,releaseLabelsRemoved:removed,remainingExact:{
  dele:/\bRELEASE\s+5\.4\s*[·•—–-]\s*THE\s+ENCOUNTER\s+COMES\s+FIRST\b/i.test(html),
  walt:/\bRELEASE\s+5\.3\s*[·•—–-]\s*A\s+CLINICAL\s+ENCOUNTER\b/i.test(html)
