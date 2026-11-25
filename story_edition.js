@@ -16,13 +16,16 @@ function region(text,start,end,replacement){
 const note='<details class="story-context"><summary>About the story</summary><p>Matthew Ratcliffe describes existential feelings as a background sense of what is possible, familiar or available in ordinary life. The same room can offer different possibilities to different people.</p><p>These are fictional accounts, not simulations or diagnoses. A visit reveals only what happens and what someone chooses to share. Independent lived-experience and accessibility review is still needed.</p><p><a href="https://doi.org/10.1093/med/9780199206469.003.0002" target="_blank" rel="noopener noreferrer">Read about existential feelings (Ratcliffe, 2008)</a></p></details>';
 function generate(html){
   // Isolate room save and opening preference across editions; maintain guided tab-only ownership.
-  html=html.replaceAll('lifeworld.v1','beingfound.story.room.v1').replaceAll('beingfound.opening.v1','beingfound.story.opening.v1');
+  html=html.replaceAll('lifeworld.','beingfound.story.').replaceAll('beingfound.opening.v1','beingfound.story.opening.v1');
   html=once(html,'<body>','<body class="bf-story-edition">');
   html=html.replace(/<title>[^<]*<\/title>/i,'<title>Being Found — Story Edition</title>');
   html=region(html,'function showTitle(){ const sv=','function showIntro(ix)',[
     'function showTitle(){ modal("mTitle",',
     JSON.stringify('<div class="title-head"><div class="titlelogo"><i class="ring"></i><div><div class="eyebrow">An interactive narrative</div><h1>Being Found</h1></div></div><button class="title-help" type="button" data-how-open aria-label="How to play">? <span>How to play</span></button></div><p class="lede">A window lit before sunrise. A door that may stay closed. A conversation that cannot be hurried.</p><div class="story-title-actions"><button class="cta title-primary" type="button" data-class="open">Begin story</button><button class="cta ghost title-opening" type="button" data-prologue="1">Watch the opening</button><button class="cta ghost" type="button" data-bf-leena>A different Saturday · Leena</button></div>'+note+'<p class="small title-disclaimer">Fictional story · Preview build · Independent review pending.</p>')+'); }'
   ].join('\n'));
+  html=once(html,'if(inRoom&&(tabletDock||tabletPortraitDock||desktopDock)){','if(inRoom&&available){');
+  html=once(html,'if(desktopDock)dock.appendChild(guide);else dock.prepend(guide);','dock.appendChild(guide);');
+  html=once(html,'guide.parentElement!==dock||desktopDock&&guide!==dock.lastElementChild','guide.parentElement!==dock||guide!==dock.lastElementChild');
   // Reuse controller transitions and flags, without requiring classroom tasks.
   html=region(html,'function begin(){if(run.active){resume();return;}','function renderGuide()',[
     "function begin(){if(run.active){resume();return;}run.active=true;run.stage='intro';run.noor.clear();run.dele.clear();run.pre={};run.post={};run.dVisit=null;run.wVisit=null;run.deleOutcome=null;run.guideCollapsed=true;run.paceStarted=null;run.paceMarks=[];document.body.classList.add('cl-route');",
@@ -65,21 +68,22 @@ function generate(html){
   // The original guide stays out of the way; no developer/teaching controls are exposed.
   html=html.replace('</head>', '<link rel="stylesheet" href="story-edition.css"></head>');
   html=html.replace(/src="leena\.js\?v=/,'src="leena-story.js?v=');
+  html=html.replace(/src="story\.js\?v=/,'src="story-engine-edition.js?v=');
   return html;
 }
 module.exports=function writeStory(dir,html){
   const css='body.bf-story-edition #app #btnTerms,body.bf-story-edition #app #btnFlats,body.bf-story-edition #app #bf83-reflect-launch,body.bf-story-edition #app #colRight,body.bf-story-edition #app #wStrip,body.bf-story-edition #app #goalPanel,body.bf-story-edition #app #goalBar,body.bf-story-edition #app #noteFloat{display:none!important} .bf-story-edition #clGuide{padding:8px!important;box-shadow:none!important;background:transparent!important;border:0!important} .story-room-footer,.story-title-actions{display:grid;gap:8px}.story-room-footer{grid-template-columns:1fr auto;align-items:center}.story-room-footer button,.story-title-actions button{min-height:44px!important}.story-context{margin:1rem 0;color:inherit;line-height:1.5}.story-context summary{cursor:pointer;padding:.5rem 0;min-height:44px}.bf-story-edition #mTitle .mcard{max-width:530px}.bf-story-edition #clOverlay .cl-card{max-width:580px}.bf-story-edition #clOverlay .cl-card h2{font-family:Georgia,serif;font-weight:500;font-size:clamp(2rem,6vw,3.3rem)} @media(max-width:650px){.bf-story-edition #clGuide{position:relative!important;inset:auto!important;width:100%!important;max-width:100%!important}.story-room-footer{grid-template-columns:1fr auto}}';
-  fs.writeFileSync(path.join(dir,'story-edition.css'),css);
+  fs.writeFileSync(path.join(dir,'story-edition.css'),css+' body.bf-story-edition.bf-guide-closed #clGuide:not([hidden]){display:block!important} body.bf-story-edition #bf-guide-toggle{display:none!important} body.bf-story-edition #app #dock #clGuide:not([hidden]){position:static!important;width:100%!important;max-width:100%!important;inset:auto!important;max-height:none!important;overflow:visible!important}');
+  fs.writeFileSync(path.join(dir,'story-engine-edition.js'),fs.readFileSync(path.join(dir,'story.js'),'utf8').replaceAll('lifeworld.','beingfound.story.'));
   let leena=fs.readFileSync(path.join(dir,'leena.js'),'utf8');
   leena=once(leena,'Leena · fictional person · optional Rooms story','Leena · Community library');
   leena=once(leena,'Being Found / Optional story','Being Found / A different Saturday');
   leena=once(leena,'Close and return to Rooms','Return to menu');
   leena=once(leena,'End of this optional fictional encounter','Saturday afternoon');
   leena=once(leena,'<h3>Reflect: what can you actually say?</h3>','<details class="story-context"><summary>Remember the visit</summary>');
-  leena=once(leena,'<div class="leena-actions">'+bDummy(),' </details><div class="leena-actions">'+bDummy());
+  leena=once(leena,`<div class="leena-actions">'+b('Replay Leena’s story','replay')`,`</details><div class="leena-actions">'+b('Replay Leena’s story','replay')`);
   leena=once(leena,"b('Return to Rooms','exit')","b('Return to menu','exit')");
   fs.writeFileSync(path.join(dir,'leena-story.js'),leena);
   fs.writeFileSync(path.join(dir,'story.html'),generate(html));
 };
-function bDummy(){return "'+b('Replay Leena’s story','replay')";}
 module.exports.generate=generate;
