@@ -168,6 +168,9 @@ jobs:
           python3 dele_check.py
           python3 visit_check.py
 
+      - name: Story edition browser regression
+        run: python3 qa_story_edition.py
+
       - name: Upload visual QA evidence
         if: always()
         uses: actions/upload-artifact@v4
