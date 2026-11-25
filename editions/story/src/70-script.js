@@ -226,6 +226,14 @@ BF.story = (() => {
     }
     ui.fade(1, .3).then(() => { play(i, null); });
   }
+  function resumeCheckpoint(save) {
+    const index = chapters.findIndex(chapter => chapter.id === save.chapter);
+    if (index < 0 || !save.state) return;
+    au.init();
+    st.restore(save.state);
+    ui.closeScreen();
+    ui.fade(1, .4).then(() => play(index, save.from));
+  }
   function skipChapter(id) {
     const i = chapters.findIndex(c => c.id === (id || st.chapter)); if (i < 0) return;
     if (chapters[i].defaults) Object.entries(chapters[i].defaults).forEach(([k, v]) => { if (st.get(k) === undefined) st.set(k, v); });
@@ -244,8 +252,9 @@ BF.story = (() => {
     W.cam.mode = 'focus'; W.cam.focus = [W.cam.x, W.cam.y];
     au.ambience('streetNight'); au.music('title');
     ui.fade(0, 1.2);
-    const save = BF.save.read(), can = save && save.chapter && save.chapter !== 'complete';
-    const ch = can ? chapters.find(c => c.id === save.chapter) : null;
+    const save = BF.save.read();
+    const ch = save && save.state && chapters.find(c => c.id === save.chapter);
+    const can = !!ch;
     ui.openScreen(`<div class="title">
       <div class="title-k">A story in five rooms and one street</div>
       <h1>Being Found</h1>
@@ -260,7 +269,7 @@ BF.story = (() => {
       </div>
       <p class="title-foot">Headphones recommended. Tap or click to move and interact; keyboard works too.</p>
     </div>`, {
-      cont: () => { au.init(); st.restore(save.state); const i = chapters.findIndex(c => c.id === save.chapter); ui.closeScreen(); ui.fade(1, .4).then(() => play(Math.max(0, i), save.from)); },
+      cont: () => resumeCheckpoint(save),
       new: () => { au.init(); if (can) confirmNew(); else newStory(); },
       chapters: () => { au.init(); chapterScreen('title'); },
       notebook: () => { if (save && save.state && !st.notebook.length) st.notebook = save.state.notebook || []; openNotebook(null, false, 'title'); },
@@ -302,10 +311,11 @@ BF.story = (() => {
     const cur = save && save.chapter;
     const items = chapters.filter(c => c.number !== undefined).map((c, i) => {
       const open = done.has(c.id) || c.id === cur || i === 0;
-      return `<li class="chap ${open ? '' : 'locked'}"><div><span class="ck">${BF.u.esc(c.kicker)}</span><span class="ct">${BF.u.esc(c.title)}</span><span class="cw">${BF.u.esc(c.when || '')}</span>${c.content ? `<span class="cn">${BF.u.esc(c.content)}</span>` : ''}</div>${open ? `<button type="button" class="btn small" data-x="go" data-id="${c.id}">${c.id === cur && !done.has(c.id) ? 'Resume' : 'Play'}</button>` : '<span class="muted small">Not yet reached</span>'}</li>`;
+      const atCheckpoint = c.id === cur && !done.has(c.id);
+      return `<li class="chap ${open ? '' : 'locked'}"><div><span class="ck">${BF.u.esc(c.kicker)}</span><span class="ct">${BF.u.esc(c.title)}</span><span class="cw">${BF.u.esc(c.when || '')}</span>${c.content ? `<span class="cn">${BF.u.esc(c.content)}</span>` : ''}</div>${open ? `<button type="button" class="btn small" data-x="${atCheckpoint ? 'resume' : 'go'}" data-id="${c.id}">${atCheckpoint ? 'Resume' : 'Play'}</button>` : '<span class="muted small">Not yet reached</span>'}</li>`;
     }).join('');
     ui.openScreen(`<div class="scr-card wide"><h2>Chapters</h2><p class="muted">Replaying a chapter keeps what happened before it.</p><ul class="chaps">${items}</ul><div class="row"><button type="button" class="btn ghost" data-x="back">Back</button></div></div>`, {
-      back: backFromScreen, go: b => { au.init(); startChapter(b.dataset.id, true); },
+      back: backFromScreen, resume: () => resumeCheckpoint(save), go: b => { au.init(); startChapter(b.dataset.id, true); },
     }, {name: 'screen'});
   }
   function openNotebook(pageId, fromToast, from) {

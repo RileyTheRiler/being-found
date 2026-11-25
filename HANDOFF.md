@@ -1,3 +1,7 @@
+## Story Edition checkpoint restoration
+
+Baseline main `1c9e1f9224e08d00957f9a46017d7b279205fe46` passed push run 45540269002 and was served by the production alias. On that build, Chapters → Resume overwrote Noor’s hall checkpoint with the beginning of her chapter. The repair shares Continue’s checkpoint restoration between the two menus. Completed-chapter Play remains a replay. The focused browser regression is `editions/story/test/qa_resume.py`. See the implementing PR for exact release receipts. Replay-state isolation and route-specific attribution are separate open findings in audit PR #37.
+
 ## Story Edition (standalone): `editions/story/`, branch `feat/story-edition-standalone`
 
 A separate narrative game with its own engine and saves; it does not use or patch `src/index.html`. Read `editions/story/README.md` before editing it. Build is wired through `postbuild.js` into `dist/story/`. Smoke test: `python3 editions/story/test/qa_story.py`. Lived-experience, device and screen-reader review are still outstanding.

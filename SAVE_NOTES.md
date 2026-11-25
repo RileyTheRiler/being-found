@@ -1,3 +1,7 @@
+## Story Edition checkpoint restoration
+
+Baseline main `1c9e1f9224e08d00957f9a46017d7b279205fe46` passed push run 45540269002 and was served by the production alias. On that build, Chapters → Resume overwrote Noor’s hall checkpoint with the beginning of her chapter. The repair shares Continue’s checkpoint restoration between the two menus. Completed-chapter Play remains a replay. The focused browser regression is `editions/story/test/qa_resume.py`. See the implementing PR for exact release receipts. Replay-state isolation and route-specific attribution are separate open findings in audit PR #37.
+
 ## Story Edition 1.0, standalone, on branch `feat/story-edition-standalone` (25 Nov 2026)
 
 Adds `editions/story/`: an independent narrative game built from the immersive master plan (full campaign, new unified illustrated art, interlinked cast). Prologue + six chapters: Noor’s morning; Noor at Dele’s door (let in, “not today”, note, or no knock, all valid); Leena’s library shift with optional dated recollections; Dele’s evening as a labelled authored perspective, unconditional and never unlocked by choices; Mara’s home visit with Walt (supported conversation, his own toast goal); epilogue a week later. Choices carry forward. Optional Notebook pages cite Ratcliffe with page references. No scores, meters, dice, diagnosis labels or effort penalties; equal movement speed for everyone.

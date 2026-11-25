@@ -123,7 +123,9 @@ jobs:
         run: python3 qa_smoke.py
 
       - name: Story Edition (standalone) chapter smoke
-        run: python3 editions/story/test/qa_story.py
+        run: |
+          python3 editions/story/test/qa_story.py
+          python3 editions/story/test/qa_resume.py
 
       - name: Tablet portrait Guide, orientation and target-size regression
         run: python3 qa_tablet_guide.py
