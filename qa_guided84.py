@@ -50,6 +50,9 @@ def check(browser, label, width, height, mobile):
         page.evaluate("document.querySelector('#plSkip')?.click()")
         page.get_by_role("button", name="Start the guided story").click()
         assert page.locator('#clOverlay').is_visible()
+        if not mobile:
+            page.locator('#clOverlay .cl-journal summary').click()
+            page.locator('[data-clanswer="pre"]').first.fill("Ask about <preferences>.")
         page.get_by_role("button", name="Enter Noor’s room").click()
         page.wait_for_function("window.LWClass?.stage==='noor'")
         s = state(page)
@@ -110,6 +113,17 @@ def check(browser, label, width, height, mobile):
         page.evaluate("window.LWClass.toFinal()")
         page.wait_for_function("window.LWClass?.stage==='complete'")
         assert "from the outside" in page.locator('#clOverlay h2').inner_text().lower()
+        actions = page.locator('#clOverlay .cl-final-actions button')
+        assert actions.first.inner_text() == "Finish"
+        assert actions.count() == 3
+        if mobile:
+            assert page.get_by_text("No starting notes entered.", exact=True).is_visible()
+            assert page.locator(".cl-before-line").count() == 0
+        else:
+            rows = page.locator(".cl-before-line")
+            assert rows.count() == 3
+            assert "Ask about <preferences>." in rows.first.inner_text()
+            assert "Not answered" in rows.nth(1).inner_text()
         answers = page.locator('#clOverlay textarea[data-clanswer="post"]')
         assert answers.count() == 3
         prompts = page.locator('#clOverlay .cl-questions label').all_inner_texts()

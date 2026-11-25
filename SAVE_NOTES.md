@@ -1,3 +1,7 @@
+## Final reflection controls · 24 November 2026
+
+Finish is the primary final action. Copy and facilitator questions remain available. When all opening prompts are blank, the reflection shows a single line. Partial and complete starting notes retain their original labels and wording. Classroom preview.
+
 ## Independent review corrections · 24 November 2026
 
 Review baseline: `bcff395487157d5057ed3246a5e836439331e67a`. Guided room checkpoints now use tab storage. On reload an existing persistent Rooms record takes precedence. Leaving Walt ends the classroom controller. Leena’s recap retains each distinct reply and separates speech from observed actions. The wide cart label is anchored above its outline. The pilot rubric accepts accurate attribution on the actual route, including leaving a note without a resident account.
