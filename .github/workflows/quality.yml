@@ -126,6 +126,7 @@ jobs:
         run: |
           python3 editions/story/test/qa_story.py
           python3 editions/story/test/qa_resume.py
+          python3 editions/story/test/qa_doorstep.py
 
       - name: Tablet portrait Guide, orientation and target-size regression
         run: python3 qa_tablet_guide.py
