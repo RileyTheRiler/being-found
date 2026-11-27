@@ -16,6 +16,8 @@ node editions/story/build.js           # Story Edition only, into editions/story
 ```sh
 # against the served build (same server as the root suite: python3 -m http.server 8770 --directory dist)
 python3 editions/story/test/qa_story.py            # CI smoke: every chapter starts, plays random actions and choices, no page errors
+python3 editions/story/test/qa_resume.py           # both public resume menus, Classroom isolation
+python3 editions/story/test/qa_doorstep.py         # deterministic doorstep/disclosure and legacy saves
 # local, slower: a whole campaign with random choices, from any chapter
 node editions/story/build.js && python3 editions/story/test/playthrough.py prologue 1
 ```

@@ -237,6 +237,7 @@ BF.story = (() => {
   function skipChapter(id) {
     const i = chapters.findIndex(c => c.id === (id || st.chapter)); if (i < 0) return;
     if (chapters[i].defaults) Object.entries(chapters[i].defaults).forEach(([k, v]) => { if (st.get(k) === undefined) st.set(k, v); });
+    if (chapters[i].onSkip) chapters[i].onSkip(G);
     if (!st.completed.includes(chapters[i].id)) st.completed.push(chapters[i].id);
     if (i + 1 < chapters.length) { gen++; hideAll(); ui.fade(1, .3).then(() => play(i + 1, null)); } else { gen++; hideAll(); titleScreen(); }
   }
@@ -322,7 +323,20 @@ BF.story = (() => {
     if (fromToast) { BF.time.paused = true; screenFrom = 'resume'; }
     else if (from) screenFrom = from; else if (!ui.screen) { BF.time.paused = true; screenFrom = 'resume'; }
     const pages = st.notebook.map(id => [id, BF.notebook.pages[id]]).filter(p => p[1]);
-    const people = BF.notebook.people.map(p => { const lines = st.get('know_' + p.id) || []; return lines.length ? `<section class="person"><h4 style="color:${p.color}">${BF.u.esc(p.name)}</h4><ul>${lines.map(l => `<li>${BF.u.esc(l)}</li>`).join('')}</ul></section>` : ''; }).join('');
+    const people = BF.notebook.people.map(p => {
+      let lines = st.get('know_' + p.id) || [];
+      if (p.id === 'noor') {
+        // v1 saves may contain the old unconditional claim. It cannot establish
+        // what she actually said; do not reconstruct disclosure from outcome.
+        const old = 'Told Leena about the knock, and no more than that.';
+        const hadOld = lines.includes(old);
+        lines = lines.filter(line => line !== old);
+        const disclosed = st.get('noorDoorDisclosure');
+        if (Array.isArray(disclosed)) lines = lines.concat(disclosed);
+        else if (hadOld) lines.push('Earlier saved conversation details are unavailable.');
+      }
+      return lines.length ? `<section class="person"><h4 style="color:${p.color}">${BF.u.esc(p.name)}</h4><ul>${lines.map(l => `<li>${BF.u.esc(l)}</li>`).join('')}</ul></section>` : '';
+    }).join('');
     const list = pages.map(([id, p]) => `<button type="button" class="nb-item ${id === pageId ? 'on' : ''}" data-x="page" data-id="${id}"><span>${BF.u.esc(p.title)}</span><span class="muted small">${BF.u.esc(p.scene || '')}</span></button>`).join('') || '<p class="muted">Pages appear here as the story goes on. They are optional.</p>';
     const page = pageId && BF.notebook.pages[pageId];
     const view = page ? `<article class="nb-page"><div class="nb-k">${BF.u.esc(page.scene || '')}</div><h3>${BF.u.esc(page.title)}</h3>${page.body}${page.refs ? `<div class="nb-refs"><h5>Further reading</h5><ul>${page.refs.map(r => `<li>${r}</li>`).join('')}</ul></div>` : ''}</article>` : `<div class="nb-intro"><h3>Notebook</h3><p>Some of the ideas behind this story come from the philosopher Matthew Ratcliffe, who writes about how people find themselves in the world: what seems possible, familiar, or out of reach. These pages are here if you want them. The story never asks you to read them.</p>${people ? `<h4 class="nb-sub">What you have seen</h4>${people}` : ''}</div>`;

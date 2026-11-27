@@ -138,6 +138,42 @@
     await G.think(lines[c], {name: 'Leena'});
   }
 
+  // An outcome alone cannot distinguish the two paths to a note or to home.
+  // The initial remark and optional reply each have their own witness record.
+  function doorstepAccount(out, knocked) {
+    const knock = {intro: 'Mine’s been long. I knocked on a friend’s door this morning.',
+      record: 'Told Leena she knocked on a friend’s door.', question: 'Did they answer?'};
+    const note = {intro: 'Mine’s been long. I left a note at a friend’s door this morning.',
+      record: 'Told Leena she left a note at a friend’s door.'};
+    const home = {intro: 'Mine’s been long. I was outside a friend’s door this morning.',
+      record: 'Told Leena she was outside a friend’s door.'};
+    if (out === 'visit') return {...knock, reply: 'He did. He let me in. I’m still thinking about it.',
+      followup: 'Told Leena her friend answered and let her in.'};
+    if (out === 'declined') return {...knock, reply: 'He did. He said not today. Which is allowed.',
+      followup: 'Told Leena her friend answered and said not today.'};
+    if (out === 'note') {
+      if (knocked === true) return {...knock, reply: 'I left before anyone answered. I slid a note under the door.',
+        followup: 'Told Leena she left a note before anyone answered.'};
+      if (knocked === false) return {...note, question: 'Did you knock?', reply: 'No. I just left the note.',
+        followup: 'Told Leena she did not knock.'};
+      return {...note, question: 'Did you speak to them?', reply: 'No. I left a note in the end.',
+        followup: 'Told Leena she did not speak to her friend.'};
+    }
+    if (out === 'home') {
+      if (knocked === true) return {...knock, reply: 'I went home before anyone answered.',
+        followup: 'Told Leena she went home before anyone answered.'};
+      if (knocked === false) return {
+        intro: 'Mine’s been long. I was outside a friend’s door this morning, but I didn’t knock.',
+        record: 'Told Leena she was outside a friend’s door and did not knock.',
+        question: 'Did you want to knock?', reply: 'I think so. I don’t know if he wanted me to.',
+        followup: 'Told Leena she thought she wanted to knock, but didn’t know if her friend wanted her to.'};
+      return {...home, question: 'Did you speak to them?', reply: 'No. I went home in the end.',
+        followup: 'Told Leena she went home without speaking to her friend.'};
+    }
+    // A skipped or otherwise unplayed encounter does not supply a door story.
+    return {intro: 'Mine’s been long. I’ve got a lot on my mind.'};
+  }
+
   async function noorVisit(G) {
     const W = G.W; G.flag('noorCame');
     G.sfx('bell'); G.sfx('doorOpen');
@@ -173,16 +209,22 @@
       await G.say('noor', d === 'lake' ? 'A lake! Whatever you decide, I hope it’s a good one to decide about.' : 'Fair. You can tell me, or not.', {expr: 'soft'});
     } else if (c === 'busy') await G.say('noor', 'You look like you’re having a good one.', {expr: 'smile'});
     else await G.say('noor', 'Quiet is good. Quiet is a library’s whole thing.', {expr: 'smile'});
-    const out = G.is('deleOutcome');
-    await G.say('noor', out === 'home' ? 'Mine’s been long. I walked past a friend’s door this morning. Twice.' : 'Mine’s been long. I knocked on a friend’s door this morning.', {expr: 'soft'});
-    c = await G.choose('', [{id: 'answer', label: out === 'home' ? 'Did you want to knock?' : 'Did they answer?'}, {id: 'talk', label: 'Do you want to talk about it?'}, {id: 'nohave', label: 'You don’t have to tell me.'}], {name: 'Leena'});
+    const account = doorstepAccount(G.is('deleOutcome'), G.is('deleKnocked'));
+    const disclosed = [];
+    G.flag('noorDoorDisclosure', disclosed);
+    await G.say('noor', account.intro, {expr: 'soft'});
+    if (account.record) disclosed.push(account.record);
+    c = await G.choose('', [
+      {id: 'answer', label: account.question, when: () => !!account.question},
+      {id: 'talk', label: 'Do you want to talk about it?'},
+      {id: 'nohave', label: 'You don’t have to tell me.'}
+    ], {name: 'Leena'});
     if (c === 'answer') {
-      const lines = {visit: 'He did. He let me in. I’m still thinking about it.', declined: 'He did. He said not today. Which is allowed.', note: 'I left a note in the end.', home: 'I think so. I don’t know if he wanted me to.'};
-      await G.say('noor', lines[out] || lines.visit, {expr: 'soft'});
+      await G.say('noor', account.reply, {expr: 'soft'});
+      disclosed.push(account.followup);
     }
     if (c === 'talk') await G.say('noor', 'Not yet. Thank you, though.', {expr: 'soft'});
     if (c === 'nohave') await G.say('noor', 'Thank you. That’s… yes. Thank you.', {expr: 'soft'});
-    G.know('noor', 'Told Leena about the knock, and no more than that.');
     if (G.is('hasBooks')) { await G.say('noor', 'Oh. And these are a week late. I know. I’m sorry.', {expr: 'smile'}); await G.choose('', [{id: 'fine', label: 'A week is practically early.'}], {name: 'Leena'}); }
     await G.say('noor', 'I’ll let you get back to the cart.', {expr: 'smile'});
     G.close(); G.camReset();
