@@ -287,7 +287,9 @@ BF.story = (() => {
     if (save?.state) {
       const entry = chapterEntries[id] || (save.chapter === id && !save.from
         ? save.state : legacyEntry(save, i));
-      st.restore(structuredClone(entry));
+      // Essays are persistent discoveries; witness flags and dialogue remain route-specific.
+      const earned = [...new Set([...(entry.notebook || []), ...(save.state.notebook || [])])];
+      st.restore(structuredClone({...entry, notebook: earned}));
       for (const later of chapters.slice(i)) delete chapterEntries[later.id];
     } else if (chapters[i].defaults) {
       Object.entries(chapters[i].defaults).forEach(([k, v]) => st.set(k, v));

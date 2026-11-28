@@ -1,3 +1,7 @@
+## Story Edition PR #39 — earned Notebook page retention (draft)
+
+Independent CodeRabbit review at `b412575832004dda28df396fbebacab74d090ec0` identified loss of earned essays on replay. The exact-head preview reproduced this via rendered controls: invitation → library → both optional recollections → Dele → title Chapters Play → skip → Continue; earned `about`, `doorway`, `time` became only `about`. The follow-up preserves the union of the entry and latest save's earned pages, without carrying later route-specific witness flags, dialogue or recollections. The root production build and focused local invitation/answer browser regression passed, including rendered Time essay access after replay/Continue. Exact-head CI, independent follow-up review, and four-viewport live preview visual sign-off remain required; no merge or production promotion. New Chromium environment has Noto, DejaVu and Liberation system fonts. Walt's agency/chronology remains next after release.
+
 ## PR #39 replay and restoration review
 
 Quality run [46097581388](https://github.com/RileyTheRiler/being-found/actions/runs/46097581388) failed when a chapter card intercepted a click on a visible dialogue button. Reduced motion [46097581326](https://github.com/RileyTheRiler/being-found/actions/runs/46097581326) passed all 13 steps.

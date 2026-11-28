@@ -194,6 +194,9 @@ def check(browser, route, disclosure="answer"):
 
 
 def replay_without_visit(page, previous, legacy):
+    earned = set(page.evaluate("BF.state.notebook"))
+    if not legacy:
+        assert "time" in earned, earned
     if legacy:
         # Model a save written before chapter-entry snapshots existed.
         page.evaluate("""key => {
@@ -223,6 +226,10 @@ def replay_without_visit(page, previous, legacy):
         expect(page.locator('.nb-view section.person:has(> h4:text-is("Dele")) li')).to_have_text(
             ["His bike has had a flat tyre since August."])
         assert "background" in page.evaluate("BF.state.notebook")
+    assert earned <= set(page.evaluate("BF.state.notebook")), (earned, page.evaluate("BF.state.notebook"))
+    if not legacy:
+        page.get_by_role("button", name="A future that opens and closes").click()
+        expect(page.locator(".nb-view")).to_contain_text("Every plan assumes a future")
     assert not page.evaluate("BF.state.flags.sawApril || BF.state.flags.sawOctober")
     print(f"PASS replay and Continue, legacy={legacy}: no prior disclosures or recollections", flush=True)
 
