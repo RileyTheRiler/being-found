@@ -25,7 +25,7 @@ BF.notebook = (() => {
       <p>Leena’s two recollections are hers, told in her words, about two different times in her life. She chooses whether to look at them. So do you.</p>`,
       refs: [`Ratcliffe, M. ${EoD}, chapter “Loss of Significance”, pp. 180–181, on drive, the present and the future.`]},
     sameDoor: {title: 'When possibilities change', scene: 'Chapter Four',
-      body: `<p>Dele can open his door. He does, once. Nothing stops him from walking down to Ferro’s. The door is the same door Noor uses every day.</p>
+      body: `<p>From Dele’s landing, the stairs still lead down to Ferro’s. How does that familiar walk seem to him tonight?</p>
       <p>Ratcliffe collected many first-person accounts of depression. A theme that recurs is a change in the <i>kinds</i> of possibility the world seems to hold. Things can still be done. What changes is whether anything shows up as mattering, or as able to change. One respondent wrote: <q>I could go anywhere and do anything and nothing for me would change.</q></p>
       <p>Ratcliffe also stresses that these accounts vary a great deal. Dele’s evening is one authored story, not a picture of how depression feels for everyone.</p>`,
       refs: [`Ratcliffe, M. ${EoD}, chapter “Eternal Incarceration”, p. 67.`]},
@@ -68,4 +68,52 @@ BF.notebook = (() => {
   ];
   return {pages, people};
 })();
-BF.state.notebook.push('about');
+// Discoveries belong to the player, not to a chapter snapshot. Keep the
+// legacy notebook arrays readable for migration and backwards compatibility.
+BF.essayDiscovery = (() => {
+  const KEY = 'beingfound.story.notebook.v1';
+  const ids = new Set(['about']);
+  let persistent = false;
+  const valid = id => typeof id === 'string' && Object.hasOwn(BF.notebook.pages, id);
+  function add(values) {
+    if (Array.isArray(values)) for (const id of values) if (valid(id)) ids.add(id);
+  }
+  // Do not overwrite an unsupported future format. Invalid v1 data can
+  // be repaired using the valid discoveries still available in legacy saves.
+  function sync() {
+    persistent = false;
+    try {
+      const raw = localStorage.getItem(KEY);
+      let stored;
+      try { stored = JSON.parse(raw); } catch (e) {}
+      if (stored && typeof stored === 'object' && Object.hasOwn(stored, 'version') && stored.version !== 1) return false;
+      if (stored?.version === 1) add(stored.essays);
+      const next = JSON.stringify({version: 1, essays: [...ids]});
+      if (raw !== next) localStorage.setItem(KEY, next);
+      persistent = true;
+      return true;
+    } catch (e) { return false; }
+  }
+  function migrate(save) {
+    if (save?.version === 1) {
+      add(save.state?.notebook);
+      if (save.chapterEntries && typeof save.chapterEntries === 'object') {
+        for (const entry of Object.values(save.chapterEntries)) add(entry?.notebook);
+      }
+    }
+    return sync();
+  }
+  return {
+    ids: () => [...ids],
+    persistent: () => persistent,
+    migrate,
+    discover(id) {
+      if (!valid(id)) return false;
+      const fresh = !ids.has(id);
+      ids.add(id);
+      sync();
+      return fresh;
+    },
+  };
+})();
+BF.essayDiscovery.migrate(BF.save.read());

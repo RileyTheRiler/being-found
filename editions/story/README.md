@@ -16,6 +16,8 @@ node editions/story/build.js           # Story Edition only, into editions/story
 ```sh
 # against the served build (same server as the root suite: python3 -m http.server 8770 --directory dist)
 python3 editions/story/test/qa_story.py            # CI smoke: every chapter starts, plays random actions and choices, no page errors
+python3 editions/story/test/qa_resume.py           # both public resume menus, Classroom isolation
+python3 editions/story/test/qa_doorstep.py         # deterministic doorstep/disclosure and legacy saves
 # local, slower: a whole campaign with random choices, from any chapter
 node editions/story/build.js && python3 editions/story/test/playthrough.py prologue 1
 ```
@@ -66,6 +68,8 @@ src/99-main.js        boot and frame loop
 ```
 
 ## Relationship to the classroom edition
+
+Essay discoveries use `beingfound.story.notebook.v1` (version 1, stable essay IDs) and persist immediately, independent of route checkpoints. Legacy checkpoint and chapter-entry essay arrays migrate without transferring witness records. New story is not a data reset. To intentionally erase Story progress and discoveries, clear both `beingfound.story.save.v1` and `beingfound.story.notebook.v1` while the game is closed; preferences are separate. If storage fails or its format is unsupported, discoveries remain available in the current session but may not survive reload. Never clear Classroom keys as part of a Story reset.
 
 This edition shares no code with `src/index.html` or the overlay modules, and it changes none of them. Its saves use their own keys (`beingfound.story.*`). It supersedes the experimental generator approach in PR #35, which patched the classroom page into a story page.
 

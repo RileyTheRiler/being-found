@@ -5,6 +5,7 @@
   register({id: 'door', number: 2, kicker: 'Chapter Two', title: 'Behind the Door', when: 'Noor · Saturday, late morning',
     content: 'A friend has withdrawn and seems low. Nothing frightening happens.',
     defaults: {pastry: true, twoKnots: true},
+    onSkip(G) { G.flag('deleOutcome', null); G.flag('deleKnocked', null); },
     async run(G, from) {
       await G.card('Chapter Two', 'Behind the Door', 'Noor · Saturday, late morning', {content: 'Dele, a friend of Noor’s, has withdrawn and seems low. Nothing frightening happens, and the visit can end however it ends.', chapter: 'door', go: 'Begin'});
       if (from !== 'inside') await landing(G);
@@ -22,6 +23,8 @@
     else if (G.is('pastry')) await G.think('One cinnamon knot, a little squashed. She should have asked Sami for two.');
     else await G.think('His door. Her door. Six steps of carpet between them.');
     G.flag('deleOutcome', null);
+    // False means the landing was played without a knock, not a missing legacy flag.
+    G.flag('deleKnocked', false);
     await G.explore({until: () => !!G.is('deleOutcome'), acts: {
       door2C: () => [
         {label: 'Knock', run: async () => { await knock(G); }},
@@ -44,6 +47,7 @@
 
   async function knock(G) {
     const W = G.W, dele = G.actor('dele');
+    G.flag('deleKnocked', true);
     G.sfx('knock'); await G.anim('noor', 'knock', 1.1);
     await G.wait(1.8);
     let c = await G.choose('The radio inside goes quiet.', [
