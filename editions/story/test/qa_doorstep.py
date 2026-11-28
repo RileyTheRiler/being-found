@@ -247,7 +247,7 @@ def quit_to_title(page):
 
 def check_time_page(page):
     page.get_by_role("button", name="Notebook", exact=True).click()
-    page.get_by_role("button", name=TIME_PAGE, exact=True).click()
+    page.get_by_role("button", name=TIME_PAGE).click()
     expect(page.locator(".nb-view")).to_contain_text("Every plan assumes a future")
     page.get_by_role("button", name="Close", exact=True).click()
 
@@ -339,6 +339,12 @@ def migration(browser, mode):
             })()""")
         for _ in range(2):
             page.reload()
+            page.get_by_role("button", name="Notebook", exact=True).click()
+            if mode in ("unavailable", "unsupported"):
+                expect(page.get_by_role("status").filter(has_text="Notebook discoveries cannot currently be saved")).to_be_visible()
+            else:
+                expect(page.locator(".nb-view")).not_to_contain_text("Notebook discoveries cannot currently be saved")
+            page.get_by_role("button", name="Close", exact=True).click()
             check_time_page(page)
             ids = page.evaluate("BF.state.notebook")
             expected = {"about","background","time"} | ({"doorway"} if mode == "valid" else set())

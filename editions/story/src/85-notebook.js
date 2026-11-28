@@ -73,6 +73,7 @@ BF.notebook = (() => {
 BF.essayDiscovery = (() => {
   const KEY = 'beingfound.story.notebook.v1';
   const ids = new Set(['about']);
+  let persistent = false;
   const valid = id => typeof id === 'string' && Object.hasOwn(BF.notebook.pages, id);
   function add(values) {
     if (Array.isArray(values)) for (const id of values) if (valid(id)) ids.add(id);
@@ -80,6 +81,7 @@ BF.essayDiscovery = (() => {
   // Do not overwrite an unsupported future format. Invalid v1 data can
   // be repaired using the valid discoveries still available in legacy saves.
   function sync() {
+    persistent = false;
     try {
       const raw = localStorage.getItem(KEY);
       let stored;
@@ -88,6 +90,7 @@ BF.essayDiscovery = (() => {
       if (stored?.version === 1) add(stored.essays);
       const next = JSON.stringify({version: 1, essays: [...ids]});
       if (raw !== next) localStorage.setItem(KEY, next);
+      persistent = true;
       return true;
     } catch (e) { return false; }
   }
@@ -102,6 +105,7 @@ BF.essayDiscovery = (() => {
   }
   return {
     ids: () => [...ids],
+    persistent: () => persistent,
     migrate,
     discover(id) {
       if (!valid(id)) return false;
