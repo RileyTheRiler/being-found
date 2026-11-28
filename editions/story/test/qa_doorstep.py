@@ -252,6 +252,21 @@ def check_time_page(page):
     page.get_by_role("button", name="Close", exact=True).click()
 
 
+def earn_time_in_library(page, both=False):
+    action(page, "leena", "Returns cart", "Shelve the next book")
+    action(page, "leena", "Returns cart", "Shelve the next book")
+    choice(page, "Monday’s fine. I’ll leave the wall empty for it.")
+    choice(page, "Quiet so far.")
+    choice(page, "You don’t have to tell me.")
+    labels = ["Open your planner", "Look at the April page"]
+    if both:
+        labels.append("Look at the October page")
+    for label in labels:
+        action(page, "leena", "Your planner", label)
+        page.get_by_role("button", name="Close the planner").click()
+        hotspot(page, "leena", "Your planner")
+
+
 def earn_before_checkpoint(browser, immediate_refresh):
     context = browser.new_context(viewport={"width":390,"height":844}, reduced_motion="reduce")
     try:
@@ -271,15 +286,7 @@ def earn_before_checkpoint(browser, immediate_refresh):
         hotspot(page, "leena", "Returns cart")
         before = page.evaluate("key => localStorage.getItem(key)", SAVE)
         assert "time" not in page.evaluate("BF.state.notebook")
-        action(page, "leena", "Returns cart", "Shelve the next book")
-        action(page, "leena", "Returns cart", "Shelve the next book")
-        choice(page, "Monday’s fine. I’ll leave the wall empty for it.")
-        choice(page, "Quiet so far.")
-        choice(page, "You don’t have to tell me.")
-        for label in ("Open your planner", "Look at the April page", "Look at the October page"):
-            action(page, "leena", "Your planner", label)
-            page.get_by_role("button", name="Close the planner").click()
-            hotspot(page, "leena", "Your planner")
+        earn_time_in_library(page, both=not immediate_refresh)
         assert "time" in page.evaluate("BF.state.notebook")
         assert page.evaluate("key => localStorage.getItem(key)", SAVE) == before
         # The first test action after earning is refresh, before any menu or save.
@@ -296,6 +303,15 @@ def earn_before_checkpoint(browser, immediate_refresh):
         hotspot(page, "leena", "Returns cart")
         assert not page.evaluate("BF.state.flags.sawApril || BF.state.flags.sawOctober || BF.state.flags.noorDoorDisclosure")
         check_time_page(page)
+        if not immediate_refresh:
+            # Re-earn through the same actual interaction after restoring a
+            # checkpoint that has no recollection flags. No duplicate or new
+            # checkpoint may be written by a repeated discovery.
+            before_repeat = page.evaluate("key => localStorage.getItem(key)", SAVE)
+            earn_time_in_library(page)
+            assert page.evaluate("BF.state.notebook").count("time") == 1
+            assert page.evaluate("key => JSON.parse(localStorage.getItem(key)).essays", DISCOVERY).count("time") == 1
+            assert page.evaluate("key => localStorage.getItem(key)", SAVE) == before_repeat
         quit_to_title(page)
         page.get_by_role("button", name="Chapters", exact=True).click()
         page.locator("li.chap").filter(has_text="Behind the Door").get_by_role("button", name="Play").click()
@@ -314,6 +330,17 @@ def earn_before_checkpoint(browser, immediate_refresh):
         page.goto(URL + "?fast=6")
         check_time_page(page)
         assert page.evaluate("localStorage.getItem('lifeworld.v1')") == "classroom-sentinel"
+        if not immediate_refresh:
+            # Model intentional browser deletion of both Story progress keys,
+            # not a new-story action. A new document must not resurrect them.
+            page.evaluate("keys => keys.forEach(k => localStorage.removeItem(k))", [SAVE, DISCOVERY])
+            page.close()
+            page = context.new_page()
+            page.goto(URL + "?fast=6")
+            assert page.evaluate("BF.state.notebook") == ["about"]
+            page.get_by_role("button", name="Notebook", exact=True).click()
+            expect(page.get_by_role("button", name=TIME_PAGE)).to_have_count(0)
+            assert page.evaluate("localStorage.getItem('lifeworld.v1')") == "classroom-sentinel"
         print(f"PASS Notebook retention: immediate refresh={immediate_refresh}, title, replay, Continue, new story, reopen", flush=True)
     finally:
         context.close()
