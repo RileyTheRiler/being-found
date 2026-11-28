@@ -68,4 +68,48 @@ BF.notebook = (() => {
   ];
   return {pages, people};
 })();
-BF.state.notebook.push('about');
+// Discoveries belong to the player, not to a chapter snapshot. Keep the
+// legacy notebook arrays readable for migration and backwards compatibility.
+BF.essayDiscovery = (() => {
+  const KEY = 'beingfound.story.notebook.v1';
+  const ids = new Set(['about']);
+  const valid = id => typeof id === 'string' && Object.hasOwn(BF.notebook.pages, id);
+  function add(values) {
+    if (Array.isArray(values)) for (const id of values) if (valid(id)) ids.add(id);
+  }
+  // Do not overwrite an unsupported future format. Invalid v1 data can
+  // be repaired using the valid discoveries still available in legacy saves.
+  function sync() {
+    try {
+      const raw = localStorage.getItem(KEY);
+      let stored;
+      try { stored = JSON.parse(raw); } catch (e) {}
+      if (stored && typeof stored === 'object' && Object.hasOwn(stored, 'version') && stored.version !== 1) return false;
+      if (stored?.version === 1) add(stored.essays);
+      const next = JSON.stringify({version: 1, essays: [...ids]});
+      if (raw !== next) localStorage.setItem(KEY, next);
+      return true;
+    } catch (e) { return false; }
+  }
+  function migrate(save) {
+    if (save?.version === 1) {
+      add(save.state?.notebook);
+      if (save.chapterEntries && typeof save.chapterEntries === 'object') {
+        for (const entry of Object.values(save.chapterEntries)) add(entry?.notebook);
+      }
+    }
+    return sync();
+  }
+  return {
+    ids: () => [...ids],
+    migrate,
+    discover(id) {
+      if (!valid(id)) return false;
+      const fresh = !ids.has(id);
+      ids.add(id);
+      sync();
+      return fresh;
+    },
+  };
+})();
+BF.essayDiscovery.migrate(BF.save.read());

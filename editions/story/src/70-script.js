@@ -71,7 +71,7 @@ BF.story = (() => {
     async fade(to = 1, s) { const g = gen; await ui.fade(to, s); check(g); },
     focus(targets, zoom, speed) { const pts = targets.map(t => typeof t === 'string' ? (W.actors[t] ? [W.actors[t].x, W.actors[t].y, 2.2] : W.objCenter(W.objects[t])) : t); W.focusOn(pts, zoom, speed); },
     camReset() { W.camReset(); },
-    note(id) { if (st.notebook.includes(id)) return; st.notebook.push(id); const p = BF.notebook.pages[id]; if (p) ui.toast(p.title, () => openNotebook(id, true)); },
+    note(id) { if (!BF.essayDiscovery.discover(id)) return; ui.toast(BF.notebook.pages[id].title, () => openNotebook(id, true)); },
     know(who, line) { const k = 'know_' + who; const arr = st.get(k) || []; if (!arr.includes(line)) arr.push(line); st.set(k, arr); },
     checkpoint(beat) { saveNow(st.chapter, beat); },
     lock(v) { locked = v; },
@@ -275,21 +275,18 @@ BF.story = (() => {
     for (const [key, value] of Object.entries(save.state.flags || {})) {
       if (key.startsWith('know_') && Array.isArray(value)) flags[key] = value.filter(line => witnessed.has(line));
     }
-    // These optional essays persist across new stories, independently of witness records.
-    return {flags, completed: (save.state.completed || []).filter(id => earlier.includes(id)),
-      notebook: save.state.notebook || ['about'], log: []};
+    return {flags, completed: (save.state.completed || []).filter(id => earlier.includes(id)), log: []};
   }
   function startChapter(id) {
     const i = chapters.findIndex(c => c.id === id); if (i < 0) return;
     ui.closeScreen();
     const save = BF.save.read();
+    BF.essayDiscovery.migrate(save);
     chapterEntries = {...save?.chapterEntries};
     if (save?.state) {
       const entry = chapterEntries[id] || (save.chapter === id && !save.from
         ? save.state : legacyEntry(save, i));
-      // Essays are persistent discoveries; witness flags and dialogue remain route-specific.
-      const earned = [...new Set([...(entry.notebook || []), ...(save.state.notebook || [])])];
-      st.restore(structuredClone({...entry, notebook: earned}));
+      st.restore(structuredClone(entry));
       for (const later of chapters.slice(i)) delete chapterEntries[later.id];
     } else if (chapters[i].defaults) {
       Object.entries(chapters[i].defaults).forEach(([k, v]) => st.set(k, v));
@@ -300,6 +297,7 @@ BF.story = (() => {
     const index = chapters.findIndex(chapter => chapter.id === save.chapter);
     if (index < 0 || !save.state) return;
     au.init();
+    BF.essayDiscovery.migrate(save);
     chapterEntries = {...save.chapterEntries};
     st.restore(structuredClone(save.state));
     ui.closeScreen();
@@ -325,6 +323,7 @@ BF.story = (() => {
     au.ambience('streetNight'); au.music('title');
     ui.fade(0, 1.2);
     const save = BF.save.read();
+    BF.essayDiscovery.migrate(save);
     const ch = save && save.state && chapters.find(c => c.id === save.chapter);
     const can = !!ch;
     ui.openScreen(`<div class="title">
@@ -335,7 +334,7 @@ BF.story = (() => {
         ${can ? `<button type="button" class="btn big" data-x="cont" autofocus>Continue<span class="sub">${ch ? BF.u.esc(ch.title) : ''}</span></button>` : ''}
         <button type="button" class="btn ${can ? 'ghost' : 'big'}" data-x="new" ${can ? '' : 'autofocus'}>New story</button>
         <button type="button" class="btn ghost" data-x="chapters">Chapters</button>
-        ${st.notebook.length || (save && save.state && save.state.notebook && save.state.notebook.length) ? '<button type="button" class="btn ghost" data-x="notebook">Notebook</button>' : ''}
+        ${st.notebook.length ? '<button type="button" class="btn ghost" data-x="notebook">Notebook</button>' : ''}
         <button type="button" class="btn ghost" data-x="settings">Settings</button>
         <button type="button" class="btn ghost" data-x="about">About</button>
       </div>
@@ -352,7 +351,7 @@ BF.story = (() => {
   function confirmNew() {
     ui.openScreen(`<div class="scr-card narrow"><h2>Start a new story?</h2><p>Your current place in the story will be replaced. Notebook pages you have found stay.</p><div class="row"><button type="button" class="btn" data-x="yes">Start again</button><button type="button" class="btn ghost" data-x="no" autofocus>Keep my place</button></div></div>`, {yes: newStory, no: titleScreen});
   }
-  function newStory() { chapterEntries = {}; const nb = [...new Set([...st.notebook, ...(BF.save.read()?.state?.notebook || [])])]; st.reset(); st.notebook = nb; ui.closeScreen(); ui.fade(1, .6).then(() => play(0, null)); }
+  function newStory() { BF.essayDiscovery.migrate(BF.save.read()); chapterEntries = {}; st.reset(); ui.closeScreen(); ui.fade(1, .6).then(() => play(0, null)); }
   let screenFrom = null;
   function backFromScreen() { if (screenFrom === 'title') titleScreen(); else if (screenFrom === 'pause') openPause(); else resume(); }
   function openPause() {
@@ -409,7 +408,7 @@ BF.story = (() => {
       return lines.length ? `<section class="person"><h4 style="color:${p.color}">${BF.u.esc(p.name)}</h4><ul>${lines.map(l => `<li>${BF.u.esc(l)}</li>`).join('')}</ul></section>` : '';
     }).join('');
     const list = pages.map(([id, p]) => `<button type="button" class="nb-item ${id === pageId ? 'on' : ''}" data-x="page" data-id="${id}"><span>${BF.u.esc(p.title)}</span><span class="muted small">${BF.u.esc(p.scene || '')}</span></button>`).join('') || '<p class="muted">Pages appear here as the story goes on. They are optional.</p>';
-    const page = pageId && BF.notebook.pages[pageId];
+    const page = st.notebook.includes(pageId) && BF.notebook.pages[pageId];
     const view = page ? `<article class="nb-page"><div class="nb-k">${BF.u.esc(page.scene || '')}</div><h3>${BF.u.esc(page.title)}</h3>${page.body}${page.refs ? `<div class="nb-refs"><h5>Further reading</h5><ul>${page.refs.map(r => `<li>${r}</li>`).join('')}</ul></div>` : ''}</article>` : `<div class="nb-intro"><h3>Notebook</h3><p>Some of the ideas behind this story come from the philosopher Matthew Ratcliffe, who writes about how people find themselves in the world: what seems possible, familiar, or out of reach. These pages are here if you want them. The story never asks you to read them.</p>${people ? `<h4 class="nb-sub">What you have seen</h4>${people}` : ''}</div>`;
     ui.openScreen(`<div class="scr-card wide nb"><div class="nb-head"><h2>Notebook</h2><button type="button" class="btn small ghost" data-x="back">Close</button></div><div class="nb-grid"><nav class="nb-list"><button type="button" class="nb-item ${!pageId ? 'on' : ''}" data-x="home">Contents and people</button>${list}</nav><div class="nb-view" tabindex="0">${view}</div></div></div>`, {
       back: () => { if (screenFrom === 'resume') resume(); else backFromScreen(); }, page: b => { const keep = screenFrom; openNotebook(b.dataset.id, false, keep); setTimeout(() => { const v = document.querySelector('.nb-view'); v && v.focus({preventScroll: true}); }, 60); }, home: () => openNotebook(null, false, screenFrom),

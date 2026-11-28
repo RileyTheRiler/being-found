@@ -234,6 +234,127 @@ def replay_without_visit(page, previous, legacy):
     print(f"PASS replay and Continue, legacy={legacy}: no prior disclosures or recollections", flush=True)
 
 
+
+DISCOVERY = "beingfound.story.notebook.v1"
+TIME_PAGE = "A future that opens and closes"
+
+
+def quit_to_title(page):
+    page.locator("#btnPause").click()
+    page.get_by_role("button", name="Save and return to title").click()
+    expect(page.get_by_role("button", name="Notebook", exact=True)).to_be_visible()
+
+
+def check_time_page(page):
+    page.get_by_role("button", name="Notebook", exact=True).click()
+    page.get_by_role("button", name=TIME_PAGE, exact=True).click()
+    expect(page.locator(".nb-view")).to_contain_text("Every plan assumes a future")
+    page.get_by_role("button", name="Close", exact=True).click()
+
+
+def earn_before_checkpoint(browser, immediate_refresh):
+    context = browser.new_context(viewport={"width":390,"height":844}, reduced_motion="reduce")
+    try:
+        context.add_init_script("""localStorage.setItem('beingfound.story.settings.v1', JSON.stringify({
+          textSpeed:3, reducedMotion:true, notebookPrompts:false, music:0, ambience:0, effects:0
+        }))""")
+        page = context.new_page()
+        page.goto(URL + "?fast=6")
+        # An older chapter-entry save, with no Time page or current recollection.
+        record = {"version":1, "chapter":"leena", "from":None, "state":{
+            "flags":{"deleOutcome":"home","deleKnocked":False},
+            "completed":["prologue","noor","door"], "notebook":["about"], "log":[]}}
+        page.evaluate("([key, record]) => localStorage.setItem(key, JSON.stringify(record))", [SAVE, record])
+        page.evaluate("localStorage.setItem('lifeworld.v1', 'classroom-sentinel')")
+        page.reload()
+        page.get_by_role("button", name="Continue").click()
+        hotspot(page, "leena", "Returns cart")
+        before = page.evaluate("key => localStorage.getItem(key)", SAVE)
+        assert "time" not in page.evaluate("BF.state.notebook")
+        action(page, "leena", "Returns cart", "Shelve the next book")
+        action(page, "leena", "Returns cart", "Shelve the next book")
+        choice(page, "Monday’s fine. I’ll leave the wall empty for it.")
+        choice(page, "Quiet so far.")
+        choice(page, "You don’t have to tell me.")
+        for label in ("Open your planner", "Look at the April page", "Look at the October page"):
+            action(page, "leena", "Your planner", label)
+            page.get_by_role("button", name="Close the planner").click()
+            hotspot(page, "leena", "Your planner")
+        assert "time" in page.evaluate("BF.state.notebook")
+        assert page.evaluate("key => localStorage.getItem(key)", SAVE) == before
+        # The first test action after earning is refresh, before any menu or save.
+        if immediate_refresh:
+            page.reload()
+        else:
+            quit_to_title(page)
+        check_time_page(page)
+        saved = page.evaluate("key => JSON.parse(localStorage.getItem(key))", DISCOVERY)
+        assert saved["version"] == 1 and saved["essays"].count("time") == 1
+        assert set(saved["essays"]) == {"about","time"}, saved
+        # Title Continue restores only checkpoint witnesses.
+        page.get_by_role("button", name="Continue").click()
+        hotspot(page, "leena", "Returns cart")
+        assert not page.evaluate("BF.state.flags.sawApril || BF.state.flags.sawOctober || BF.state.flags.noorDoorDisclosure")
+        check_time_page(page)
+        quit_to_title(page)
+        page.get_by_role("button", name="Chapters", exact=True).click()
+        page.locator("li.chap").filter(has_text="Behind the Door").get_by_role("button", name="Play").click()
+        page.get_by_role("button", name="Content note", exact=True).click()
+        page.get_by_role("button", name="Skip this chapter", exact=True).click()
+        hotspot(page, "leena", "Returns cart")
+        check_time_page(page)
+        assert not page.evaluate("BF.state.flags.sawApril || BF.state.flags.sawOctober || BF.state.flags.noorDoorDisclosure")
+        quit_to_title(page)
+        page.get_by_role("button", name="New story", exact=True).click()
+        page.get_by_role("button", name="Start again", exact=True).click()
+        page.wait_for_function("BF.state.chapter === 'prologue'")
+        assert "time" in page.evaluate("BF.state.notebook")
+        page.close()
+        page = context.new_page()
+        page.goto(URL + "?fast=6")
+        check_time_page(page)
+        assert page.evaluate("localStorage.getItem('lifeworld.v1')") == "classroom-sentinel"
+        print(f"PASS Notebook retention: immediate refresh={immediate_refresh}, title, replay, Continue, new story, reopen", flush=True)
+    finally:
+        context.close()
+
+
+def migration(browser, mode):
+    context = browser.new_context(reduced_motion="reduce")
+    try:
+        page = context.new_page()
+        page.goto(URL)
+        record = {"version":1,"chapter":"leena","from":None,
+                  "state":{"flags":{},"completed":[],"notebook":["about","background","background","invalid"],"log":[]},
+                  "chapterEntries":{"door":{"flags":{"know_dele":["private snapshot witness"]},"notebook":["time","time","constructor"]}}}
+        page.evaluate("([key, record]) => localStorage.setItem(key, JSON.stringify(record))", [SAVE,record])
+        raw = {"malformed":"{broken", "unsupported":'{"version":2,"essays":["hope"]}', "valid":'{"version":1,"essays":["doorway","doorway",42]}', "unavailable":None}[mode]
+        if raw is not None:
+            page.evaluate("([key, raw]) => localStorage.setItem(key, raw)", [DISCOVERY,raw])
+        if mode == "unavailable":
+            context.add_init_script("""(() => {
+                const get = Storage.prototype.getItem, set = Storage.prototype.setItem;
+                Storage.prototype.getItem = function(k) { if (k === 'beingfound.story.notebook.v1') throw new DOMException('Blocked','SecurityError'); return get.call(this,k); };
+                Storage.prototype.setItem = function(k,v) { if (k === 'beingfound.story.notebook.v1') throw new DOMException('Blocked','SecurityError'); return set.call(this,k,v); };
+            })()""")
+        for _ in range(2):
+            page.reload()
+            check_time_page(page)
+            ids = page.evaluate("BF.state.notebook")
+            expected = {"about","background","time"} | ({"doorway"} if mode == "valid" else set())
+            assert set(ids) == expected and len(ids) == len(expected), ids
+            assert not page.evaluate("BF.state.flags.know_dele")
+            assert page.evaluate("key => JSON.parse(localStorage.getItem(key))", SAVE) == record
+            if mode == "unsupported":
+                assert page.evaluate("key => localStorage.getItem(key)", DISCOVERY) == raw
+            elif mode != "unavailable":
+                persisted = page.evaluate("key => JSON.parse(localStorage.getItem(key))", DISCOVERY)
+                assert set(persisted["essays"]) == expected and len(persisted["essays"]) == len(expected)
+        print(f"PASS Notebook migration: {mode}", flush=True)
+    finally:
+        context.close()
+
+
 if __name__ == "__main__":
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(executable_path=os.getenv("BF_CHROME"))
@@ -245,4 +366,8 @@ if __name__ == "__main__":
                 check(browser, route)
             check(browser, "refusal", "talk")
             check(browser, "invitation", "nohave")
+            for refresh in (True, False):
+                earn_before_checkpoint(browser, refresh)
+            for mode in ("valid", "malformed", "unsupported", "unavailable"):
+                migration(browser, mode)
         browser.close()

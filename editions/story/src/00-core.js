@@ -92,13 +92,14 @@ BF.time = {
 
 /* ---------- story flags ---------- */
 BF.state = {
-  flags: {}, chapter: null, completed: [], notebook: [], log: [],
+  flags: {}, chapter: null, completed: [], log: [],
+  get notebook() { return BF.essayDiscovery.ids(); },
   get(k) { return this.flags[k]; },
   set(k, v = true) { this.flags[k] = v; },
   inc(k, n = 1) { this.flags[k] = (this.flags[k] || 0) + n; return this.flags[k]; },
   snapshot() { return JSON.parse(JSON.stringify({flags: this.flags, completed: this.completed, notebook: this.notebook, log: this.log.slice(-120)})); },
   restore(d) {
-    this.flags = d.flags || {}; this.completed = d.completed || []; this.notebook = d.notebook || []; this.log = d.log || [];
+    this.flags = d.flags || {}; this.completed = d.completed || []; this.log = d.log || [];
   },
   reset() { this.flags = {}; this.completed = []; this.log = []; /* notebook pages persist across new stories */ },
 };
