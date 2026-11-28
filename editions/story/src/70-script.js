@@ -227,6 +227,42 @@ BF.story = (() => {
     leena: ['leenaDecision', 'noorDoorDisclosure'],
     dele: ['deleReply', 'openedCurtains'],
   };
+  // Witness lines in saves predating chapter-entry snapshots had no source ID.
+  const legacyWitnessLines = {
+    noor: [
+      "Is painting the whole street, window by window.",
+      "Walks the long loop with Noor on Saturday mornings. Has been texting Dele.",
+      "Runs the community library. Asked Noor to paint a sign for the reading corner.",
+      "Lives across the landing from Noor. Laughing outside Ferro’s in a photo from last spring.",
+      "His lamp was on late into the night, and on again in the morning.",
+      "His bike has had a flat tyre since August.",
+      "Usually comes into Ferro’s. Sami has noticed he hasn’t.",
+      "Hand-lettered the gold sign on Ferro’s window three summers ago. The F has started to lift.",
+      "Has skipped the Saturday walk three weeks running. Tells Mara he’s tired.",
+      "Is a speech-language pathologist. Has a home visit with a retired woodwork teacher on Tuesday.",
+    ],
+    door: [
+      "Opened the door when Noor knocked.",
+      "Keeps his curtains closed. The lamp by the window stays on during the day.",
+      "“I know I could go outside. I just don’t know what I’d be going out for.”",
+      "Notices old hand-painted shop signs. Said he “used to”.",
+    ],
+    leena: [
+      "Works Saturday afternoons at Linden Library.",
+      "Taught the school woodshop class that built the library’s bench in 1998.",
+      "Her friend Nia invited her to a lake weekend on the 14th.",
+      "Lives with bipolar disorder. Says it is part of her history, and not the reason for everything.",
+      "Told Leena about the knock, and no more than that.",
+    ],
+    walt: [
+      "Walt’s wife. Told Mara that Walt “stopped trying” with his picture cards.",
+      "Spends hours in his workshop since the stroke.",
+      "Retired woodwork teacher. Has aphasia after a stroke four months ago.",
+      "His granddaughter Rosie turns one on Sunday.",
+      "Wants to say something to Rosie himself at her first birthday.",
+      "Made a card for Rosie’s birthday: ROSIE · ONE YEAR · LOVED. Says he says it “badly”.",
+    ],
+  };
   function legacyEntry(save, index) {
     const earlier = chapters.slice(0, index).map(ch => ch.id);
     const flags = {};
@@ -235,8 +271,13 @@ BF.story = (() => {
         if (Object.hasOwn(save.state.flags || {}, key)) flags[key] = save.state.flags[key];
       }
     }
+    const witnessed = new Set(earlier.flatMap(id => legacyWitnessLines[id] || []));
+    for (const [key, value] of Object.entries(save.state.flags || {})) {
+      if (key.startsWith('know_') && Array.isArray(value)) flags[key] = value.filter(line => witnessed.has(line));
+    }
+    // These optional essays persist across new stories, independently of witness records.
     return {flags, completed: (save.state.completed || []).filter(id => earlier.includes(id)),
-      notebook: ['about'], log: []};
+      notebook: save.state.notebook || ['about'], log: []};
   }
   function startChapter(id) {
     const i = chapters.findIndex(c => c.id === id); if (i < 0) return;
@@ -309,7 +350,7 @@ BF.story = (() => {
   function confirmNew() {
     ui.openScreen(`<div class="scr-card narrow"><h2>Start a new story?</h2><p>Your current place in the story will be replaced. Notebook pages you have found stay.</p><div class="row"><button type="button" class="btn" data-x="yes">Start again</button><button type="button" class="btn ghost" data-x="no" autofocus>Keep my place</button></div></div>`, {yes: newStory, no: titleScreen});
   }
-  function newStory() { chapterEntries = {}; const nb = st.notebook.slice(); st.reset(); st.notebook = nb; ui.closeScreen(); ui.fade(1, .6).then(() => play(0, null)); }
+  function newStory() { chapterEntries = {}; const nb = [...new Set([...st.notebook, ...(BF.save.read()?.state?.notebook || [])])]; st.reset(); st.notebook = nb; ui.closeScreen(); ui.fade(1, .6).then(() => play(0, null)); }
   let screenFrom = null;
   function backFromScreen() { if (screenFrom === 'title') titleScreen(); else if (screenFrom === 'pause') openPause(); else resume(); }
   function openPause() {

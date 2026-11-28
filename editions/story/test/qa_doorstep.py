@@ -199,6 +199,8 @@ def replay_without_visit(page, previous, legacy):
         page.evaluate("""key => {
             const record = JSON.parse(localStorage.getItem(key));
             delete record.chapterEntries;
+            record.state.flags.know_dele = ['His bike has had a flat tyre since August.', 'Opened the door when Noor knocked.'];
+            record.state.notebook.push('background');
             localStorage.setItem(key, JSON.stringify(record));
         }""", SAVE)
     page.goto(URL + "?fast=6")
@@ -217,6 +219,10 @@ def replay_without_visit(page, previous, legacy):
     page.get_by_role("button", name="Notebook", exact=True).click()
     expect(page.locator(".nb-view")).to_be_visible()
     expect(entries).to_have_count(0)
+    if legacy:
+        expect(page.locator('.nb-view section.person:has(> h4:text-is("Dele")) li')).to_have_text(
+            ["His bike has had a flat tyre since August."])
+        assert "background" in page.evaluate("BF.state.notebook")
     assert not page.evaluate("BF.state.flags.sawApril || BF.state.flags.sawOctober")
     print(f"PASS replay and Continue, legacy={legacy}: no prior disclosures or recollections", flush=True)
 
