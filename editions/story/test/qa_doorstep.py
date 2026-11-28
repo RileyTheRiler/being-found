@@ -7,7 +7,7 @@ import os
 import time
 from urllib.parse import urljoin
 
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import TimeoutError as PlaywrightTimeoutError, expect, sync_playwright
 
 URL = urljoin(os.getenv("BF_TEST_URL", "http://127.0.0.1:8770/index.html"), "story/index.html")
 SAVE = "beingfound.story.save.v1"
@@ -40,10 +40,15 @@ def until(page, predicate, label):
             return
         next_button = page.locator("#dialogue.show #dlgNext:not([hidden])")
         card_button = page.locator("#card.show .card-go")
-        if next_button.is_visible():
-            next_button.click(timeout=3000)
-        elif card_button.is_visible():
-            card_button.click(timeout=3000)
+        # A chapter transition can dismiss a previously visible dialogue.
+        # Recheck on that race, without invoking debug or hidden controls.
+        control = card_button if card_button.is_visible() else next_button
+        if control.is_visible():
+            try:
+                control.click(timeout=1000)
+            except PlaywrightTimeoutError:
+                if control.is_visible():
+                    raise
         else:
             page.wait_for_timeout(80)
     raise AssertionError(f"Timed out: {label}; dialogue={page.locator('#dlgText').inner_text()!r}")
@@ -136,11 +141,21 @@ def check(browser, route, disclosure="answer"):
         hotspot(page, "leena", "Library door")
         page.get_by_role("button", name="Notebook", exact=True).click()
         notebook = page.locator(".nb-view")
-        actual = notebook.locator("section.person").filter(has=page.get_by_role("heading", name="Noor", exact=True)).locator("li").all_text_contents()
+        expect(notebook).to_be_visible()
+        # Match the exact rendered heading; a role query can omit it while
+        # the Notebook screen is becoming visible.
+        entries = notebook.locator('section.person:has(> h4:text-is("Noor")) li')
         want = expected if disclosure == "answer" else expected[:1]
         if route.startswith("legacy-"):
             want = ["An unrelated earlier observation."] + want
+        expect(entries).to_have_count(len(want))
+        actual = entries.all_text_contents()
         assert actual == want, f"{route}/{disclosure}: Notebook actual={actual!r}, expected={want!r}"
+        for entry in entries.all():
+            expect(entry).to_be_visible()
+        artifacts = os.getenv("BF_TEST_ARTIFACTS", "qa-artifacts")
+        os.makedirs(artifacts, exist_ok=True)
+        page.screenshot(path=os.path.join(artifacts, f"doorstep-{route}-{disclosure}.png"), animations="disabled")
         assert OLD not in notebook.inner_text()
         page.get_by_role("button", name="Close", exact=True).click()
         log = page.evaluate("BF.state.log")
@@ -163,8 +178,12 @@ def check(browser, route, disclosure="answer"):
 if __name__ == "__main__":
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(executable_path=os.getenv("BF_CHROME"))
-        for route in CASES:
-            check(browser, route)
-        check(browser, "refusal", "talk")
-        check(browser, "invitation", "nohave")
+        selected = os.getenv("BF_DOORSTEP_CASE")
+        if selected:
+            check(browser, selected)
+        else:
+            for route in CASES:
+                check(browser, route)
+            check(browser, "refusal", "talk")
+            check(browser, "invitation", "nohave")
         browser.close()
