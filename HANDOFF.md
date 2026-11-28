@@ -1,3 +1,11 @@
+## PR #39 replay and restoration review
+
+Quality run [46097581388](https://github.com/RileyTheRiler/being-found/actions/runs/46097581388) failed when a chapter card intercepted a click on a visible dialogue button. Reduced motion [46097581326](https://github.com/RileyTheRiler/being-found/actions/runs/46097581326) passed all 13 steps.
+
+Independent Chromium review of preview HTML at `46d9b4c` reproduced stale invitation disclosures after Chapters → Play → skip, missing saved people on the cold title Notebook, and a Notebook page claiming Dele opened a door he only stood beside. The review used a seeded v1 checkpoint for replay. Regression coverage now also earns the checkpoint through play, reads the cold Notebook, replays, skips and resumes after reload. One route reads both voluntary recollections.
+
+New Story saves carry chapter-entry snapshots alongside the current checkpoint. Replay discards subsequent entries; Continue retains the checkpoint. When an older save has no entry snapshot, replay keeps confirmed earlier choices used by later scenes and drops observations and dialogue whose chapter cannot be established. Ordinary resume preserves the older record’s observations. See PR #39 for checks, review and release receipts.
+
 ## Story Edition Stage B — doorstep attribution (review branch; not released)
 
 Baseline `836046d853249a699f5c81d7a23972ad642d1959` (PR #37 final receipt, main push run 46071160508, 47/47). Rechecked GitHub main identical and Vercel production READY `dpl_DJ9yAbNEEJB3Bso2GwM6BczAPDNx`, public alias assigned to that SHA. PR #38 checkpoint fix remains unchanged.

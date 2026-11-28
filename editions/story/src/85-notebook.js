@@ -25,7 +25,7 @@ BF.notebook = (() => {
       <p>Leena’s two recollections are hers, told in her words, about two different times in her life. She chooses whether to look at them. So do you.</p>`,
       refs: [`Ratcliffe, M. ${EoD}, chapter “Loss of Significance”, pp. 180–181, on drive, the present and the future.`]},
     sameDoor: {title: 'When possibilities change', scene: 'Chapter Four',
-      body: `<p>Dele can open his door. He does, once. Nothing stops him from walking down to Ferro’s. The door is the same door Noor uses every day.</p>
+      body: `<p>From Dele’s landing, the stairs still lead down to Ferro’s. How does that familiar walk seem to him tonight?</p>
       <p>Ratcliffe collected many first-person accounts of depression. A theme that recurs is a change in the <i>kinds</i> of possibility the world seems to hold. Things can still be done. What changes is whether anything shows up as mattering, or as able to change. One respondent wrote: <q>I could go anywhere and do anything and nothing for me would change.</q></p>
       <p>Ratcliffe also stresses that these accounts vary a great deal. Dele’s evening is one authored story, not a picture of how depression feels for everyone.</p>`,
       refs: [`Ratcliffe, M. ${EoD}, chapter “Eternal Incarceration”, p. 67.`]},

@@ -47,7 +47,7 @@ def until(page, predicate, label):
             try:
                 control.click(timeout=1000)
             except PlaywrightTimeoutError:
-                if control.is_visible():
+                if control.is_visible() and not (control is next_button and card_button.is_visible()):
                     raise
         else:
             page.wait_for_timeout(80)
@@ -114,7 +114,8 @@ def legacy(page, route):
 
 
 def check(browser, route, disclosure="answer"):
-    context = browser.new_context(viewport={"width": 1180, "height": 820}, reduced_motion="reduce")
+    width, height = (390, 844) if route == "direct-home" else (1440, 900) if route == "invitation" else (1180, 820)
+    context = browser.new_context(viewport={"width": width, "height": height}, reduced_motion="reduce")
     try:
         context.add_init_script("""localStorage.setItem('beingfound.story.settings.v1', JSON.stringify({
           textSpeed:3, reducedMotion:true, notebookPrompts:false, music:0, ambience:0, effects:0
@@ -167,12 +168,57 @@ def check(browser, route, disclosure="answer"):
             assert not any("friend’s door" in line for line in noor), noor
         flags = page.evaluate("BF.state.flags")
         assert not flags.get("sawApril") and not flags.get("sawOctober"), flags
+        if route == "invitation" and disclosure == "answer":
+            for label in ("Open your planner", "Look at the April page", "Look at the October page"):
+                action(page, "leena", "Your planner", label)
+                page.get_by_role("button", name="Close the planner").click()
+                hotspot(page, "leena", "Your planner")
+            assert page.evaluate("BF.state.flags.sawApril && BF.state.flags.sawOctober")
         action(page, "leena", "Library door", "Lock up for the day")
         hotspot(page, "dele", "Phone")
+        if route == "skip":
+            action(page, "dele", "Front door", "Stand by the door")
+            hotspot(page, "dele", "Phone")
+            page.get_by_role("button", name="Notebook", exact=True).click()
+            page.get_by_role("button", name="When possibilities change").click()
+            expect(notebook).to_contain_text("From Dele’s landing")
+            assert not page.evaluate("BF.state.flags.openedDoor")
+        if route == "invitation" and disclosure == "answer":
+            replay_without_visit(page, expected, legacy=False)
+        if route == "refusal" and disclosure == "answer":
+            replay_without_visit(page, expected, legacy=True)
         assert not errors, errors
         print(f"PASS {route}/{disclosure}: exact Notebook, Noor dialogue, optional recollections, Dele evening", flush=True)
     finally:
         context.close()
+
+
+def replay_without_visit(page, previous, legacy):
+    if legacy:
+        # Model a save written before chapter-entry snapshots existed.
+        page.evaluate("""key => {
+            const record = JSON.parse(localStorage.getItem(key));
+            delete record.chapterEntries;
+            localStorage.setItem(key, JSON.stringify(record));
+        }""", SAVE)
+    page.goto(URL + "?fast=6")
+    page.get_by_role("button", name="Notebook", exact=True).click()
+    entries = page.locator('.nb-view section.person:has(> h4:text-is("Noor")) li')
+    expect(entries).to_have_text(previous)
+    page.get_by_role("button", name="Close", exact=True).click()
+    page.get_by_role("button", name="Chapters", exact=True).click()
+    page.locator("li.chap").filter(has_text="Behind the Door").get_by_role("button", name="Play").click()
+    page.get_by_role("button", name="Content note", exact=True).click()
+    page.get_by_role("button", name="Skip this chapter", exact=True).click()
+    hotspot(page, "leena", "Returns cart")
+    page.goto(URL + "?fast=6")
+    page.get_by_role("button", name="Continue").click()
+    hotspot(page, "leena", "Returns cart")
+    page.get_by_role("button", name="Notebook", exact=True).click()
+    expect(page.locator(".nb-view")).to_be_visible()
+    expect(entries).to_have_count(0)
+    assert not page.evaluate("BF.state.flags.sawApril || BF.state.flags.sawOctober")
+    print(f"PASS replay and Continue, legacy={legacy}: no prior disclosures or recollections", flush=True)
 
 
 if __name__ == "__main__":

@@ -192,7 +192,8 @@ BF.story = (() => {
   }
 
   /* ---------- saving ---------- */
-  function saveNow(chapter, from) { if (!chapter) return; const snap = st.snapshot(); BF.save.write({chapter, from: from || null, state: snap}); }
+  let chapterEntries = {};
+  function saveNow(chapter, from) { if (!chapter) return; const snap = st.snapshot(); BF.save.write({chapter, from: from || null, state: snap, chapterEntries}); }
 
   /* ---------- chapter flow ---------- */
   function register(ch) { chapters.push(ch); }
@@ -201,14 +202,15 @@ BF.story = (() => {
     ui.showHud(true);
     for (let i = index; i < chapters.length; i++) {
       const ch = chapters[i]; st.chapter = ch.id;
+      if (!from) chapterEntries[ch.id] = st.snapshot();
       saveNow(ch.id, from);
       try { await ch.run(G, from); } catch (e) { if (e === ABORT) return; console.error(e); }
       if (g !== gen) return;
       from = null;
       if (!st.completed.includes(ch.id)) st.completed.push(ch.id);
-      if (i + 1 < chapters.length) saveNow(chapters[i + 1].id, null);
+
     }
-    BF.save.write({chapter: 'complete', from: null, state: st.snapshot()});
+    saveNow('complete', null);
     titleScreen();
   }
   function hideAll() {
@@ -217,12 +219,37 @@ BF.story = (() => {
     BF.time.waits = []; BF.time.paused = false;
     const ph = ui.el().phone; ph.classList.remove('show'); ph.innerHTML = '';
   }
-  function startChapter(id, fresh) {
+  // Older saves have no chapter-entry snapshot. Carry forward only facts
+  // that an earlier chapter could have established and a later scene uses.
+  const legacyCarry = {
+    noor: ['pastry', 'twoKnots', 'hasBooks', 'hasSign'],
+    door: ['deleOutcome', 'deleKnocked', 'madeTea', 'gaveKnot', 'bagOnMat', 'washed', 'noteText'],
+    leena: ['leenaDecision', 'noorDoorDisclosure'],
+    dele: ['deleReply', 'openedCurtains'],
+  };
+  function legacyEntry(save, index) {
+    const earlier = chapters.slice(0, index).map(ch => ch.id);
+    const flags = {};
+    for (const id of earlier) {
+      for (const key of legacyCarry[id] || []) {
+        if (Object.hasOwn(save.state.flags || {}, key)) flags[key] = save.state.flags[key];
+      }
+    }
+    return {flags, completed: (save.state.completed || []).filter(id => earlier.includes(id)),
+      notebook: ['about'], log: []};
+  }
+  function startChapter(id) {
     const i = chapters.findIndex(c => c.id === id); if (i < 0) return;
     ui.closeScreen();
-    if (fresh) { // replaying from the menu: keep earlier choices, reset later ones
-      const save = BF.save.read(); if (save && save.state) st.restore(save.state);
-      if (chapters[i].defaults) Object.entries(chapters[i].defaults).forEach(([k, v]) => { if (st.get(k) === undefined) st.set(k, v); });
+    const save = BF.save.read();
+    chapterEntries = {...save?.chapterEntries};
+    if (save?.state) {
+      const entry = chapterEntries[id] || (save.chapter === id && !save.from
+        ? save.state : legacyEntry(save, i));
+      st.restore(structuredClone(entry));
+      for (const later of chapters.slice(i)) delete chapterEntries[later.id];
+    } else if (chapters[i].defaults) {
+      Object.entries(chapters[i].defaults).forEach(([k, v]) => st.set(k, v));
     }
     ui.fade(1, .3).then(() => { play(i, null); });
   }
@@ -230,7 +257,8 @@ BF.story = (() => {
     const index = chapters.findIndex(chapter => chapter.id === save.chapter);
     if (index < 0 || !save.state) return;
     au.init();
-    st.restore(save.state);
+    chapterEntries = {...save.chapterEntries};
+    st.restore(structuredClone(save.state));
     ui.closeScreen();
     ui.fade(1, .4).then(() => play(index, save.from));
   }
@@ -273,7 +301,7 @@ BF.story = (() => {
       cont: () => resumeCheckpoint(save),
       new: () => { au.init(); if (can) confirmNew(); else newStory(); },
       chapters: () => { au.init(); chapterScreen('title'); },
-      notebook: () => { if (save && save.state && !st.notebook.length) st.notebook = save.state.notebook || []; openNotebook(null, false, 'title'); },
+      notebook: () => { if (save?.state) st.restore(structuredClone(save.state)); openNotebook(null, false, 'title'); },
       settings: () => settingsScreen('title'), about: () => aboutScreen('title'),
     }, {name: 'title', cls: 'title-scr'});
     document.addEventListener('pointerdown', () => au.init(), {once: true});
@@ -281,7 +309,7 @@ BF.story = (() => {
   function confirmNew() {
     ui.openScreen(`<div class="scr-card narrow"><h2>Start a new story?</h2><p>Your current place in the story will be replaced. Notebook pages you have found stay.</p><div class="row"><button type="button" class="btn" data-x="yes">Start again</button><button type="button" class="btn ghost" data-x="no" autofocus>Keep my place</button></div></div>`, {yes: newStory, no: titleScreen});
   }
-  function newStory() { const nb = st.notebook.slice(); st.reset(); st.notebook = nb; ui.closeScreen(); ui.fade(1, .6).then(() => play(0, null)); }
+  function newStory() { chapterEntries = {}; const nb = st.notebook.slice(); st.reset(); st.notebook = nb; ui.closeScreen(); ui.fade(1, .6).then(() => play(0, null)); }
   let screenFrom = null;
   function backFromScreen() { if (screenFrom === 'title') titleScreen(); else if (screenFrom === 'pause') openPause(); else resume(); }
   function openPause() {
@@ -316,7 +344,7 @@ BF.story = (() => {
       return `<li class="chap ${open ? '' : 'locked'}"><div><span class="ck">${BF.u.esc(c.kicker)}</span><span class="ct">${BF.u.esc(c.title)}</span><span class="cw">${BF.u.esc(c.when || '')}</span>${c.content ? `<span class="cn">${BF.u.esc(c.content)}</span>` : ''}</div>${open ? `<button type="button" class="btn small" data-x="${atCheckpoint ? 'resume' : 'go'}" data-id="${c.id}">${atCheckpoint ? 'Resume' : 'Play'}</button>` : '<span class="muted small">Not yet reached</span>'}</li>`;
     }).join('');
     ui.openScreen(`<div class="scr-card wide"><h2>Chapters</h2><p class="muted">Replaying a chapter keeps what happened before it.</p><ul class="chaps">${items}</ul><div class="row"><button type="button" class="btn ghost" data-x="back">Back</button></div></div>`, {
-      back: backFromScreen, resume: () => resumeCheckpoint(save), go: b => { au.init(); startChapter(b.dataset.id, true); },
+      back: backFromScreen, resume: () => resumeCheckpoint(save), go: b => { au.init(); startChapter(b.dataset.id); },
     }, {name: 'screen'});
   }
   function openNotebook(pageId, fromToast, from) {
@@ -347,7 +375,7 @@ BF.story = (() => {
   function aboutScreen(from) {
     screenFrom = from;
     ui.openScreen(`<div class="scr-card"><h2>About Being Found</h2>
-      <p>Being Found is a short narrative game about neighbours on one street. You spend a Saturday with Noor, knock on Dele’s door, work a library shift as Leena, spend an evening in Dele’s flat, and visit Walt with Mara.</p>
+      <p>Being Found is a short narrative game about neighbours on one street. You spend a Saturday with Noor, visit her landing, work a library shift as Leena, spend an evening in Dele’s flat, and visit Walt with Mara.</p>
       <p>Its ideas come from Matthew Ratcliffe’s philosophy of “existential feeling”: the background sense of what is possible, familiar, and worth doing that shapes everything else. You can play without knowing any of that. The optional Notebook explains it if you want.</p>
       <p>Every character is fictional. Experiences of depression, bipolar disorder, and aphasia vary widely, and no chapter shows how any one person feels. Dele’s and Leena’s perspectives are authored stories, written with care, and not yet reviewed by people with lived experience.</p>
       <h3>Content</h3><p>The story touches on low mood and withdrawal (Dele), past mood episodes (Leena), and life after a stroke (Walt). There is no self-harm, no crisis, and no violence. Any chapter can be skipped.</p>
@@ -356,7 +384,7 @@ BF.story = (() => {
       <div class="row"><button type="button" class="btn" data-x="back" autofocus>Back</button></div></div>`, {back: backFromScreen}, {name: 'screen'});
   }
   async function credits() {
-    ui.showHud(false); BF.save.write({chapter: 'complete', from: null, state: st.snapshot()});
+    ui.showHud(false); saveNow('complete', null);
     await ui.title(`<div class="cred"><h2>Being Found</h2><p>A story by Riley Reso</p></div>`, 4200);
     await ui.title(`<div class="cred"><p class="ck">With ideas from</p><p>Matthew Ratcliffe<br><i>Feelings of Being</i> (2008) · <i>Experiences of Depression</i> (2015)<br><i>Rethinking Commonsense Psychology</i> (2007)</p></div>`, 5200);
     await ui.title(`<div class="cred"><p>Noor, Dele, Mara, Leena, Walt and June are fictional.<br>Their lives go on past the edge of this story.</p></div>`, 5200);

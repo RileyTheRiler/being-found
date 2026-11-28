@@ -22,7 +22,7 @@
   const q = new URLSearchParams(location.search);
   if (q.get('fast')) BF.time.scale = +q.get('fast');
   addEventListener('unhandledrejection', e => { if (e.reason && e.reason.abort) e.preventDefault(); });
-  if (q.get('chapter')) { BF.audio.init(); const nb = BF.state.notebook; BF.story.startChapter(q.get('chapter'), true); }
+  if (q.get('chapter')) { BF.audio.init(); BF.story.startChapter(q.get('chapter')); }
   else BF.story.titleScreen();
   window.BFdebug = {W: BF.world, S: BF.story, st: BF.state, G: BF.story.G};
 })();
